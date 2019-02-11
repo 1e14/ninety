@@ -10,10 +10,7 @@ describe("mergeObject()", () => {
     };
 
     mergeObject<T>(contents, {
-      set: {
-        bar: true,
-        foo: 6
-      }
+      set: [["bar", true], ["foo", 6]]
     });
 
     expect(contents).toEqual({

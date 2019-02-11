@@ -3,9 +3,7 @@ import {TJson} from "./TJson";
 /**
  * Key-value pairs to be set.
  */
-export type TDiffSet<T extends TJson> = {
-  [P in keyof T]?: T[P];
-};
+export type TDiffSet<T extends TJson> = Array<[keyof T, T[keyof T]]>;
 
 /**
  * Keys to be deleted.

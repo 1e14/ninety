@@ -12,14 +12,14 @@ export function diffObjects<T extends TJson>(
   // extracting key-value pairs to be updated
   let set: TDiffSet<T>;
   if (before) {
-    set = {};
+    set = [];
     for (const [key, value] of Object.entries(after)) {
       if (value !== before[key]) {
-        set[key] = value;
+        set.push([<keyof T>key, value]);
       }
     }
   } else {
-    set = after;
+    set = <Array<[keyof T, T[keyof T]]>>Object.entries(after);
   }
 
   // extracting keys to be deleted

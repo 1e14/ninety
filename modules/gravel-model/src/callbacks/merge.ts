@@ -13,7 +13,7 @@ export function mergeObject<T extends TJson>(
 
   const set = diff.set;
   if (set) {
-    for (const [key, value] of Object.entries(set)) {
+    for (const [key, value] of set) {
       current[key] = value;
     }
   }

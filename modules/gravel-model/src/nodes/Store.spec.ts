@@ -18,9 +18,7 @@ describe("createStore()", () => {
         connect(node.o.d_val, spy);
         node.i.d_diff({
           del: ["bar"],
-          set: {
-            foo: 5
-          }
+          set: [["foo", 5]]
         }, "1");
         expect(spy).toHaveBeenCalledWith({
           foo: 5
@@ -32,15 +30,11 @@ describe("createStore()", () => {
         connect(node.o.d_diff, spy);
         node.i.d_diff({
           del: ["bar"],
-          set: {
-            foo: 5
-          }
+          set: [["foo", 5]]
         }, "1");
         expect(spy).toHaveBeenCalledWith({
           del: ["bar"],
-          set: {
-            foo: 5
-          }
+          set: [["foo", 5]]
         }, "1");
       });
     });
@@ -58,9 +52,7 @@ describe("createStore()", () => {
       connect(node.o.ev_err, spy);
       node.i.d_diff({
         del: ["bar"],
-        set: {
-          foo: 5
-        }
+        set: [["foo", 5]]
       }, "1");
       expect(spy).toHaveBeenCalledWith(
         "Error: No merger callback. Can't merge.", "1");
@@ -82,15 +74,11 @@ describe("createStore()", () => {
         connect(node.o.b_d_diff, spy);
         node.i.d_diff({
           del: ["bar"],
-          set: {
-            foo: 5
-          }
+          set: [["foo", 5]]
         }, "1");
         expect(spy).toHaveBeenCalledWith({
           del: ["bar"],
-          set: {
-            foo: 5
-          }
+          set: [["foo", 5]]
         }, "1");
       });
 
@@ -99,9 +87,7 @@ describe("createStore()", () => {
         connect(node.o.ev_err, spy);
         node.i.d_diff({
           del: ["bar"],
-          set: {
-            foo: 5
-          }
+          set: [["foo", 5]]
         }, "1");
         expect(spy).toHaveBeenCalledWith("Error", "1");
       });
@@ -126,9 +112,7 @@ describe("createStore()", () => {
         }, "1");
         expect(spy).toHaveBeenCalledWith({
           del: ["bar"],
-          set: {
-            foo: 5
-          }
+          set: [["foo", 5]]
         }, "1");
       });
 
