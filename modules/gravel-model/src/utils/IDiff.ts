@@ -1,22 +1,21 @@
 import {TJson} from "./TJson";
-import {TPath} from "./TPath";
 
 /**
- * Lists key-value pairs to set.
+ * Key-value pairs to be set.
  */
-type TDiffSet<T extends TJson> = {
-  [P in TPath]: T;
+export type TDiffSet<T extends TJson> = {
+  [P in keyof T]?: T[P];
 };
 
 /**
- * Lists key-value pairs to delete.
+ * Keys to be deleted.
  */
-type TDiffDel<T extends TJson> = Array<keyof T>;
+export type TDiffDel<T extends TJson> = Array<keyof T>;
 
 /**
- * Describes a diff to be applied to a tree data structure.
+ * Describes a diff to be applied to a JSON data structure.
  */
 export interface IDiff<T extends TJson> {
-  set: TDiffSet<T>;
-  del: TDiffDel<T>;
+  set?: TDiffSet<T>;
+  del?: TDiffDel<T>;
 }
