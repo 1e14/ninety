@@ -14,6 +14,6 @@ export type TDiffDel<T extends TJson> = Array<keyof T>;
  * Describes a diff to be applied to a JSON data structure.
  */
 export interface IDiff<T extends TJson> {
-  set?: TDiffSet<T>;
-  del?: TDiffDel<T>;
+  set: TDiffSet<T>;
+  del: TDiffDel<T>;
 }

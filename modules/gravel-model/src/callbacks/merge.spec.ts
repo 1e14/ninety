@@ -10,6 +10,7 @@ describe("mergeObject()", () => {
     };
 
     mergeObject<T>(contents, {
+      del: [],
       set: [["bar", true], ["foo", 6]]
     });
 
@@ -27,7 +28,8 @@ describe("mergeObject()", () => {
     };
 
     mergeObject<T>(contents, {
-      del: ["foo"]
+      del: ["foo"],
+      set: []
     });
 
     expect(contents).toEqual({
