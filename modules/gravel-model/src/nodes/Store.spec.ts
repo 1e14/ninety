@@ -37,29 +37,88 @@ describe("createStore()", () => {
           set: [["foo", 5]]
         }, "1");
       });
+
+      describe("when diff is empty", () => {
+        it("should not emit on d_val", () => {
+          const spy = jasmine.createSpy();
+          connect(node.o.d_val, spy);
+          node.i.d_diff({
+            del: [],
+            set: []
+          }, "1");
+          expect(spy).not.toHaveBeenCalled();
+        });
+
+        it("should not forward d_diff", () => {
+          const spy = jasmine.createSpy();
+          connect(node.o.d_diff, spy);
+          node.i.d_diff({
+            del: [],
+            set: []
+          }, "1");
+          expect(spy).not.toHaveBeenCalled();
+        });
+      });
     });
   });
 
-  describe("when merger is not supplied", () => {
+  describe("when merger callback is not supplied", () => {
     let node: TStore<{ foo: number, bar: boolean }>;
 
     beforeEach(() => {
       node = createStore();
     });
 
-    it("should emit on ev_err", function () {
-      const spy = jasmine.createSpy();
-      connect(node.o.ev_err, spy);
-      node.i.d_diff({
-        del: ["bar"],
-        set: [["foo", 5]]
-      }, "1");
-      expect(spy).toHaveBeenCalledWith(
-        "Error: No merger callback. Can't merge.", "1");
+    describe("on input (d_diff)", () => {
+      it("should bounce d_diff", () => {
+        const spy = jasmine.createSpy();
+        connect(node.o.b_d_diff, spy);
+        node.i.d_diff({
+          del: ["bar"],
+          set: [["foo", 5]]
+        }, "1");
+        expect(spy).toHaveBeenCalledWith({
+          del: ["bar"],
+          set: [["foo", 5]]
+        }, "1");
+      });
+
+      it("should emit on ev_err", function () {
+        const spy = jasmine.createSpy();
+        connect(node.o.ev_err, spy);
+        node.i.d_diff({
+          del: ["bar"],
+          set: [["foo", 5]]
+        }, "1");
+        expect(spy).toHaveBeenCalledWith(
+          "Error: No merger callback. Can't merge.", "1");
+      });
+
+      describe("when diff is empty", () => {
+        it("should not bounce d_diff", () => {
+          const spy = jasmine.createSpy();
+          connect(node.o.b_d_diff, spy);
+          node.i.d_diff({
+            del: [],
+            set: []
+          }, "1");
+          expect(spy).not.toHaveBeenCalled();
+        });
+
+        it("should not emit on ev_err", () => {
+          const spy = jasmine.createSpy();
+          connect(node.o.ev_err, spy);
+          node.i.d_diff({
+            del: [],
+            set: []
+          }, "1");
+          expect(spy).not.toHaveBeenCalled();
+        });
+      });
     });
   });
 
-  describe("when merger throws", () => {
+  describe("when merger callback throws", () => {
     let node: TStore<{ foo: number, bar: boolean }>;
 
     beforeEach(() => {
@@ -94,7 +153,7 @@ describe("createStore()", () => {
     });
   });
 
-  describe("when differ is supplied", () => {
+  describe("when differ callback is supplied", () => {
     let node: TStore<{ foo: number, bar: boolean }>;
 
     beforeEach(() => {
@@ -126,10 +185,21 @@ describe("createStore()", () => {
           foo: 5
         }, "1");
       });
+
+      describe("when new value is equivalent", () => {
+        it("should not emit on d_diff", () => {
+          const spy = jasmine.createSpy();
+          connect(node.o.d_diff, spy);
+          node.i.d_val({
+            bar: true
+          }, "1");
+          expect(spy).not.toHaveBeenCalled();
+        });
+      });
     });
   });
 
-  describe("when differ is not supplied", () => {
+  describe("when differ callback is not supplied", () => {
     let node: TStore<{ foo: number, bar: boolean }>;
 
     beforeEach(() => {
@@ -152,7 +222,7 @@ describe("createStore()", () => {
     });
   });
 
-  describe("when differ throws", () => {
+  describe("when differ callback throws", () => {
     let node: TStore<{ foo: number, bar: boolean }>;
 
     beforeEach(() => {

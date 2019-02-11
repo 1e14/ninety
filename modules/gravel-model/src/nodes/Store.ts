@@ -72,20 +72,24 @@ export function createStore<T extends TJson>(
   const i: TInPorts<IInputs<T>> = {
     d_diff: merger ?
       (value, tag) => {
-        try {
-          merger(contents, value);
-          invalidated = false;
-          outputs.d_val(contents, tag);
-          outputs.d_diff(value, tag);
-        } catch (err) {
-          outputs.b_d_diff(value, tag);
-          outputs.ev_err(String(err), tag);
+        if (value.set.length || value.del.length) {
+          try {
+            merger(contents, value);
+            invalidated = false;
+            outputs.d_val(contents, tag);
+            outputs.d_diff(value, tag);
+          } catch (err) {
+            outputs.b_d_diff(value, tag);
+            outputs.ev_err(String(err), tag);
+          }
         }
       } :
       (value, tag) => {
-        outputs.b_d_diff(value, tag);
-        const message = "No merger callback. Can't merge.";
-        outputs.ev_err(String(new Error(message)), tag);
+        if (value.set.length || value.del.length) {
+          outputs.b_d_diff(value, tag);
+          const message = "No merger callback. Can't merge.";
+          outputs.ev_err(String(new Error(message)), tag);
+        }
       },
 
     d_val: differ ?
@@ -94,7 +98,10 @@ export function createStore<T extends TJson>(
         contents = value;
         invalidated = false;
         try {
-          outputs.d_diff(differ(before, value), tag);
+          const diff = differ(before, value);
+          if (diff.set.length || diff.del.length) {
+            outputs.d_diff(diff, tag);
+          }
         } catch (err) {
           outputs.b_d_val(value, tag);
           outputs.ev_err(String(err), tag);
