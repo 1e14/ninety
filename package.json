@@ -1,0 +1,27 @@
+{
+  "name": "@protoboard/gravel",
+  "version": "0.1.0",
+  "description": "",
+  "author": "Dan Stocker <dan@kwaia.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:protoboard/gravel.git"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^2.8.16",
+    "jasmine": "^3.3.1",
+    "tslint": "^5.12.1",
+    "typescript": "^3.3.3"
+  },
+  "scripts": {
+    "b-model": "cd modules/gravel-model && npm run build",
+    "build": "npm run b-model",
+    "i-model": "cd modules/gravel-model && npm i",
+    "ln-model": "cd modules/gravel-model && npm ln @kwaia/mote && npm ln",
+    "pi-model": "npm run ln-model && npm run i-model",
+    "postinstall": "npm run ln-model && npm run i-model",
+    "t-model": "cd modules/gravel-model && npm run test",
+    "test": "npm run t-model"
+  }
+}
