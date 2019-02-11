@@ -1,9 +1,15 @@
 import {createOutPorts, createOutputs, INode, TInPorts} from "@kwaia/mote";
 import {IDiff, TJson} from "../utils";
 
+/**
+ * Describes a function that applies a diff to data.
+ */
 export type TMergerCallback<T extends TJson> =
   (current: Partial<T>, diff: IDiff<T>) => void;
 
+/**
+ * Describes a function that takes a difference of two pieces of data.
+ */
 export type TDifferCallback<T extends TJson> =
   (before: Partial<T>, after: Partial<T>) => IDiff<T>;
 
@@ -42,7 +48,7 @@ export interface IOutputs<T extends TJson> {
 }
 
 /**
- * Stores model data. Can be invalidated and sampled.
+ * Stores and updates model data. Can be invalidated and sampled.
  */
 export type TStore<T extends TJson> = INode<IInputs<T>, IOutputs<T>>;
 
@@ -57,7 +63,8 @@ export function createStore<T extends TJson>(
   differ?: TDifferCallback<T>,
   contents?: Partial<T>
 ): TStore<T> {
-  const o = createOutPorts(["b_d_diff", "b_d_val", "d_diff", "d_val", "ev_err", "st_inv"]);
+  const o = createOutPorts([
+    "b_d_diff", "b_d_val", "d_diff", "d_val", "ev_err", "st_inv"]);
   const outputs = createOutputs(o);
 
   let invalidated: boolean;

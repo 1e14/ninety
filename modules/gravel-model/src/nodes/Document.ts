@@ -11,7 +11,7 @@ export type TInputs<T extends TJson> = T & IModelInputs<T>;
 export type TOutputs<T extends TJson> = IModelOutputs<T>;
 
 /**
- * Builds, stores, and maintains a document model.
+ * Stores and updates a document model.
  */
 export type TDocument<D extends TJson> = INode<TInputs<D>, TOutputs<D>>;
 
