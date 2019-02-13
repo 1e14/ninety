@@ -1,4 +1,4 @@
-import {connect} from "@kwaia/mote";
+import {connect} from "@protoboard/river";
 import {diffObjects, mergeObject} from "../callbacks";
 import {createStore, TStore} from "./Store";
 

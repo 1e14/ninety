@@ -1,4 +1,4 @@
-import {connect, createMerger, INode, TInPorts, TOutPorts} from "@kwaia/mote";
+import {connect, createMerger, INode, TInPorts, TOutPorts} from "@protoboard/river";
 import {TJson} from "../utils";
 import {
   createStore,

@@ -17,17 +17,15 @@
     "type": "git",
     "url": "git@github.com:protoboard/gravel.git"
   },
-  "devDependencies": {
-    "typescript": "^3.3.3"
-  },
   "dependencies": {
-    "@kwaia/mote": "^0.1.0"
+    "@protoboard/river": "^0.1.0"
   },
   "scripts": {
-    "build": "npm run clean && tsc",
-    "clean": "rm -rf dist",
-    "jasmine": "jasmine dist/**/*.spec.js",
+    "build": "npm run clean && tsc && echo gravel-model built",
+    "clean": "rm -rf dist && echo gravel-model cleaned",
+    "jasmine": "jasmine dist/**/*.spec.js && echo gravel-model tests passed",
+    "ln": "npm ln @protoboard/river && npm ln && echo gravel-model linked",
     "test": "npm run tslint && npm run jasmine",
-    "tslint": "tslint -c ../../tslint.json src/**/*.ts"
+    "tslint": "tslint -c ../../tslint.json src/**/*.ts && echo gravel-model tslint passed"
   }
 }

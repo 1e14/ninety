@@ -1,4 +1,4 @@
-import {createOutPorts, createOutputs, INode, TInPorts} from "@kwaia/mote";
+import {createOutPorts, createOutputs, INode, TInPorts} from "@protoboard/river";
 import {IDiff, TJson} from "../utils";
 
 /**

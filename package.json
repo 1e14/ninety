@@ -15,13 +15,15 @@
     "typescript": "^3.3.3"
   },
   "scripts": {
-    "b-model": "cd modules/gravel-model && npm run build",
-    "build": "npm run b-model",
+    "build-model": "cd modules/gravel-model && npm run build",
+    "build": "npm run build-model",
+    "clean": "npm run clean-model",
+    "clean-model": "cd modules/gravel-model && npm run clean",
     "i-model": "cd modules/gravel-model && npm i",
-    "ln-model": "cd modules/gravel-model && npm ln @kwaia/mote && npm ln",
-    "pi-model": "npm run ln-model && npm run i-model",
+    "ln-model": "cd modules/gravel-model && npm run ln",
+    "postinstall-model": "npm run ln-model && npm run i-model",
     "postinstall": "npm run ln-model && npm run i-model",
-    "t-model": "cd modules/gravel-model && npm run test",
-    "test": "npm run t-model"
+    "test-model": "cd modules/gravel-model && npm run test",
+    "test": "npm run test-model"
   }
 }
