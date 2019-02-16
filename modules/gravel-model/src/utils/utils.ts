@@ -17,7 +17,7 @@ export function getCollection(key: string) {
   let node = collections.get(key);
   if (!node) {
     node = createCollection();
-    fields.set(key, node);
+    collections.set(key, node);
   }
   return node;
 }
