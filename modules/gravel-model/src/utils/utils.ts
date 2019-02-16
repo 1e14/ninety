@@ -1,12 +1,23 @@
-import {createField, TField} from "../nodes";
+import {createCollection, createField, TCollection, TField} from "../nodes";
 
-const cache: Map<string, TField<any>> = new Map();
+const fields: Map<string, TField<any>> = new Map();
 
 export function getField(key: string) {
-  let node = cache.get(key);
+  let node = fields.get(key);
   if (!node) {
     node = createField();
-    cache.set(key, node);
+    fields.set(key, node);
+  }
+  return node;
+}
+
+const collections: Map<string, TCollection<any>> = new Map();
+
+export function getCollection(key: string) {
+  let node = collections.get(key);
+  if (!node) {
+    node = createCollection();
+    fields.set(key, node);
   }
   return node;
 }
