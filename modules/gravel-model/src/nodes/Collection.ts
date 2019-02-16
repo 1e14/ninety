@@ -5,13 +5,7 @@ import {
   TInPorts
 } from "@protoboard/river";
 import {diffObjects, mergeObject} from "../callbacks";
-import {IAny, IDiff} from "../utils";
-
-export type TMergerCallback<T extends IAny> =
-  (current: Partial<T>, diff: IDiff<T>) => void;
-
-export type TDifferCallback<T extends IAny> =
-  (before: Partial<T>, after: Partial<T>) => IDiff<T>;
+import {IAny, IDiff} from "../types";
 
 export interface IInputs<T extends IAny> {
   d_diff: IDiff<T>;

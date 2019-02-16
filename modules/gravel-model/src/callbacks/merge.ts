@@ -1,4 +1,4 @@
-import {IAny, IDiff} from "../utils";
+import {IAny, IDiff} from "../types";
 
 /**
  * Applies diff to the specified object.

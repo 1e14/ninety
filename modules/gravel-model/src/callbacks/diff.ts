@@ -1,4 +1,4 @@
-import {IAny, IDiff, TDiffDel, TDiffSet} from "../utils";
+import {IAny, IDiff, TDiffDel, TDiffSet} from "../types";
 
 /**
  * Extracts difference of the two specified objects.
