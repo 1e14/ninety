@@ -1,2 +1,2 @@
-export * from "./Document";
-export * from "./Store";
+export {createField, TField} from "./Field";
+export {createStore, TStore} from "./Store";
