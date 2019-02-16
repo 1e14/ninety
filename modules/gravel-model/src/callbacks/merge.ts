@@ -1,11 +1,11 @@
-import {IDiff, TJson} from "../utils";
+import {IAny, IDiff} from "../utils";
 
 /**
  * Applies diff to the specified object.
  * @param current Current object.
  * @param diff Diff to be applied.
  */
-export function mergeObject<T extends TJson>(
+export function mergeObject<T extends IAny>(
   current: Partial<T>,
   diff: IDiff<T>
 ): void {

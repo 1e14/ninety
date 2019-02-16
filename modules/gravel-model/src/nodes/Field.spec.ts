@@ -73,6 +73,19 @@ describe("createField()", () => {
         expect(spy).toHaveBeenCalledWith(true, "1");
       });
     });
+
+    describe("when invalidated", () => {
+      beforeEach(() => {
+        node.i.ev_inv(null);
+      });
+
+      it("should not emit on 'st_inv'", () => {
+        const spy = jasmine.createSpy();
+        connect(node.o.st_inv, spy);
+        node.i.ev_inv(null, "1");
+        expect(spy).not.toHaveBeenCalled();
+      });
+    });
   });
 
   describe("on input (ev_smp)", () => {

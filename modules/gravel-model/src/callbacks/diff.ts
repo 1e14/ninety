@@ -1,11 +1,11 @@
-import {IDiff, TDiffDel, TDiffSet, TJson} from "../utils";
+import {IAny, IDiff, TDiffDel, TDiffSet} from "../utils";
 
 /**
  * Extracts difference of the two specified objects.
  * @param before "Before" object.
  * @param after "After" object.
  */
-export function diffObjects<T extends TJson>(
+export function diffObjects<T extends IAny>(
   before: Partial<T>,
   after: Partial<T>
 ): IDiff<T> {
