@@ -1,7 +1,7 @@
 Gravel
 ======
 
-Gravel is a Web UI framework.
+Gravel is a Web UI framework built as a *computational graph*.
 
 Getting started
 ---------------
