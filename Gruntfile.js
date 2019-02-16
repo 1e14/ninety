@@ -54,7 +54,7 @@ module.exports = function (grunt) {
         cmd: deps
         .map((dep) => `npm ln ${dep}`)
         .concat("npm ln")
-        .join("&&")
+        .join(" && ")
       };
 
       return config;
