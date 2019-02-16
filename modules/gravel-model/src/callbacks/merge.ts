@@ -1,4 +1,5 @@
-import {IAny, IDiff} from "../types";
+import {IAny} from "@protoboard/river";
+import {IDiff} from "../types";
 
 /**
  * Applies diff to the specified object.

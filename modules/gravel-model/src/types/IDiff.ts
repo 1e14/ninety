@@ -1,4 +1,4 @@
-import {IAny} from "./IAny";
+import {IAny} from "@protoboard/river";
 
 /**
  * Key-value pairs to be set.

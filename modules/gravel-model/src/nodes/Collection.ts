@@ -1,11 +1,12 @@
 import {
   createOutPorts,
   createOutputs,
+  IAny,
   INode,
   TInPorts
 } from "@protoboard/river";
 import {diffObjects, mergeObject} from "../callbacks";
-import {IAny, IDiff} from "../types";
+import {IDiff} from "../types";
 
 export interface IInputs<T extends IAny> {
   d_diff: IDiff<T>;

@@ -1,4 +1,5 @@
-import {IAny, IDiff, TDiffDel, TDiffSet} from "../types";
+import {IAny} from "@protoboard/river";
+import {IDiff, TDiffDel, TDiffSet} from "../types";
 
 /**
  * Extracts difference of the two specified objects.
