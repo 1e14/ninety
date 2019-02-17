@@ -1,9 +1,9 @@
 import {connect} from "@protoboard/river";
-import {createCollection, TCollection} from "./Collection";
+import {Collection, createCollection} from "./Collection";
 
 describe("createCollection()", () => {
   describe("on input (d_diff)", () => {
-    let node: TCollection<{ foo: number, bar: boolean }>;
+    let node: Collection<{ foo: number, bar: boolean }>;
 
     beforeEach(() => {
       node = createCollection();
@@ -95,7 +95,7 @@ describe("createCollection()", () => {
   });
 
   describe("on input (d_val)", () => {
-    let node: TCollection<{ foo: number, bar: boolean }>;
+    let node: Collection<{ foo: number, bar: boolean }>;
 
     beforeEach(() => {
       node = createCollection();
@@ -181,7 +181,7 @@ describe("createCollection()", () => {
   });
 
   describe("on input (ev_inv)", () => {
-    let node: TCollection<{ foo: number, bar: boolean }>;
+    let node: Collection<{ foo: number, bar: boolean }>;
 
     beforeEach(() => {
       node = createCollection();
@@ -214,7 +214,7 @@ describe("createCollection()", () => {
   });
 
   describe("on input (ev_smp)", () => {
-    let node: TCollection<{ foo: number, bar: boolean }>;
+    let node: Collection<{ foo: number, bar: boolean }>;
 
     beforeEach(() => {
       node = createCollection();

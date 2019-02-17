@@ -1,3 +1,3 @@
-export * from "./IDiff";
-export * from "./TDifferCallback";
-export * from "./TMergerCallback";
+export * from "./Diff";
+export * from "./DifferCallback";
+export * from "./MergerCallback";

@@ -1,36 +1,36 @@
 import {
+  Any,
   createOutPorts,
   createOutputs,
-  IAny,
-  INode,
-  TInPorts
+  InPorts,
+  Node
 } from "@protoboard/river";
 import {diffObjects, mergeObject} from "../callbacks";
-import {IDiff} from "../types";
+import {Diff} from "../types";
 
-export interface IInputs<T extends IAny> {
-  d_diff: IDiff<T>;
+export type Inputs<T extends Any> = {
+  d_diff: Diff<T>;
   d_val: Partial<T>;
   ev_inv: any;
   ev_smp: any;
-}
+};
 
-export interface IOutputs<T extends IAny> {
-  d_diff: IDiff<T>;
+export type Outputs<T extends Any> = {
+  d_diff: Diff<T>;
   d_val: Partial<T>;
   st_inv: boolean;
-}
+};
 
-export type TCollection<T extends IAny> = INode<IInputs<T>, IOutputs<T>>;
+export type Collection<T extends Any> = Node<Inputs<T>, Outputs<T>>;
 
-export function createCollection<T extends IAny>(): TCollection<T> {
+export function createCollection<T extends Any>(): Collection<T> {
   const o = createOutPorts(["d_diff", "d_val", "st_inv"]);
   const outputs = createOutputs(o);
 
   let contents = {};
   let invalidated: boolean;
 
-  const i: TInPorts<IInputs<T>> = {
+  const i: InPorts<Inputs<T>> = {
     d_diff: (value, tag) => {
       if (value.set.length || value.del.length) {
         mergeObject(contents, value);

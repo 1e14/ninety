@@ -1,14 +1,14 @@
-import {IAny} from "@protoboard/river";
-import {IDiff} from "../types";
+import {Any} from "@protoboard/river";
+import {Diff} from "../types";
 
 /**
  * Applies diff to the specified object.
  * @param current Current object.
  * @param diff Diff to be applied.
  */
-export function mergeObject<T extends IAny>(
+export function mergeObject<T extends Any>(
   current: Partial<T>,
-  diff: IDiff<T>
+  diff: Diff<T>
 ): void {
   current = current || <T>{};
 

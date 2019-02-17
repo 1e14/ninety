@@ -1,6 +1,6 @@
-import {createCollection, createField, TCollection, TField} from "../nodes";
+import {Collection, createCollection, createField, Field} from "../nodes";
 
-const fields: Map<string, TField<any>> = new Map();
+const fields: Map<string, Field<any>> = new Map();
 
 export function getField(key: string) {
   let node = fields.get(key);
@@ -11,7 +11,7 @@ export function getField(key: string) {
   return node;
 }
 
-const collections: Map<string, TCollection<any>> = new Map();
+const collections: Map<string, Collection<any>> = new Map();
 
 export function getCollection(key: string) {
   let node = collections.get(key);

@@ -1,17 +1,17 @@
-import {IAny} from "@protoboard/river";
-import {IDiff, TDiffDel, TDiffSet} from "../types";
+import {Any} from "@protoboard/river";
+import {Diff, DiffDel, DiffSet} from "../types";
 
 /**
  * Extracts difference of the two specified objects.
  * @param before "Before" object.
  * @param after "After" object.
  */
-export function diffObjects<T extends IAny>(
+export function diffObjects<T extends Any>(
   before: Partial<T>,
   after: Partial<T>
-): IDiff<T> {
+): Diff<T> {
   // extracting key-value pairs to be updated
-  let set: TDiffSet<T>;
+  let set: DiffSet<T>;
   if (before) {
     set = [];
     for (const [key, value] of Object.entries(after)) {
@@ -24,7 +24,7 @@ export function diffObjects<T extends IAny>(
   }
 
   // extracting keys to be deleted
-  let del: TDiffDel<T>;
+  let del: DiffDel<T>;
   if (after) {
     del = [];
     for (const [key, value] of Object.entries(before)) {
@@ -33,7 +33,7 @@ export function diffObjects<T extends IAny>(
       }
     }
   } else {
-    del = <TDiffDel<T>>Object.keys(before);
+    del = <DiffDel<T>>Object.keys(before);
   }
 
   return {set, del};

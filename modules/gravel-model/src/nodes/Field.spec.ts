@@ -1,9 +1,9 @@
 import {connect} from "@protoboard/river";
-import {createField, TField} from "./Field";
+import {createField, Field} from "./Field";
 
 describe("createField()", () => {
   describe("on input (d_val)", () => {
-    let node: TField<number>;
+    let node: Field<number>;
 
     beforeEach(() => {
       node = createField();
@@ -59,7 +59,7 @@ describe("createField()", () => {
   });
 
   describe("on input (ev_inv)", () => {
-    let node: TField<number>;
+    let node: Field<number>;
 
     beforeEach(() => {
       node = createField();
@@ -89,7 +89,7 @@ describe("createField()", () => {
   });
 
   describe("on input (ev_smp)", () => {
-    let node: TField<number>;
+    let node: Field<number>;
 
     beforeEach(() => {
       node = createField();

@@ -1,3 +1,3 @@
-export {createCollection, TCollection} from "./Collection";
-export {createDocument, TDocument} from "./Document";
-export {createField, TField} from "./Field";
+export {createCollection, Collection} from "./Collection";
+export {createDocument, Document} from "./Document";
+export {createField, Field} from "./Field";
