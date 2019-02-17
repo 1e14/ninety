@@ -3,7 +3,8 @@ module.exports = function (grunt) {
   "use strict";
 
   const modules = [
-    "gravel-model"
+    "gravel-model",
+    "gravel-routing"
   ];
 
   grunt.initConfig({
