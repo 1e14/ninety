@@ -1,4 +1,4 @@
-import {connect} from "@protoboard/river";
+import {connect} from "river-core";
 import {createRouter, Router} from "./Router";
 
 describe("createRouter()", () => {

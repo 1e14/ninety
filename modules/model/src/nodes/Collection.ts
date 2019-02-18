@@ -4,7 +4,7 @@ import {
   createOutputs,
   InPorts,
   Node
-} from "@protoboard/river";
+} from "river-core";
 import {diffObjects, mergeObject} from "../callbacks";
 import {Diff} from "../types";
 

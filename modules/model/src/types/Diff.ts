@@ -1,4 +1,4 @@
-import {Any} from "@protoboard/river";
+import {Any} from "river-core";
 
 /**
  * Key-value pairs to be set.

@@ -1,5 +1,5 @@
-import {InPorts, Node, OutPorts} from "@protoboard/river";
-import {createNoop} from "@protoboard/river-stdlib";
+import {InPorts, Node, OutPorts} from "river-core";
+import {createNoop} from "river-stdlib";
 
 export type Inputs = {
   ev_inv: any;

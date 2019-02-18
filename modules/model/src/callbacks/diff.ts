@@ -1,4 +1,4 @@
-import {Any} from "@protoboard/river";
+import {Any} from "river-core";
 import {Diff, DiffDel, DiffSet} from "../types";
 
 /**

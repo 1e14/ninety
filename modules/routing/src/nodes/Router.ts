@@ -1,4 +1,4 @@
-import {createOutPorts, createOutputs, InPorts, Node} from "@protoboard/river";
+import {createOutPorts, createOutputs, InPorts, Node} from "river-core";
 
 export type Inputs = {
   d_path: string;
