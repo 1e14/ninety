@@ -1,5 +1,5 @@
+import {Diff} from "gravel-types";
 import {Any} from "river-core";
-import {Diff} from "../types";
 
 /**
  * Applies diff to the specified object.

@@ -1,5 +1,5 @@
+import {Diff, DiffDel, DiffSet} from "gravel-types";
 import {Any} from "river-core";
-import {Diff, DiffDel, DiffSet} from "../types";
 
 /**
  * Extracts difference of the two specified objects.

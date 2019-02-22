@@ -1,6 +1,6 @@
+import {Diff} from "gravel-types";
 import {Any, createNode, Node} from "river-core";
 import {diffObjects, mergeObject} from "../callbacks";
-import {Diff} from "../types";
 
 export type In<T extends Any> = {
   d_diff: Diff<T>;

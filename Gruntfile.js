@@ -3,6 +3,7 @@ module.exports = function (grunt) {
   "use strict";
 
   const modules = [
+    "types",
     "model",
     "routing"
   ];
