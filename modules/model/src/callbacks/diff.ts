@@ -9,34 +9,40 @@ import {Any} from "river-core";
 export function diffObjects<T extends Any>(
   before: Partial<T>,
   after: Partial<T>
-): Diff<T> {
+): Diff<T> | false {
+  let different = false;
+
   // extracting key-value pairs to be updated
   let set: DiffSet<T>;
   if (before) {
-    set = [];
+    set = <DiffSet<T>>{};
     for (const [key, value] of Object.entries(after)) {
       if (value !== before[key]) {
-        set.push([<keyof T>key, value]);
+        set[key] = value;
+        different = true;
       }
     }
   } else {
-    set = <Array<[keyof T, T[keyof T]]>>Object.entries(after);
+    set = <DiffSet<T>>after;
+    different = true;
   }
 
   // extracting keys to be deleted
   let del: DiffDel<T>;
   if (after) {
-    del = [];
+    del = <DiffDel<T>>{};
     for (const [key, value] of Object.entries(before)) {
       if (value !== undefined && after[key] === undefined) {
-        del.push(<keyof T>key);
+        del[key] = null;
+        different = true;
       }
     }
   } else {
-    del = <DiffDel<T>>Object.keys(before);
+    del = <DiffDel<T>>before;
+    different = true;
   }
 
-  return {set, del};
+  return different && {set, del};
 }
 
 // TODO: Add diffArrays()

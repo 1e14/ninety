@@ -24,8 +24,7 @@ export function createCollection<T extends Any>(): Collection<T> {
 
     return {
       d_diff: (value, tag) => {
-        if (value.set.length || value.del.length) {
-          mergeObject(contents, value);
+        if (mergeObject(contents, value)) {
           outputs.d_val(contents, tag);
           outputs.d_diff(value, tag);
 
@@ -37,17 +36,15 @@ export function createCollection<T extends Any>(): Collection<T> {
       },
 
       d_val: (value, tag) => {
-        if (value !== contents) {
-          const diff = diffObjects(contents, value);
-          if (diff.set.length || diff.del.length) {
-            contents = value;
-            outputs.d_val(contents, tag);
-            outputs.d_diff(diff, tag);
+        const diff = value !== contents && diffObjects(contents, value);
+        if (diff !== false) {
+          contents = value;
+          outputs.d_val(contents, tag);
+          outputs.d_diff(diff, tag);
 
-            if (invalidated !== false) {
-              invalidated = false;
-              outputs.st_inv(invalidated, tag);
-            }
+          if (invalidated !== false) {
+            invalidated = false;
+            outputs.st_inv(invalidated, tag);
           }
         }
       },

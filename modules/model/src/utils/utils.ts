@@ -1,3 +1,4 @@
+import {Any} from "river-core";
 import {Collection, createCollection, createField, Field} from "../nodes";
 
 const fields: Map<string, Field<any>> = new Map();
@@ -20,4 +21,11 @@ export function getCollection(key: string) {
     collections.set(key, node);
   }
   return node;
+}
+
+export function isEmptyObject(object: Any) {
+  for (const key in object) {
+    return false;
+  }
+  return true;
 }

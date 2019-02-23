@@ -17,10 +17,11 @@ describe("createCollection()", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_val, spy);
         node.i.d_diff({
-          del: ["bar"],
-          set: [["foo", 5]]
+          del: {bar: null},
+          set: {foo: 5}
         }, "1");
         expect(spy).toHaveBeenCalledWith({
+          bar: undefined,
           foo: 5
         }, "1");
       });
@@ -29,12 +30,12 @@ describe("createCollection()", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_diff, spy);
         node.i.d_diff({
-          del: ["bar"],
-          set: [["foo", 5]]
+          del: {bar: null},
+          set: {foo: 5}
         }, "1");
         expect(spy).toHaveBeenCalledWith({
-          del: ["bar"],
-          set: [["foo", 5]]
+          del: {bar: null},
+          set: {foo: 5}
         }, "1");
       });
 
@@ -47,8 +48,8 @@ describe("createCollection()", () => {
           const spy = jasmine.createSpy();
           connect(node.o.st_inv, spy);
           node.i.d_diff({
-            del: ["bar"],
-            set: [["foo", 5]]
+            del: {bar: null},
+            set: {foo: 5}
           }, "1");
           expect(spy).toHaveBeenCalledWith(false, "1");
         });
@@ -63,8 +64,8 @@ describe("createCollection()", () => {
           const spy = jasmine.createSpy();
           connect(node.o.st_inv, spy);
           node.i.d_diff({
-            del: ["bar"],
-            set: [["foo", 5]]
+            del: {bar: null},
+            set: {foo: 5}
           }, "1");
           expect(spy).not.toHaveBeenCalled();
         });
@@ -76,8 +77,8 @@ describe("createCollection()", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_val, spy);
         node.i.d_diff({
-          del: [],
-          set: []
+          del: {},
+          set: {}
         }, "1");
         expect(spy).not.toHaveBeenCalled();
       });
@@ -86,8 +87,8 @@ describe("createCollection()", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_diff, spy);
         node.i.d_diff({
-          del: [],
-          set: []
+          del: {},
+          set: {}
         }, "1");
         expect(spy).not.toHaveBeenCalled();
       });
@@ -112,8 +113,8 @@ describe("createCollection()", () => {
           foo: 5
         }, "1");
         expect(spy).toHaveBeenCalledWith({
-          del: ["bar"],
-          set: [["foo", 5]]
+          del: {bar: null},
+          set: {foo: 5}
         }, "1");
       });
 
