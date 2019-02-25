@@ -5,7 +5,8 @@ module.exports = function (grunt) {
   const modules = [
     "types",
     "model",
-    "routing"
+    "routing",
+    "dom"
   ];
 
   grunt.initConfig({
