@@ -19,10 +19,10 @@
     "url": "git@github.com:protoboard/gravel.git"
   },
   "dependencies": {
-    "gravel-dom": "^0.1.0",
     "gravel-model": "^0.1.0",
     "gravel-routing": "^0.1.0",
     "gravel-types": "^0.1.0",
+    "gravel-view-dom": "^0.1.0",
     "river-core": "^0.1.0",
     "river-stdlib": "^0.1.0",
     "river-browser": "^0.1.0"

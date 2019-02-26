@@ -1,4 +1,4 @@
-import {applyView} from "gravel-dom";
+import {applyView} from "gravel-view-dom";
 import {createLocationHash} from "river-browser";
 import {connect} from "river-core";
 
