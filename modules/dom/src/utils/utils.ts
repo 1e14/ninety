@@ -12,8 +12,13 @@ export function setDomPath(path: string, value: any): boolean {
       tmp = tmp[key];
     } else if (tmp instanceof NodeList) {
       if (tmp[key] === undefined) {
-        addPlaceholders(parent, parseInt(key, 10));
-        return false;
+        if (keys[0] === "tagName") {
+          addElement(parent, parseInt(key, 10), value);
+          return true;
+        } else {
+          addPlaceholders(parent, parseInt(key, 10));
+          return false;
+        }
       } else {
         tmp = tmp[key];
       }
@@ -38,4 +43,13 @@ export function addPlaceholders(parent: Node, index: number): void {
     const placeholder = document.createComment("ph");
     parent.appendChild(placeholder);
   }
+}
+
+export function addElement(parent: Node, index: number, tagName: string): void {
+  for (let i = parent.childNodes.length; i < index; i++) {
+    const placeholder = document.createComment("ph");
+    parent.appendChild(placeholder);
+  }
+  const element = document.createElement(tagName);
+  parent.appendChild(element);
 }
