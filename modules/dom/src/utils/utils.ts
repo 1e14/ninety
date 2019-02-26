@@ -1,11 +1,29 @@
-export function setDomPath(path: string, value: any): boolean {
+import {Diff} from "gravel-types";
+
+function addPlaceholders(parent: Node, index: number): void {
+  for (let i = parent.childNodes.length; i <= index; i++) {
+    const placeholder = document.createComment("ph");
+    parent.appendChild(placeholder);
+  }
+}
+
+function addElement(parent: Node, index: number, tagName: string): void {
+  for (let i = parent.childNodes.length; i < index; i++) {
+    const placeholder = document.createComment("ph");
+    parent.appendChild(placeholder);
+  }
+  const element = document.createElement(tagName);
+  parent.appendChild(element);
+}
+
+export function applyViewProperty(path: string, value: any): boolean {
   const keys = path.split(".");
   let tmp: any = document;
   let parent: Node = document;
   do {
     const key = keys.shift();
     if (tmp instanceof Comment && key === "tagName") {
-      const element = document.createElement(key);
+      const element = document.createElement(value);
       tmp.parentNode.replaceChild(element, tmp);
     } else if (tmp instanceof Node) {
       parent = tmp;
@@ -38,18 +56,17 @@ export function setDomPath(path: string, value: any): boolean {
   return tmp !== undefined;
 }
 
-export function addPlaceholders(parent: Node, index: number): void {
-  for (let i = parent.childNodes.length; i <= index; i++) {
-    const placeholder = document.createComment("ph");
-    parent.appendChild(placeholder);
-  }
-}
+export function applyView<T>(view: Diff<T>): Diff<T> {
+  const bounced: Diff<T> = {
+    set: {},
+    del: {}
+  };
 
-export function addElement(parent: Node, index: number, tagName: string): void {
-  for (let i = parent.childNodes.length; i < index; i++) {
-    const placeholder = document.createComment("ph");
-    parent.appendChild(placeholder);
+  for (const [path, value] of Object.entries(view.set)) {
+    if (!applyViewProperty(path, value)) {
+      bounced.set[path] = value;
+    }
   }
-  const element = document.createElement(tagName);
-  parent.appendChild(element);
+
+  return bounced;
 }
