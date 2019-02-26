@@ -20,6 +20,15 @@ module.exports = function (grunt) {
       "package-lock": ["package-lock.json"]
     }),
 
+    copy: {
+      dom: {
+        src: ["modules/dom/test/index.html"],
+        dest: "modules/dom/dist/",
+        expand: true,
+        flatten: true
+      }
+    },
+
     watch: modules.reduce((config, module) => {
       config[module] = {
         files: [`modules/${module}/src/**/*.ts`],
@@ -39,6 +48,27 @@ module.exports = function (grunt) {
       };
       return config;
     }, {}),
+
+    webpack: {
+      app: {
+        entry: `./modules/dom/src/index.ts`,
+        output: {
+          filename: "bundle.js",
+          path: `${__dirname}/modules/dom/dist`
+        },
+        mode: "production",
+        devtool: "source-map",
+        module: {
+          rules: [
+            {test: /\.ts$/, use: "ts-loader"},
+            {test: /\.js$/, use: "source-map-loader", enforce: "pre"}
+          ]
+        },
+        resolve: {
+          extensions: [".ts", ".js"]
+        }
+      }
+    },
 
     exec: modules.reduce((config, module) => {
       config[`ts-${module}`] = {
@@ -94,8 +124,10 @@ module.exports = function (grunt) {
   });
 
   grunt.loadNpmTasks("grunt-contrib-clean");
+  grunt.loadNpmTasks("grunt-contrib-copy");
   grunt.loadNpmTasks("grunt-contrib-watch");
   grunt.loadNpmTasks("grunt-tslint");
+  grunt.loadNpmTasks("grunt-webpack");
   grunt.loadNpmTasks("grunt-exec");
   grunt.loadNpmTasks("grunt-notify");
 
@@ -136,6 +168,7 @@ module.exports = function (grunt) {
   grunt.registerTask("build-quick", ["clean-dist", "ts", "notify:build"]);
   grunt.registerTask("build", [
     "clean-dist", "tslint", "ts", "test", "notify:build"]);
+  grunt.registerTask("bundle-dom", ["copy:dom", "webpack:dom"]);
   grunt.registerTask("postinstall", modules
   .map((module) => `postinstall-${module}`));
   grunt.registerTask("default", ["build-quick", "watch"]);
