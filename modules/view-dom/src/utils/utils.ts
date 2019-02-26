@@ -49,8 +49,6 @@ export function applyViewProperty(path: string, value: any): boolean {
     } else {
       tmp = tmp[key];
     }
-    // tslint:disable
-    console.log(">", key, tmp);
   } while (tmp !== undefined && keys.length);
 
   return tmp !== undefined;
@@ -58,15 +56,13 @@ export function applyViewProperty(path: string, value: any): boolean {
 
 export function applyView<T>(view: Diff<T>): Diff<T> {
   const bounced: Diff<T> = {
-    set: {},
-    del: {}
+    del: {},
+    set: {}
   };
-
   for (const [path, value] of Object.entries(view.set)) {
     if (!applyViewProperty(path, value)) {
       bounced.set[path] = value;
     }
   }
-
   return bounced;
 }
