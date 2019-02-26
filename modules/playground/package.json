@@ -1,0 +1,30 @@
+{
+  "name": "gravel-playground",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "!dist/**/*.spec.*",
+    "package.json",
+    "README.md"
+  ],
+  "keywords": [],
+  "author": "Dan Stocker <dan@kwaia.com>",
+  "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:protoboard/gravel.git"
+  },
+  "dependencies": {
+    "gravel-dom": "^0.1.0",
+    "gravel-model": "^0.1.0",
+    "gravel-routing": "^0.1.0",
+    "gravel-types": "^0.1.0",
+    "river-core": "^0.1.0",
+    "river-stdlib": "^0.1.0",
+    "river-browser": "^0.1.0"
+  }
+}

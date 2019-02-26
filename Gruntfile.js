@@ -6,7 +6,8 @@ module.exports = function (grunt) {
     "types",
     "model",
     "routing",
-    "dom"
+    "dom",
+    "playground"
   ];
 
   grunt.initConfig({
@@ -21,9 +22,9 @@ module.exports = function (grunt) {
     }),
 
     copy: {
-      dom: {
-        src: ["modules/dom/test/index.html"],
-        dest: "modules/dom/dist/",
+      playground: {
+        src: ["modules/playground/src/index.html"],
+        dest: "modules/playground/dist/",
         expand: true,
         flatten: true
       }
@@ -50,11 +51,11 @@ module.exports = function (grunt) {
     }, {}),
 
     webpack: {
-      app: {
-        entry: `./modules/dom/src/index.ts`,
+      playground: {
+        entry: `./modules/playground/src/index.ts`,
         output: {
           filename: "bundle.js",
-          path: `${__dirname}/modules/dom/dist`
+          path: `${__dirname}/modules/playground/dist`
         },
         mode: "production",
         devtool: "source-map",
@@ -168,7 +169,7 @@ module.exports = function (grunt) {
   grunt.registerTask("build-quick", ["clean-dist", "ts", "notify:build"]);
   grunt.registerTask("build", [
     "clean-dist", "tslint", "ts", "test", "notify:build"]);
-  grunt.registerTask("bundle-dom", ["copy:dom", "webpack:dom"]);
+  grunt.registerTask("bundle", ["copy:playground", "webpack:playground"]);
   grunt.registerTask("postinstall", modules
   .map((module) => `postinstall-${module}`));
   grunt.registerTask("default", ["build-quick", "watch"]);
