@@ -20,19 +20,19 @@ function addPlaceholders(parent: Node, index: number): void {
  * @param value Property value to be set.
  */
 export function applyViewProperty(path: string, value: any): boolean {
-  const comps = path.split(".");
+  const components = path.split(".");
   let tmp: any = document;
   let parent: Node = document;
   do {
-    const comp = comps.shift();
+    const component = components.shift();
     if (tmp instanceof Node) {
       // setting current node as last parent, and going on to the specified
       // property
       parent = tmp;
-      tmp = tmp[comp];
+      tmp = tmp[component];
     } else if (tmp instanceof NodeList) {
       // extracting child index & tagName from path component
-      const [index, tagName] = comp.split(":");
+      const [index, tagName] = component.split(":");
       const node = tmp[index];
       if (node === undefined) {
         if (tagName === undefined) {
@@ -52,24 +52,28 @@ export function applyViewProperty(path: string, value: any): boolean {
       }
     } else if (tmp instanceof NamedNodeMap) {
       // attributes
-      let attribute = tmp.getNamedItem(comp);
+      let attribute = tmp.getNamedItem(component);
       if (!attribute) {
-        attribute = document.createAttribute(comp);
+        attribute = document.createAttribute(component);
         tmp.setNamedItem(attribute);
       }
       attribute.value = value;
     } else if (tmp instanceof DOMTokenList) {
       // CSS classes
-      tmp.add(comp, comp);
-    } else {
-      // in any other case - proceed to specified property
-      tmp = tmp[comp];
+      tmp.add(component, component);
+    } else if (tmp instanceof CSSStyleDeclaration) {
+      // CSS styles
+      tmp[component] = value;
+    } else if (components.length) {
+      // path is not fully processed
+      // proceeding to next property
+      tmp = tmp[component];
     }
 
     if (tmp === undefined) {
       return false;
     }
-  } while (comps.length);
+  } while (components.length);
 
   return true;
 }

@@ -9,7 +9,9 @@ connect(locationHash.o.d_val, () => {
     del: {},
     set: {
       "body.childNodes.4:section.attributes.bar": "baz",
-      "body.childNodes.4:section.classList.foo": true
+      "body.childNodes.4:section.classList.foo": true,
+      "body.childNodes.4:section.style.backgroundColor": "green",
+      "body.childNodes.4:section.style.height": "100px",
     }
   });
   applyView({
