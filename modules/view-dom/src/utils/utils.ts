@@ -20,44 +20,56 @@ function addPlaceholders(parent: Node, index: number): void {
  * @param value Property value to be set.
  */
 export function applyViewProperty(path: string, value: any): boolean {
-  const keys = path.split(".");
+  const comps = path.split(".");
   let tmp: any = document;
   let parent: Node = document;
   do {
-    const key = keys.shift();
+    const comp = comps.shift();
     if (tmp instanceof Node) {
+      // setting current node as last parent, and going on to the specified
+      // property
       parent = tmp;
-      tmp = tmp[key];
+      tmp = tmp[comp];
     } else if (tmp instanceof NodeList) {
-      const [index, tagName] = key.split(",");
+      // extracting child index & tagName from path component
+      const [index, tagName] = comp.split(",");
       const node = tmp[index];
       if (node === undefined) {
         if (tagName === undefined) {
+          // no tagName - can't proceed
           return false;
         }
         addPlaceholders(parent, +index);
         tmp = document.createElement(tagName);
         parent.appendChild(tmp);
       } else if (node instanceof Comment) {
+        // replacing existing placeholder
         tmp = document.createElement(tagName);
         parent.replaceChild(tmp, node);
       } else {
+        // in any other case - proceed to specified property
         tmp = tmp[index];
       }
-    } else if (tmp instanceof NamedNodeMap && !tmp.getNamedItem(key)) {
-      const attribute = document.createAttribute(key);
+    } else if (tmp instanceof NamedNodeMap) {
+      // attributes
+      let attribute = tmp.getNamedItem(comp);
+      if (!attribute) {
+        attribute = document.createAttribute(comp);
+        tmp.setNamedItem(attribute);
+      }
       attribute.value = value;
-      tmp.setNamedItem(attribute);
     } else if (tmp instanceof DOMTokenList) {
-      tmp.add(key, key);
+      // CSS classes
+      tmp.add(comp, comp);
     } else {
-      tmp = tmp[key];
+      // in any other case - proceed to specified property
+      tmp = tmp[comp];
     }
 
     if (tmp === undefined) {
       return false;
     }
-  } while (keys.length);
+  } while (comps.length);
 
   return true;
 }
