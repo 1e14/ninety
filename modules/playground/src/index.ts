@@ -1,11 +1,11 @@
-import {applyView} from "gravel-view-dom";
+import {applyDomView} from "gravel-view-dom";
 import {createLocationHash} from "river-browser";
 import {connect} from "river-core";
 
 const locationHash = createLocationHash();
 
 connect(locationHash.o.d_val, () => {
-  applyView({
+  applyDomView({
     del: {},
     set: {
       "body.childNodes.4:section.attributes.bar": "baz",
@@ -14,7 +14,7 @@ connect(locationHash.o.d_val, () => {
       "body.childNodes.4:section.style.height": "100px",
     }
   });
-  applyView({
+  applyDomView({
     del: {},
     set: {
       "body.childNodes.2:div.attributes.id": "quux",
