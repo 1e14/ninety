@@ -33,8 +33,7 @@ describe("mergeObject()", () => {
     });
 
     expect(contents).toEqual({
-      baz: "1",
-      foo: undefined
+      baz: "1"
     });
   });
 

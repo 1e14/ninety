@@ -1,7 +1,7 @@
 import {Diff} from "gravel-types";
 import {Any} from "river-core";
 
-const hasOwnProperty = Object.prototype.hasOwnProperty;
+const hOP = Object.prototype.hasOwnProperty;
 
 /**
  * Applies diff to the specified object.
@@ -12,7 +12,7 @@ export function mergeObject<T extends Any>(
   current: Partial<T>,
   diff: Diff<T>
 ): boolean {
-  let merged = false;
+  let changed = false;
 
   current = current || <T>{};
 
@@ -21,21 +21,21 @@ export function mergeObject<T extends Any>(
     for (const [key, value] of Object.entries(set)) {
       if (value !== current[key]) {
         current[key] = value;
-        merged = true;
+        changed = true;
       }
     }
   }
   const del = diff.del;
   if (del) {
     for (const key in del) {
-      if (current[key] !== undefined) {
-        current[key] = undefined;
-        merged = true;
+      if (hOP.call(current, key)) {
+        delete current[key];
+        changed = true;
       }
     }
   }
 
-  return merged;
+  return changed;
 }
 
 // TODO: Add mergeArray()

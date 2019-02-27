@@ -21,7 +21,6 @@ describe("createCollection()", () => {
           set: {foo: 5}
         }, "1");
         expect(spy).toHaveBeenCalledWith({
-          bar: undefined,
           foo: 5
         }, "1");
       });
