@@ -1,19 +1,10 @@
 import {Diff} from "gravel-types";
 
 function addPlaceholders(parent: Node, index: number): void {
-  for (let i = parent.childNodes.length; i <= index; i++) {
-    const placeholder = document.createComment("ph");
-    parent.appendChild(placeholder);
-  }
-}
-
-function addElement(parent: Node, index: number, tagName: string): void {
   for (let i = parent.childNodes.length; i < index; i++) {
     const placeholder = document.createComment("ph");
     parent.appendChild(placeholder);
   }
-  const element = document.createElement(tagName);
-  parent.appendChild(element);
 }
 
 export function applyViewProperty(path: string, value: any): boolean {
@@ -29,16 +20,17 @@ export function applyViewProperty(path: string, value: any): boolean {
       parent = tmp;
       tmp = tmp[key];
     } else if (tmp instanceof NodeList) {
-      if (tmp[key] === undefined) {
-        if (keys[0] === "tagName") {
-          addElement(parent, parseInt(key, 10), value);
-          return true;
-        } else {
-          addPlaceholders(parent, parseInt(key, 10));
+      const [index, tagName] = key.split(",");
+      if (tmp[index] === undefined) {
+        if (tagName === undefined) {
           return false;
         }
+        addPlaceholders(parent, +index);
+        const element = document.createElement(tagName);
+        parent.appendChild(element);
+        tmp = element;
       } else {
-        tmp = tmp[key];
+        tmp = tmp[index];
       }
     } else if (tmp instanceof NamedNodeMap && !tmp.getNamedItem(key)) {
       const attribute = document.createAttribute(key);
