@@ -32,7 +32,7 @@ export function applyViewProperty(path: string, value: any): boolean {
       tmp = tmp[comp];
     } else if (tmp instanceof NodeList) {
       // extracting child index & tagName from path component
-      const [index, tagName] = comp.split(",");
+      const [index, tagName] = comp.split(":");
       const node = tmp[index];
       if (node === undefined) {
         if (tagName === undefined) {
