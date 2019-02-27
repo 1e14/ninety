@@ -26,10 +26,15 @@ export function applyDomProperty(path: string, value: any): boolean {
   do {
     const component = components.shift();
     if (tmp instanceof Node) {
-      // setting current node as last parent, and going on to the specified
-      // property
-      parent = tmp;
-      tmp = tmp[component];
+      if (components.length) {
+        // setting current node as last parent, and going on to the specified
+        // property
+        parent = tmp;
+        tmp = tmp[component];
+      } else {
+        // node property
+        tmp[component] = value;
+      }
     } else if (tmp instanceof NodeList) {
       // extracting child index & tagName from path component
       const [index, tagName] = component.split(":");
