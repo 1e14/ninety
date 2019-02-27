@@ -91,6 +91,11 @@ export function applyView<T>(view: Diff<T>): Diff<T> {
   return bounced;
 }
 
+/**
+ * Prepends all paths in the specified diff with the specified prefix.
+ * @param diff
+ * @param prefix
+ */
 export function prependPaths<T>(
   diff: Diff<T>, prefix: string
 ): Diff<{ [key: string]: T[keyof T] }> {
