@@ -12,4 +12,10 @@ connect(locationHash.o.d_val, () => {
       "body.childNodes.4,section.classList.foo": true
     }
   });
+  applyView({
+    del: {},
+    set: {
+      "body.childNodes.2,div.attributes.id": "quux"
+    }
+  });
 });

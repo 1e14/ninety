@@ -1,5 +1,11 @@
 import {Diff} from "gravel-types";
 
+/**
+ * Adds placeholder comment nodes to the specified parent node up to the
+ * (but not including) the specified index.
+ * @param parent Parent DOM node
+ * @param index Index up to which to create placeholder nodes.
+ */
 function addPlaceholders(parent: Node, index: number): void {
   for (let i = parent.childNodes.length; i < index; i++) {
     const placeholder = document.createComment("ph");
@@ -7,28 +13,34 @@ function addPlaceholders(parent: Node, index: number): void {
   }
 }
 
+/**
+ * Applies a single property to the DOM.
+ * @param path Path to a DOM node. Elements must specify both childIndex &
+ * tagName, otherwise follows hierarchy.
+ * @param value Property value to be set.
+ */
 export function applyViewProperty(path: string, value: any): boolean {
   const keys = path.split(".");
   let tmp: any = document;
   let parent: Node = document;
   do {
     const key = keys.shift();
-    if (tmp instanceof Comment && key === "tagName") {
-      const element = document.createElement(value);
-      tmp.parentNode.replaceChild(element, tmp);
-    } else if (tmp instanceof Node) {
+    if (tmp instanceof Node) {
       parent = tmp;
       tmp = tmp[key];
     } else if (tmp instanceof NodeList) {
       const [index, tagName] = key.split(",");
-      if (tmp[index] === undefined) {
+      const node = tmp[index];
+      if (node === undefined) {
         if (tagName === undefined) {
           return false;
         }
         addPlaceholders(parent, +index);
-        const element = document.createElement(tagName);
-        parent.appendChild(element);
-        tmp = element;
+        tmp = document.createElement(tagName);
+        parent.appendChild(tmp);
+      } else if (node instanceof Comment) {
+        tmp = document.createElement(tagName);
+        parent.replaceChild(tmp, node);
       } else {
         tmp = tmp[index];
       }
@@ -41,11 +53,19 @@ export function applyViewProperty(path: string, value: any): boolean {
     } else {
       tmp = tmp[key];
     }
-  } while (tmp !== undefined && keys.length);
 
-  return tmp !== undefined;
+    if (tmp === undefined) {
+      return false;
+    }
+  } while (keys.length);
+
+  return true;
 }
 
+/**
+ * Applies the specified view diff to the DOM.
+ * @param view
+ */
 export function applyView<T>(view: Diff<T>): Diff<T> {
   const bounced: Diff<T> = {
     del: {},
