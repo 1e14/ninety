@@ -19,7 +19,7 @@ function addPlaceholders(parent: Node, index: number): void {
  * tagName, otherwise follows hierarchy.
  * @param value Property value to be set.
  */
-export function applyDomProperty(path: string, value: any): boolean {
+export function setDomProperty(path: string, value: any): boolean {
   const components = path.split(".");
   let tmp: any = document;
   let parent: Node = document;
@@ -93,7 +93,7 @@ export function applyDomView<T>(view: Diff<T>): Diff<T> {
     set: {}
   };
   for (const [path, value] of Object.entries(view.set)) {
-    if (!applyDomProperty(path, value)) {
+    if (!setDomProperty(path, value)) {
       bounced.set[path] = value;
     }
   }
