@@ -1,5 +1,6 @@
 import {Diff} from "gravel-types";
 import {createNode, Node} from "river-core";
+import {DomEventType} from "../types";
 
 export type In = {
   ev_event: Event;
@@ -9,13 +10,13 @@ export type In = {
 export type Out = {
   ev_event: Event;
   d_diff: Diff<{
-    [key: string]: (event: Event) => void;
+    [key in DomEventType]: (event: Event) => void;
   }>
 };
 
 export type EventListener = Node<In, Out>;
 
-export function createEventListener(name: string): EventListener {
+export function createEventListener(type: DomEventType): EventListener {
   return createNode<In, Out>(["ev_event"], (outputs) => {
     const i = {
       ev_event: (event) => {
@@ -27,7 +28,7 @@ export function createEventListener(name: string): EventListener {
         outputs.d_diff({
           del: {},
           set: {
-            [name]: i.ev_event
+            [type]: i.ev_event
           }
         }, tag);
       }
