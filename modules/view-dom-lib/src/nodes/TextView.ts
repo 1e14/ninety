@@ -1,7 +1,6 @@
-// TODO: Move to gravel-view-dom-stdlib
 import {Diff} from "gravel-types";
+import {prependPaths} from "gravel-view-dom";
 import {createNode, Node} from "river-core";
-import {prependPaths} from "../utils";
 
 export type In = {
   d_content: string;

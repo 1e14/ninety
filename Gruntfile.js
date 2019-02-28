@@ -7,6 +7,7 @@ module.exports = function (grunt) {
     "model",
     "routing",
     "view-dom",
+    "view-dom-lib",
     "playground"
   ];
 

@@ -1,4 +1,4 @@
-import {Diff} from "gravel-types/dist";
+import {Diff} from "gravel-types";
 import {createNode, Node} from "river-core";
 
 export type In = {
