@@ -1,4 +1,5 @@
 import {Diff} from "gravel-types";
+import {DiffDel, DiffSet} from "gravel-types/dist";
 
 /**
  * Adds placeholder comment nodes to the specified parent node up to the
@@ -83,6 +84,63 @@ export function setDomProperty(path: string, value: any): boolean {
   return true;
 }
 
+// TODO: only leaf node!
+export function delDomProperty(path: string): boolean {
+  const components = path.split(".");
+  let tmp: any = document;
+  let parent: Node = document;
+  let component: string;
+
+  // finding parent node / property
+  for (let i = 0, length = components.length - 1; i < length; i++) {
+    component = components.shift();
+    if (tmp instanceof Node) {
+      parent = tmp;
+      tmp = tmp[component];
+    } else if (tmp instanceof NodeList) {
+      const [index] = component.split(":");
+      tmp = tmp[index];
+    } else {
+      tmp = tmp[component];
+    }
+
+    if (tmp === undefined) {
+      return false;
+    }
+  }
+
+  // deleting property
+  component = components.shift();
+  if (tmp instanceof Node) {
+    // node property
+    tmp[component] = undefined;
+  } else if (tmp instanceof NodeList) {
+    // extracting child index from path component
+    const [index] = component.split(":");
+    const node = tmp[index];
+    if (node !== undefined) {
+      // replacing node w/ placeholder
+      tmp = document.createComment("ph");
+      parent.replaceChild(tmp, node);
+    }
+  } else if (tmp instanceof NamedNodeMap) {
+    // attributes
+    tmp.removeNamedItem(component);
+  } else if (tmp instanceof DOMTokenList) {
+    // CSS classes
+    tmp.remove(component);
+  } else if (tmp instanceof CSSStyleDeclaration) {
+    // CSS styles
+    tmp[component] = null;
+  } else if (components.length) {
+    // path is not fully processed
+    // proceeding to next property
+    delete tmp[component];
+  }
+
+  return true;
+}
+
 /**
  * Applies the specified view diff to the DOM.
  * @param view
@@ -91,10 +149,19 @@ export function applyDomView<T>(view: Diff<T>): Diff<T> {
   const bounced: Diff<T> = {};
   const viewSet = view.set;
   if (viewSet) {
-    const bouncedSet = bounced.set = {};
+    const bouncedSet: DiffSet<T> = bounced.set = {};
     for (const [path, value] of Object.entries(viewSet)) {
       if (!setDomProperty(path, value)) {
         bouncedSet[path] = value;
+      }
+    }
+  }
+  const viewDel = view.del;
+  if (viewDel) {
+    const bouncedDel: DiffDel<T> = bounced.del = {};
+    for (const path in viewDel) {
+      if (!delDomProperty(path)) {
+        bouncedDel[path] = null;
       }
     }
   }
