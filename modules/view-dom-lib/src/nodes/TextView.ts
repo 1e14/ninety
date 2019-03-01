@@ -19,7 +19,6 @@ export function createTextView(): TextView {
     return {
       d_content: (value, tag) => {
         outputs.d_diff(prependPaths({
-          del: {},
           set: {
             innerText: value
           }

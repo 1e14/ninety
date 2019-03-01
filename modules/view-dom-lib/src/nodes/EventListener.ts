@@ -26,7 +26,6 @@ export function createEventListener(type: DomEventType): EventListener {
 
       ev_smp: (value, tag) => {
         outputs.d_diff({
-          del: {},
           set: {
             [type]: i.ev_event
           }

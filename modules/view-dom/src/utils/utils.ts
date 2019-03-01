@@ -89,7 +89,6 @@ export function setDomProperty(path: string, value: any): boolean {
  */
 export function applyDomView<T>(view: Diff<T>): Diff<T> {
   const bounced: Diff<T> = {
-    del: {},
     set: {}
   };
   for (const [path, value] of Object.entries(view.set)) {

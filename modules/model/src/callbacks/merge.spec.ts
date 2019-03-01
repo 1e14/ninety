@@ -10,7 +10,6 @@ describe("mergeObject()", () => {
     };
 
     mergeObject<T>(contents, {
-      del: {},
       set: {bar: true, foo: 6}
     });
 
@@ -28,8 +27,7 @@ describe("mergeObject()", () => {
     };
 
     mergeObject<T>(contents, {
-      del: {foo: null},
-      set: {}
+      del: {foo: null}
     });
 
     expect(contents).toEqual({
@@ -44,8 +42,7 @@ describe("mergeObject()", () => {
     };
 
     const result = mergeObject<T>(contents, {
-      del: {foo: null},
-      set: {}
+      del: {foo: null}
     });
 
     expect(result).toBe(true);
@@ -58,10 +55,7 @@ describe("mergeObject()", () => {
         foo: 5
       };
 
-      const result = mergeObject<T>(contents, {
-        del: {},
-        set: {}
-      });
+      const result = mergeObject<T>(contents, {});
 
       expect(result).toBe(false);
     });

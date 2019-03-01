@@ -6,7 +6,6 @@ const locationHash = createLocationHash();
 
 connect(locationHash.o.d_val, () => {
   applyDomView({
-    del: {},
     set: {
       "body.childNodes.4:section.attributes.bar": "baz",
       "body.childNodes.4:section.childNodes.0:span.innerText": "Hello World!",
@@ -17,7 +16,6 @@ connect(locationHash.o.d_val, () => {
     }
   });
   applyDomView({
-    del: {},
     set: {
       "body.childNodes.2:div.attributes.id": "quux",
       "body.childNodes.4:section.attributes.bar": "BAZ"

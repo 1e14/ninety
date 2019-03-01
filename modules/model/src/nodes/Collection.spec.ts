@@ -75,20 +75,14 @@ describe("createCollection()", () => {
       it("should not emit on 'd_val'", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_val, spy);
-        node.i.d_diff({
-          del: {},
-          set: {}
-        }, "1");
+        node.i.d_diff({}, "1");
         expect(spy).not.toHaveBeenCalled();
       });
 
       it("should not forward d_diff", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_diff, spy);
-        node.i.d_diff({
-          del: {},
-          set: {}
-        }, "1");
+        node.i.d_diff({}, "1");
         expect(spy).not.toHaveBeenCalled();
       });
     });
