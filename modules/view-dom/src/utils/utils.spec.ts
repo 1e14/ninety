@@ -43,7 +43,14 @@ describe("setDomProperty()", () => {
       appendChild(newChild) {
         this.childNodes[this.childNodes.length++] = newChild;
       },
-      replaceChild: (newChild, oldChild) => null
+      replaceChild(newChild, oldChild) {
+        for (let i = 0; i < this.childNodes.length; i++) {
+          if (this.childNodes[i] === oldChild) {
+            this.childNodes[i] = newChild;
+            break;
+          }
+        }
+      }
     };
     window.NodeList = function () {
       this.length = 0;
@@ -95,6 +102,25 @@ describe("setDomProperty()", () => {
     expect(window.document.body.childNodes[1].childNodes[2].data).toBe("ph");
   });
 
+  it("should return true", () => {
+    const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
+    expect(setDomProperty(path, true)).toBe(true);
+  });
+
+  describe("when comments are in the way", () => {
+    beforeEach(() => {
+      const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
+      setDomProperty(path, true);
+    });
+
+    it("should replace comments with nodes", () => {
+      const path = "body.childNodes.0:span.innerText";
+      setDomProperty(path, "Hello");
+      expect(window.document.body.childNodes[0].tagName).toBe("span");
+      expect(window.document.body.childNodes[0].innerText).toBe("Hello");
+    });
+  });
+
   describe("for attribute value", () => {
     describe("when attribute does not exist yet", () => {
       it("should add new attribute", () => {
@@ -139,6 +165,13 @@ describe("setDomProperty()", () => {
       const path = "body.childNodes.1:div.childNodes.3:span.style.foo";
       setDomProperty(path, "bar");
       expect(window.document.body.childNodes[1].childNodes[3].style.foo).toBe("bar");
+    });
+  });
+
+  describe("when unsuccessful", () => {
+    it("should return false", () => {
+      const path = "body.childNodes.1.classList.foo";
+      expect(setDomProperty(path, true)).toBe(false);
     });
   });
 });

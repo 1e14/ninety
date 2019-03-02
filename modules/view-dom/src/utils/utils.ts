@@ -35,6 +35,7 @@ export function setDomProperty(path: string, value: any): boolean {
       } else {
         // node property
         tmp[component] = value;
+        return true;
       }
     } else if (tmp instanceof NodeList) {
       // extracting child index & tagName from path component
@@ -64,24 +65,21 @@ export function setDomProperty(path: string, value: any): boolean {
         tmp.setNamedItem(attribute);
       }
       attribute.value = value;
+      return true;
     } else if (tmp instanceof DOMTokenList) {
       // CSS classes
       tmp.add(component, component);
+      return true;
     } else if (tmp instanceof CSSStyleDeclaration) {
       // CSS styles
       tmp[component] = value;
+      return true;
     } else if (components.length) {
       // path is not fully processed
       // proceeding to next property
       tmp = tmp[component];
     }
-
-    if (tmp === undefined) {
-      return false;
-    }
   } while (components.length);
-
-  return true;
 }
 
 /**
