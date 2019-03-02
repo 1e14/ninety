@@ -15,7 +15,7 @@ function addPlaceholders(parent: Node, index: number): void {
 }
 
 /**
- * Applies a single property to the DOM.
+ * Sets a single property in the DOM.
  * @param path Path to a DOM node. Elements must specify both childIndex &
  * tagName, otherwise follows hierarchy.
  * @param value Property value to be set.
@@ -84,7 +84,10 @@ export function setDomProperty(path: string, value: any): boolean {
   return true;
 }
 
-// TODO: only leaf node!
+/**
+ * Deletes a single property from the DOM.
+ * @param path Path to DOM node.
+ */
 export function delDomProperty(path: string): boolean {
   const components = path.split(".");
   let tmp: any = document;
