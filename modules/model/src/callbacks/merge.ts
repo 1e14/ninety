@@ -18,7 +18,8 @@ export function mergeObject<T extends Any>(
 
   const set = diff.set;
   if (set) {
-    for (const [key, value] of Object.entries(set)) {
+    for (const key in set) {
+      const value = set[key];
       if (value !== current[key]) {
         current[key] = value;
         changed = true;

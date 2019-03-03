@@ -16,7 +16,8 @@ export function diffObjects<T extends Any>(
   let set: DiffSet<T>;
   if (before) {
     set = <DiffSet<T>>{};
-    for (const [key, value] of Object.entries(after)) {
+    for (const key in after) {
+      const value = after[key];
       if (value !== before[key]) {
         set[key] = value;
         different = true;
@@ -31,7 +32,8 @@ export function diffObjects<T extends Any>(
   let del: DiffDel<T>;
   if (after) {
     del = <DiffDel<T>>{};
-    for (const [key, value] of Object.entries(before)) {
+    for (const key in before) {
+      const value = before[key];
       if (value !== undefined && after[key] === undefined) {
         del[key] = null;
         different = true;

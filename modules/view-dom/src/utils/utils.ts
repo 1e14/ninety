@@ -149,7 +149,8 @@ export function applyDomView<T>(view: Diff<T>): Diff<T> {
   const viewSet = view.set;
   if (viewSet) {
     const bouncedSet: DiffSet<T> = bounced.set = {};
-    for (const [path, value] of Object.entries(viewSet)) {
+    for (const path in viewSet) {
+      const value = viewSet[path];
       if (!setDomProperty(path, value)) {
         bouncedSet[path] = value;
       }
