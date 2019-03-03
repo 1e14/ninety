@@ -11,10 +11,10 @@ export function prefixDiffPaths<T>(
   const del = {};
   const set = {};
   for (const key in diff.set) {
-    set[prefix + key] = diff.set[key];
+    set[prefix + "." + key] = diff.set[key];
   }
   for (const key in diff.del) {
-    del[prefix + key] = diff.del[key];
+    del[prefix + "." + key] = diff.del[key];
   }
   return {set, del};
 }

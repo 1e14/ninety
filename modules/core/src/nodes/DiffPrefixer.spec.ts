@@ -6,7 +6,7 @@ describe("createDiffPrefixer()", () => {
     let node: DiffPrefixer;
 
     beforeEach(() => {
-      node = createDiffPrefixer("baz.");
+      node = createDiffPrefixer("baz");
     });
 
     it("should emit on 'd_diff'", () => {

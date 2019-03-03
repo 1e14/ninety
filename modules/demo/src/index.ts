@@ -20,7 +20,7 @@ setInterval(ticker.i.d_val, 10);
 connect(ticker.o.d_val, diffBuffer.i.ev_res);
 
 const pageView = createPageView();
-const textView = createCustomTextView("childNodes.1:span.");
+const textView = createCustomTextView("childNodes.1:span");
 const textSource = createMapper(() => "Hello World!");
 
 connect(locationHash.o.d_val, textSource.i.d_val);

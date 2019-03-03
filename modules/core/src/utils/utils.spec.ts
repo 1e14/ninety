@@ -14,12 +14,12 @@ describe("prependPaths()", () => {
     }, "_");
     expect(result).toEqual({
       del: {
-        _baz: null,
-        _foo: null
+        "_.baz": null,
+        "_.foo": null
       },
       set: {
-        _baz: 1,
-        _foo: "bar"
+        "_.baz": 1,
+        "_.foo": "bar"
       }
     });
   });
