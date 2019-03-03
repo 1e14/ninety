@@ -1,16 +1,6 @@
 import {Any} from "river-core";
-
-/**
- * Key-value pairs to be set.
- */
-export type DiffSet<T extends Any> = Partial<T>;
-
-/**
- * Keys to be deleted.
- */
-export type DiffDel<T extends Any> = Partial<{
-  [key in keyof T]: any
-}>;
+import {DiffDel} from "./DiffDel";
+import {DiffSet} from "./DiffSet";
 
 /**
  * Describes a diff to be applied to a JSON data structure.
