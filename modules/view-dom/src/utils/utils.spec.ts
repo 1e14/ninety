@@ -59,23 +59,22 @@ beforeEach(() => {
   window.NodeList = function () {
     this.length = 0;
   };
-  window.document = {
-    body: new window.Node(),
-    createAttribute: (name) => {
-      const attr = new window.Attr();
-      attr.name = name;
-      return attr;
-    },
-    createComment: (data) => {
-      const comment = new window.Comment();
-      comment.data = data;
-      return comment;
-    },
-    createElement: (tagName) => {
-      const node = new window.Node();
-      node.tagName = tagName;
-      return node;
-    }
+  window.document = new Node();
+  window.document.body = new window.Node();
+  window.document.createAttribute = (name) => {
+    const attr = new window.Attr();
+    attr.name = name;
+    return attr;
+  };
+  window.document.createComment = (data) => {
+    const comment = new window.Comment();
+    comment.data = data;
+    return comment;
+  };
+  window.document.createElement = (tagName) => {
+    const node = new window.Node();
+    node.tagName = tagName;
+    return node;
   };
 });
 

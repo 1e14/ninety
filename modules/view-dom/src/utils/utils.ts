@@ -74,10 +74,9 @@ export function setDomProperty(path: string, value: any): boolean {
       // CSS styles
       tmp[component] = value;
       return true;
-    } else if (components.length) {
-      // path is not fully processed
-      // proceeding to next property
-      tmp = tmp[component];
+    } else {
+      // unrecognized property parent
+      return false;
     }
   } while (components.length);
 }
@@ -133,10 +132,9 @@ export function delDomProperty(path: string): boolean {
   } else if (tmp instanceof CSSStyleDeclaration) {
     // CSS styles
     tmp[component] = null;
-  } else if (components.length) {
-    // path is not fully processed
-    // proceeding to next property
-    delete tmp[component];
+  } else {
+    // unrecognized property parent
+    return false;
   }
 
   return true;
