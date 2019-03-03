@@ -169,7 +169,18 @@ describe("setDomProperty()", () => {
     it("should set style property", () => {
       const path = "body.childNodes.1:div.childNodes.3:span.style.foo";
       setDomProperty(path, "bar");
-      expect(window.document.body.childNodes[1].childNodes[3].style.foo).toBe("bar");
+      expect(window.document.body.childNodes[1].childNodes[3].style.foo)
+      .toBe("bar");
+    });
+  });
+
+  describe("for event handler", () => {
+    it("should set handler property", () => {
+      const cb = () => null;
+      const path = "body.childNodes.1:div.childNodes.3:span.onclick";
+      setDomProperty(path, cb);
+      expect(window.document.body.childNodes[1].childNodes[3].onclick)
+      .toBe(cb);
     });
   });
 
@@ -239,6 +250,20 @@ describe("delDomProperty()", () => {
       expect(
         window.document.body.childNodes[1].childNodes[3].style.foo
       ).toBe(null);
+    });
+  });
+
+  describe("for event handler", () => {
+    beforeEach(() => {
+      const path = "body.childNodes.1:div.childNodes.3:span.onclick";
+      setDomProperty(path, () => null);
+    });
+
+    it("should reset handler property", () => {
+      const path = "body.childNodes.1:div.childNodes.3:span.onclick";
+      delDomProperty(path);
+      expect(window.document.body.childNodes[1].childNodes[3].onclick)
+      .toBe(null);
     });
   });
 });

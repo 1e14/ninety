@@ -114,7 +114,7 @@ export function delDomProperty(path: string): boolean {
   component = components.shift();
   if (tmp instanceof Node) {
     // node property
-    tmp[component] = undefined;
+    tmp[component] = null;
   } else if (tmp instanceof NodeList) {
     // extracting child index from path component
     const [index] = component.split(":");
