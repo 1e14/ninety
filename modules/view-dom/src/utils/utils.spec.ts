@@ -1,4 +1,12 @@
-import {delDomProperty, prependPaths, setDomProperty} from "./utils";
+import {
+  applyDomView,
+  delDomProperty,
+  prependPaths,
+  setDomProperty
+} from "./utils";
+
+// tslint:disable:no-var-requires
+const utils = require("./utils");
 
 const window = <any>global;
 
@@ -270,6 +278,33 @@ describe("delDomProperty()", () => {
       delDomProperty(path);
       expect(window.document.body.childNodes[1].childNodes[3].onclick)
       .toBe(null);
+    });
+  });
+});
+
+describe("applyDomView()", () => {
+  it("should return bounced diff", () => {
+    const result = applyDomView({
+      del: <any>{
+        // will pass b/c already null
+        "body.childNodes.1:section": null,
+        // will not pass b/c property of null
+        "body.childNodes.4:section.classList.foo": null
+      },
+      set: <any>{
+        // will pass b/c proper path
+        "body.childNodes.2:div.attributes.id": "quux",
+        // will NOT pass b/c tagName is missing
+        "body.childNodes.4.attributes.bar": "BAZ"
+      }
+    });
+    expect(result).toEqual({
+      del: {
+        "body.childNodes.4:section.classList.foo": null
+      },
+      set: {
+        "body.childNodes.4.attributes.bar": "BAZ"
+      }
     });
   });
 });
