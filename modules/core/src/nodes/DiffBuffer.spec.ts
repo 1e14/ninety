@@ -33,5 +33,17 @@ describe("createDiffBuffer()", () => {
         }, "1");
       });
     });
+
+    describe("when diff is empty", () => {
+      it("should emit empty diff on 'd_diff'", () => {
+        const spy = jasmine.createSpy();
+        connect(node.o.d_diff, spy);
+        node.i.ev_res(null, "1");
+        expect(spy).toHaveBeenCalledWith({
+          del: {},
+          set: {}
+        }, "1");
+      });
+    });
   });
 });
