@@ -19,6 +19,7 @@ export function createDiffBuffer<T>(): DiffBuffer<T> {
       del: {},
       set: {}
     };
+    let changed = false;
 
     return {
       d_diff: (value, tag) => {
@@ -32,6 +33,7 @@ export function createDiffBuffer<T>(): DiffBuffer<T> {
           } else {
             bufferDel[path] = null;
           }
+          changed = true;
         }
 
         // transferring sets
@@ -42,15 +44,19 @@ export function createDiffBuffer<T>(): DiffBuffer<T> {
           } else {
             bufferSet[path] = valueSet[path];
           }
+          changed = true;
         }
       },
 
       ev_res: (value, tag) => {
-        outputs.d_diff(buffer, tag);
-        buffer = {
-          del: {},
-          set: {}
-        };
+        if (changed === true) {
+          outputs.d_diff(buffer, tag);
+          buffer = {
+            del: {},
+            set: {}
+          };
+          changed = false;
+        }
       }
     };
   });
