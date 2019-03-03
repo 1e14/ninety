@@ -1,5 +1,4 @@
-import {Diff} from "gravel-core";
-import {prependPaths} from "gravel-view-dom";
+import {Diff, prefixDiffPaths} from "gravel-core";
 import {createNode, Node} from "river-core";
 
 export type In = {
@@ -18,7 +17,7 @@ export function createTextView(): TextView {
   return createNode<In, Out>(["d_diff"], (outputs) => {
     return {
       d_content: (value, tag) => {
-        outputs.d_diff(prependPaths({
+        outputs.d_diff(prefixDiffPaths({
           set: {
             innerText: value
           }
