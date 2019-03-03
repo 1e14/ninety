@@ -1,4 +1,4 @@
-import {Diff} from "gravel-core";
+import {Diff, prefixDiffPaths} from "gravel-core";
 import {createNode, Node} from "river-core";
 import {DomEventType} from "../types";
 
@@ -22,7 +22,7 @@ export type Out<T extends Event> = {
 
 export type EventListener<T extends Event> = Node<In<T>, Out<T>>;
 
-export function createEventListener<T extends Event>(type: DomEventType): EventListener<T> {
+export function createEventListener<T extends Event>(prefix: string, type: DomEventType): EventListener<T> {
   return createNode<In<T>, Out<T>>(["d_diff", "d_event"], (outputs) => {
     const i = {
       d_event: (event, tag) => {
@@ -31,11 +31,11 @@ export function createEventListener<T extends Event>(type: DomEventType): EventL
       },
 
       ev_smp: (value, tag) => {
-        outputs.d_diff({
+        outputs.d_diff(prefixDiffPaths({
           set: {
             [type]: i.d_event
           }
-        }, tag);
+        }, prefix), tag);
       }
     };
     return i;

@@ -26,7 +26,7 @@ export function createCustomTextView(prefix: string = ""): CustomTextView {
     }
   }));
   const styleView = createDiffPrefixer(prefix);
-  const clickListener = createEventListener("onclick");
+  const clickListener = createEventListener(prefix, "onclick");
   const output = createNoop();
 
   connect(input.o.d_val, textView.i.d_content);

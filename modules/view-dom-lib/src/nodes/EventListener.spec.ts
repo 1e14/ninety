@@ -20,7 +20,7 @@ describe("createEventListener()", () => {
     let node: EventListener<Event>;
 
     beforeEach(() => {
-      node = createEventListener("onclick");
+      node = createEventListener("foo", "onclick");
     });
 
     it("should stop event propagation", () => {
@@ -43,7 +43,7 @@ describe("createEventListener()", () => {
     let node: EventListener<Event>;
 
     beforeEach(() => {
-      node = createEventListener("onclick");
+      node = createEventListener("foo", "onclick");
     });
 
     it("should emit on 'd_diff'", () => {
@@ -51,7 +51,9 @@ describe("createEventListener()", () => {
       connect(node.o.d_diff, spy);
       node.i.ev_smp(null, "1");
       expect(spy).toHaveBeenCalledWith({
-        set: {onclick: node.i.d_event}
+        set: {
+          "foo.onclick": node.i.d_event
+        }
       }, "1");
     });
   });
