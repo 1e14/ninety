@@ -8,13 +8,20 @@ import {Diff} from "../types";
 export function prefixDiffPaths<T>(
   diff: Diff<T>, prefix: string
 ): Diff<{ [key: string]: T[keyof T] }> {
-  const del = {};
-  const set = {};
-  for (const key in diff.set) {
-    set[prefix + "." + key] = diff.set[key];
+  const result: Diff<T> = {};
+  const diffSet = diff.set;
+  if (diffSet) {
+    const set = result.set = {};
+    for (const key in diff.set) {
+      set[prefix + "." + key] = diff.set[key];
+    }
   }
-  for (const key in diff.del) {
-    del[prefix + "." + key] = diff.del[key];
+  const diffDel = diff.del;
+  if (diffDel) {
+    const del = result.del = {};
+    for (const key in diff.del) {
+      del[prefix + "." + key] = diff.del[key];
+    }
   }
-  return {set, del};
+  return result;
 }

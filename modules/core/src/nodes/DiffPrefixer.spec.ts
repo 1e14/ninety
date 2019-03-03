@@ -42,8 +42,7 @@ describe("createDiffPrefixer()", () => {
         expect(spy).toHaveBeenCalledWith({
           del: {
             "baz.bar": null
-          },
-          set: {}
+          }
         }, "1");
       });
     });
@@ -58,7 +57,6 @@ describe("createDiffPrefixer()", () => {
           }
         }, "1");
         expect(spy).toHaveBeenCalledWith({
-          del: {},
           set: {
             "baz.foo": 5
           }
