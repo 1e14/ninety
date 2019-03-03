@@ -1,5 +1,5 @@
 import {
-  applyDomView,
+  applyDomDiff,
   delDomProperty,
   prependPaths,
   setDomProperty
@@ -282,9 +282,9 @@ describe("delDomProperty()", () => {
   });
 });
 
-describe("applyDomView()", () => {
+describe("applyDomDiff()", () => {
   it("should return bounced diff", () => {
-    const result = applyDomView({
+    const result = applyDomDiff({
       del: {
         // will pass b/c already null
         "body.childNodes.1:section": null,

@@ -1,1 +1,1 @@
-export {DomViewApplier, createDomViewApplier} from "./DomViewApplier";
+export {DomDiffApplier, createDomDiffApplier} from "./DomDiffApplier";

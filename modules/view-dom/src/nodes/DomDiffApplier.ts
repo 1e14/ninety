@@ -1,23 +1,23 @@
 import {Diff} from "gravel-core";
 import {Node} from "river-core";
-import {applyDomView} from "../utils";
+import {applyDomDiff} from "../utils";
 
 export type In = {
   d_diff: Diff<any>;
 };
 
-export type DomViewApplier = Node<In, {}>;
+export type DomDiffApplier = Node<In, {}>;
 
-let instance: DomViewApplier;
+let instance: DomDiffApplier;
 
-export function createDomViewApplier(): DomViewApplier {
+export function createDomDiffApplier(): DomDiffApplier {
   if (instance) {
     return instance;
   }
 
   const i = {
     d_diff: (value) => {
-      requestAnimationFrame(() => applyDomView(value));
+      requestAnimationFrame(() => applyDomDiff(value));
     }
   };
 

@@ -1,12 +1,12 @@
-import {createDomViewApplier} from "gravel-view-dom";
+import {createDomDiffApplier} from "gravel-view-dom";
 import {createLocationHash} from "river-browser";
 import {connect} from "river-core";
 
 const locationHash = createLocationHash();
-const domViewApplier = createDomViewApplier();
+const domDiffApplier = createDomDiffApplier();
 
 connect(locationHash.o.d_val, () => {
-  domViewApplier.i.d_diff({
+  domDiffApplier.i.d_diff({
     set: {
       "body.childNodes.1:section": null,
       "body.childNodes.4:section.attributes.bar": "baz",
@@ -17,7 +17,7 @@ connect(locationHash.o.d_val, () => {
       "body.childNodes.4:section.style.height": "100px"
     }
   });
-  domViewApplier.i.d_diff({
+  domDiffApplier.i.d_diff({
     del: {
       "body.childNodes.1:section": null,
       "body.childNodes.4:section.classList.foo": null

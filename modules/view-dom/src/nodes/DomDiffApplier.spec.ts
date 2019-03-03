@@ -1,5 +1,5 @@
 import * as utils from "../utils";
-import {createDomViewApplier, DomViewApplier} from "./DomViewApplier";
+import {createDomDiffApplier, DomDiffApplier} from "./DomDiffApplier";
 
 const window = <any>global;
 
@@ -11,27 +11,27 @@ afterEach(() => {
   delete window.requestAnimationFrame;
 });
 
-describe("createDomViewApplier()", () => {
+describe("createDomDiffApplier()", () => {
   it("should be singleton", () => {
-    expect(createDomViewApplier()).toBe(createDomViewApplier());
+    expect(createDomDiffApplier()).toBe(createDomDiffApplier());
   });
 
   describe("on input (d_diff)", () => {
-    let node: DomViewApplier;
+    let node: DomDiffApplier;
 
     beforeEach(() => {
-      node = createDomViewApplier();
+      node = createDomDiffApplier();
     });
 
-    it("should invoke applyDomView()", () => {
-      spyOn(utils, "applyDomView");
+    it("should invoke applyDomDiff()", () => {
+      spyOn(utils, "applyDomDiff");
       const diff = {
         set: {
           "body.childNodes.1:div.classList.foo": true
         }
       };
       node.i.d_diff(diff, "1");
-      expect(utils.applyDomView).toHaveBeenCalledWith(diff);
+      expect(utils.applyDomDiff).toHaveBeenCalledWith(diff);
     });
   });
 });
