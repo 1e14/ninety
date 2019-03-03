@@ -144,15 +144,17 @@ export function delDomProperty(path: string): boolean {
  * Applies the specified view diff to the DOM.
  * @param diff
  */
-export function applyDomDiff(diff: Diff<any>): Diff<any> {
+export function applyDomDiff(diff: Diff<any>): Diff<any> | true {
   const bounced: Diff<any> = {};
   const viewSet = diff.set;
+  let applied = true;
   if (viewSet) {
     const bouncedSet: DiffSet<any> = bounced.set = {};
     for (const path in viewSet) {
       const value = viewSet[path];
       if (!setDomProperty(path, value)) {
         bouncedSet[path] = value;
+        applied = false;
       }
     }
   }
@@ -162,8 +164,9 @@ export function applyDomDiff(diff: Diff<any>): Diff<any> {
     for (const path in viewDel) {
       if (!delDomProperty(path)) {
         bouncedDel[path] = null;
+        applied = false;
       }
     }
   }
-  return bounced;
+  return applied || bounced;
 }
