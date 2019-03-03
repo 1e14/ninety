@@ -16,7 +16,6 @@ export type Out = {
 export type TextView = Node<In, Out>;
 
 export function createTextView(prefix: string = ""): TextView {
-  prefix += ":span.";
   return createNode<In, Out>(["d_diff"], (outputs) => {
     return {
       d_content: (value, tag) => {
