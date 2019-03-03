@@ -1,4 +1,4 @@
-import {Diff} from "gravel-types";
+import {Diff} from "gravel-core";
 import {createNode, Node} from "river-core";
 import {DomEventType} from "../types";
 

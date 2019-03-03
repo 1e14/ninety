@@ -1,4 +1,4 @@
-import {Diff} from "gravel-types";
+import {Diff} from "gravel-core";
 import {Any} from "river-core";
 
 const hOP = Object.prototype.hasOwnProperty;

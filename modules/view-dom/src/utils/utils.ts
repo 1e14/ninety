@@ -1,5 +1,5 @@
-import {Diff} from "gravel-types";
-import {DiffDel, DiffSet} from "gravel-types/dist";
+import {Diff} from "gravel-core";
+import {DiffDel, DiffSet} from "gravel-core/dist";
 
 /**
  * Adds placeholder comment nodes to the specified parent node up to the

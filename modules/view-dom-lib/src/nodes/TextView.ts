@@ -1,4 +1,4 @@
-import {Diff} from "gravel-types";
+import {Diff} from "gravel-core";
 import {prependPaths} from "gravel-view-dom";
 import {createNode, Node} from "river-core";
 

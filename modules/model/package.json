@@ -18,7 +18,7 @@
     "url": "git@github.com:protoboard/gravel.git"
   },
   "dependencies": {
-    "gravel-types": "^0.1.0",
+    "gravel-core": "^0.1.0",
     "river-core": "^0.1.0",
     "river-stdlib": "^0.1.0"
   }

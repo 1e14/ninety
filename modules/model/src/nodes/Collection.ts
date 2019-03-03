@@ -1,4 +1,4 @@
-import {Diff} from "gravel-types";
+import {Diff} from "gravel-core";
 import {Any, createNode, Node} from "river-core";
 import {diffObjects, mergeObject} from "../callbacks";
 

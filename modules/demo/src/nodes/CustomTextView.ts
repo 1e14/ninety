@@ -1,4 +1,4 @@
-import {Diff} from "gravel-types";
+import {Diff} from "gravel-core";
 import {createEventListener, createTextView} from "gravel-view-dom-lib";
 import {connect, InPorts, Node, OutPorts} from "river-core";
 import {createNoop} from "river-stdlib";

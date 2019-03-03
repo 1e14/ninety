@@ -1,4 +1,4 @@
-import {Diff, DiffDel, DiffSet} from "gravel-types";
+import {Diff, DiffDel, DiffSet} from "gravel-core";
 import {Any} from "river-core";
 
 /**

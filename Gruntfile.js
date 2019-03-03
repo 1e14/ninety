@@ -5,7 +5,7 @@ module.exports = function (grunt) {
   "use strict";
 
   const modules = [
-    "types",
+    "core",
     "model",
     "routing",
     "view-dom",
