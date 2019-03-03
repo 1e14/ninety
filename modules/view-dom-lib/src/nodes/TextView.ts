@@ -1,14 +1,16 @@
 import {Diff, prefixDiffPaths} from "gravel-core";
 import {createNode, Node} from "river-core";
 
+export type TextViewDiff = Diff<{
+  innerText: string
+}>;
+
 export type In = {
   d_content: string;
 };
 
 export type Out = {
-  d_diff: Diff<{
-    innerText: string
-  }>
+  d_diff: TextViewDiff;
 };
 
 export type TextView = Node<In, Out>;
