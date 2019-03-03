@@ -34,7 +34,7 @@ export function createCustomTextView(): CustomTextView {
 
   const o: OutPorts<Out> = {
     d_diff: noop2.o.d_val,
-    ev_click: clickListener.o.ev_event
+    ev_click: clickListener.o.d_event
   };
 
   return {i, o};

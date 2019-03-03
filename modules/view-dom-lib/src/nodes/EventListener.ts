@@ -3,12 +3,12 @@ import {createNode, Node} from "river-core";
 import {DomEventType} from "../types";
 
 export type In = {
-  ev_event: Event;
+  d_event: Event;
   ev_smp: any;
 };
 
 export type Out = {
-  ev_event: Event;
+  d_event: Event;
   d_diff: Diff<{
     [key in DomEventType]: (event: Event) => void;
   }>
@@ -17,17 +17,17 @@ export type Out = {
 export type EventListener = Node<In, Out>;
 
 export function createEventListener(type: DomEventType): EventListener {
-  return createNode<In, Out>(["ev_event"], (outputs) => {
+  return createNode<In, Out>(["d_event"], (outputs) => {
     const i = {
-      ev_event: (event) => {
+      d_event: (event) => {
         event.stopImmediatePropagation();
-        outputs.ev_event(event);
+        outputs.d_event(event);
       },
 
       ev_smp: (value, tag) => {
         outputs.d_diff({
           set: {
-            [type]: i.ev_event
+            [type]: i.d_event
           }
         }, tag);
       }
