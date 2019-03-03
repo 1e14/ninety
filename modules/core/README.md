@@ -1,4 +1,6 @@
-Gravel-Types
-============
+Gravel-Core
+===========
 
-Common types used by Gravel modules.
+Gravel core functionality:
+
+* Managing diffs
