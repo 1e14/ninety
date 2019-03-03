@@ -192,6 +192,13 @@ describe("setDomProperty()", () => {
 });
 
 describe("delDomProperty()", () => {
+  it("should return true", () => {
+    const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
+    setDomProperty(path, true);
+    const result = delDomProperty(path);
+    expect(result).toBe(true);
+  });
+
   describe("for node", () => {
     beforeEach(() => {
       const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
