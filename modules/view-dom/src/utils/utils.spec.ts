@@ -285,13 +285,13 @@ describe("delDomProperty()", () => {
 describe("applyDomView()", () => {
   it("should return bounced diff", () => {
     const result = applyDomView({
-      del: <any>{
+      del: {
         // will pass b/c already null
         "body.childNodes.1:section": null,
         // will not pass b/c property of null
         "body.childNodes.4:section.classList.foo": null
       },
-      set: <any>{
+      set: {
         // will pass b/c proper path
         "body.childNodes.2:div.attributes.id": "quux",
         // will NOT pass b/c tagName is missing
