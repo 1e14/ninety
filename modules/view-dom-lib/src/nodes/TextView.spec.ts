@@ -12,7 +12,7 @@ describe("createTextView()", () => {
     it("should emit on 'v_diff'", () => {
       const spy = jasmine.createSpy();
       connect(node.o.v_diff, spy);
-      node.i.vm_content("Hello", "1");
+      node.i.vm_diff({set: {content: "Hello"}}, "1");
       expect(spy).toHaveBeenCalledWith({
         set: {"foo.innerText": "Hello"}
       }, "1");
