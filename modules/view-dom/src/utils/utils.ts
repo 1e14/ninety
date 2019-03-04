@@ -1,5 +1,4 @@
-import {Diff} from "gravel-core";
-import {DiffDel, DiffSet} from "gravel-core/dist";
+import {Diff, DiffDel, DiffSet} from "gravel-core";
 
 /**
  * Adds placeholder comment nodes to the specified parent node up to the
@@ -49,7 +48,7 @@ export function setDomProperty(path: string, value: any): boolean {
         addPlaceholders(parent, +index);
         tmp = document.createElement(tagName);
         parent.appendChild(tmp);
-      } else if (node instanceof Comment) {
+      } else if (node instanceof Comment || node instanceof Text) {
         // replacing existing placeholder
         tmp = document.createElement(tagName);
         parent.replaceChild(tmp, node);

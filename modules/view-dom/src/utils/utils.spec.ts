@@ -10,6 +10,8 @@ beforeEach(() => {
   };
   window.Comment = function () {//
   };
+  window.Text = function () {//
+  };
   window.CSSStyleDeclaration = function () {//
   };
   window.DOMTokenList = function () {
