@@ -23,7 +23,7 @@ const pageView = createPageView();
 setInterval(ticker.i.d_val, 10);
 connect(diffBuffer.o.d_diff, domDiffApplier.i.d_diff);
 connect(ticker.o.d_val, diffBuffer.i.ev_res);
-connect(pageView.o.d_diff, diffBuffer.i.d_diff);
+connect(pageView.o.v_diff, diffBuffer.i.d_diff);
 
 // setting up routing table
 const router = createRouter([
@@ -34,11 +34,11 @@ connect(hash2Path.o.d_val, router.i.d_path);
 
 // setting up routing "table"
 connect(router.o["/^views$/"], () => {
-  const textView = createCustomTextView("childNodes.1:span");
+  const textView = createCustomTextView("childNodes.0:span");
   const textSource = createMapper(() => "Hello World!");
 
-  connect(textSource.o.d_val, textView.i.d_content);
-  connect(textView.o.d_diff, pageView.i.d_diff);
+  connect(textSource.o.d_val, textView.i.vm_content);
+  connect(textView.o.v_diff, pageView.i.v_diff);
   connect(textView.o.ev_click, console.log);
 
   // nudge

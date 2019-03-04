@@ -4,15 +4,15 @@ import {connect, InPorts, Node, OutPorts} from "river-core";
 import {createMapper, createNoop} from "river-stdlib";
 
 export type In = {
-  d_content: string;
+  vm_content: string;
 };
 
 export type Out = {
-  d_diff: Diff<{
+  ev_click: MouseEvent;
+  v_diff: Diff<{
     "innerText": string;
     "style.color": string;
   }>;
-  ev_click: MouseEvent
 };
 
 export type CustomTextView = Node<In, Out>;
@@ -29,21 +29,21 @@ export function createCustomTextView(prefix: string = ""): CustomTextView {
   const clickListener = createEventListener(prefix, "onclick");
   const output = createNoop();
 
-  connect(input.o.d_val, textView.i.d_content);
+  connect(input.o.d_val, textView.i.vm_content);
   connect(input.o.d_val, clickListener.i.ev_smp);
   connect(input.o.d_val, styleSource.i.d_val);
   connect(styleSource.o.d_val, styleView.i.d_diff);
   connect(styleView.o.d_diff, output.i.d_val);
   connect(clickListener.o.d_diff, output.i.d_val);
-  connect(textView.o.d_diff, output.i.d_val);
+  connect(textView.o.v_diff, output.i.d_val);
 
   const i: InPorts<In> = {
-    d_content: input.i.d_val
+    vm_content: input.i.d_val
   };
 
   const o: OutPorts<Out> = {
-    d_diff: output.o.d_val,
-    ev_click: clickListener.o.d_event
+    ev_click: clickListener.o.d_event,
+    v_diff: output.o.d_val
   };
 
   return {i, o};

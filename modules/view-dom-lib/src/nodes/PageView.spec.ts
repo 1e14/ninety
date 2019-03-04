@@ -2,7 +2,7 @@ import {connect} from "river-core";
 import {createPageView, PageView} from "./PageView";
 
 describe("createPageView()", () => {
-  describe("on input (d_diff)", () => {
+  describe("on input (v_diff)", () => {
     let node: PageView;
 
     beforeEach(() => {
@@ -11,8 +11,8 @@ describe("createPageView()", () => {
 
     it("should prefix diff paths", () => {
       const spy = jasmine.createSpy();
-      connect(node.o.d_diff, spy);
-      node.i.d_diff({
+      connect(node.o.v_diff, spy);
+      node.i.v_diff({
         del: {
           baz: null
         },
