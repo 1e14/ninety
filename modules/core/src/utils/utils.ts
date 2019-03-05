@@ -26,6 +26,11 @@ export function prefixDiffPaths<T>(
   return result;
 }
 
+/**
+ * Applies source diff to target diff.
+ * @param source
+ * @param target
+ */
 export function compoundDiff(source, target): boolean {
   const targetSet = target.set;
   const targetDel = target.del;
