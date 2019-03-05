@@ -1,2 +1,2 @@
 export {DomDiffApplier, createDomDiffApplier} from "./DomDiffApplier";
-export {In as ViewIn, Out as ViewOut, View} from "./View";
+export {View, createView, In as ViewIn, Out as ViewOut} from "./View";

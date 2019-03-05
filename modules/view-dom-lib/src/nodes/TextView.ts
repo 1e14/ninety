@@ -1,6 +1,5 @@
-import {prefixDiffPaths} from "gravel-core";
-import {View, ViewIn, ViewOut} from "gravel-view-dom";
-import {createNode} from "river-core";
+import {View} from "gravel-view-dom";
+import {createView} from "gravel-view-dom/dist/nodes/View";
 
 export type VmProps = {
   content: string
@@ -8,17 +7,12 @@ export type VmProps = {
 
 export type TextView = View<VmProps>;
 
-export function createTextView(prefix: string = ""): TextView {
-  return createNode<ViewIn<VmProps>, ViewOut>(["v_diff"], (outputs) => {
+export function createTextView(path: string = ""): TextView {
+  return createView<VmProps>(path, {}, (vm) => {
+    const vmSet = vm.set;
     return {
-      v_diff: () => null,
-
-      vm_diff: (value, tag) => {
-        outputs.v_diff(prefixDiffPaths({
-          set: {
-            innerText: value.set.content
-          }
-        }, prefix), tag);
+      set: {
+        innerText: vmSet && vmSet.content
       }
     };
   });

@@ -13,7 +13,7 @@ export type Out = {
 export type View<T> = Node<In<T>, Out>;
 
 export function createView<T>(
-  path: string,
+  path: string = "",
   content: Any = {},
   cb?: (vm: Diff<T>) => Diff<any>
 ): View<T> {
