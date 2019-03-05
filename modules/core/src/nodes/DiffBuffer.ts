@@ -1,5 +1,6 @@
 import {createNode, Node} from "river-core";
-import {Diff} from "../types";
+import {Diff, DiffDel, DiffSet} from "../types";
+import {compoundDiff} from "../utils";
 
 export type In<T> = {
   d_diff: Diff<T>;
@@ -12,40 +13,16 @@ export type Out<T> = {
 
 export type DiffBuffer<T> = Node<In<T>, Out<T>>;
 
-export function createDiffBuffer<T>(): DiffBuffer<T> {
+export function createDiffBuffer<T>(buffer: Diff<T> = {}): DiffBuffer<T> {
   return createNode<In<T>, Out<T>>
   (["d_diff"], (outputs) => {
-    let buffer: Diff<T> = {
-      del: {},
-      set: {}
-    };
+    buffer.set = buffer.set || {};
+    buffer.del = buffer.del || {};
     let changed = false;
 
     return {
-      d_diff: (value, tag) => {
-        const bufferSet = buffer.set;
-        const bufferDel = buffer.del;
-
-        // transferring deletes
-        for (const path in value.del) {
-          if (path in bufferSet) {
-            delete bufferSet[path];
-          } else {
-            bufferDel[path] = null;
-          }
-          changed = true;
-        }
-
-        // transferring sets
-        const valueSet = value.set;
-        for (const path in value.set) {
-          if (path in bufferDel) {
-            delete bufferDel[path];
-          } else {
-            bufferSet[path] = valueSet[path];
-          }
-          changed = true;
-        }
+      d_diff: (value) => {
+        changed = compoundDiff(value, buffer) || changed;
       },
 
       ev_res: (value, tag) => {

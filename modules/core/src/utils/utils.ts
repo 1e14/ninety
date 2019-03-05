@@ -37,8 +37,7 @@ export function compoundDiff(source, target): boolean {
       delete targetSet[path];
       changed = true;
     }
-
-    if (targetDel[path] !== null) {
+    if (!(path in targetDel)) {
       targetDel[path] = null;
       changed = true;
     }
@@ -51,7 +50,6 @@ export function compoundDiff(source, target): boolean {
       delete targetDel[path];
       changed = true;
     }
-
     if (targetSet[path] !== sourceSet[path]) {
       targetSet[path] = sourceSet[path];
       changed = true;

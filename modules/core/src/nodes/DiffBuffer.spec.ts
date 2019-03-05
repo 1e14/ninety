@@ -15,7 +15,7 @@ describe("createDiffBuffer()", () => {
           set: {foo: 5}
         });
         node.i.d_diff({
-          del: {foo: 5},
+          del: {foo: null},
           set: {bar: true}
         });
         node.i.d_diff({
@@ -23,7 +23,7 @@ describe("createDiffBuffer()", () => {
         });
       });
 
-      it("should emit aggregated diff on 'd_diff'", () => {
+      it("should emit compounded diff on 'd_diff'", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_diff, spy);
         node.i.ev_res(null, "1");
@@ -34,7 +34,7 @@ describe("createDiffBuffer()", () => {
       });
     });
 
-    describe("when diff is empty", () => {
+    describe("on no change", () => {
       it("should not emit on 'd_diff'", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_diff, spy);
