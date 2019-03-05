@@ -35,9 +35,13 @@ connect(hash2Path.o.d_val, router.i.d_path);
 // setting up routing "table"
 connect(router.o["/^views$/"], () => {
   const textView = createCustomTextView("childNodes.0:span");
-  const textSource = createMapper(() => "Hello World!");
+  const textSource = createMapper(() => ({
+    set: {
+      content: "Hello World!"
+    }
+  }));
 
-  connect(textSource.o.d_val, textView.i.vm_content);
+  connect(textSource.o.d_val, textView.i.vm_diff);
   connect(textView.o.v_diff, pageView.i.v_diff);
   connect(textView.o.ev_click, console.log);
 
