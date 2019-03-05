@@ -25,3 +25,38 @@ export function prefixDiffPaths<T>(
   }
   return result;
 }
+
+export function compoundDiff(source, target): boolean {
+  const targetSet = target.set;
+  const targetDel = target.del;
+  let changed = false;
+
+  // transferring deletes
+  for (const path in source.del) {
+    if (path in targetSet) {
+      delete targetSet[path];
+      changed = true;
+    }
+
+    if (targetDel[path] !== null) {
+      targetDel[path] = null;
+      changed = true;
+    }
+  }
+
+  // transferring sets
+  const sourceSet = source.set;
+  for (const path in sourceSet) {
+    if (path in targetDel) {
+      delete targetDel[path];
+      changed = true;
+    }
+
+    if (targetSet[path] !== sourceSet[path]) {
+      targetSet[path] = sourceSet[path];
+      changed = true;
+    }
+  }
+
+  return changed;
+}
