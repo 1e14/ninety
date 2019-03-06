@@ -105,7 +105,8 @@ export function delDomProperty(path: string): boolean {
     }
 
     if (tmp === undefined) {
-      return false;
+      // path not found
+      return true;
     }
   }
 

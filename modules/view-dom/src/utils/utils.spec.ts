@@ -296,9 +296,7 @@ describe("applyDomDiff()", () => {
       const result = applyDomDiff({
         del: {
           // will pass b/c already null
-          "body.childNodes.1:section": null,
-          // will not pass b/c property of null
-          "body.childNodes.4:section.classList.foo": null
+          "body.childNodes.1:section": null
         },
         set: {
           // will pass b/c proper path
@@ -308,9 +306,7 @@ describe("applyDomDiff()", () => {
         }
       });
       expect(result).toEqual({
-        del: {
-          "body.childNodes.4:section.classList.foo": null
-        },
+        del: {},
         set: {
           "body.childNodes.4.attributes.bar": "BAZ"
         }
