@@ -29,7 +29,7 @@ describe("createView()", () => {
     let node: View<{ content: string }>;
 
     beforeEach(() => {
-      node = createView("foo", {}, (vm) => ({
+      node = createView("foo", (vm) => ({
         set: {
           innerText: vm.set.content
         }

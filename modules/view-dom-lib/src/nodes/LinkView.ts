@@ -1,4 +1,3 @@
-import {Diff} from "gravel-core";
 import {createView, ViewIn, ViewOut} from "gravel-view-dom";
 import {Node} from "river-core";
 
@@ -14,10 +13,9 @@ export type Out = ViewOut;
 export type LinkView = Node<In, Out>;
 
 export function createLinkView(
-  path: string = "",
-  content: Diff<any> = {}
+  path: string = ""
 ): LinkView {
-  return createView<VmProps>(path, content, (vm) => {
+  return createView<VmProps>(path, (vm) => {
     const set = vm.set;
     const del = vm.del;
     return {

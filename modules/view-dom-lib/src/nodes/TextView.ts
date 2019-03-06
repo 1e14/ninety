@@ -1,4 +1,3 @@
-import {Diff} from "gravel-core";
 import {createView, ViewIn, ViewOut} from "gravel-view-dom";
 import {Node} from "river-core";
 
@@ -13,10 +12,9 @@ export type Out = ViewOut;
 export type TextView = Node<In, Out>;
 
 export function createTextView(
-  path: string = "",
-  content: Diff<any> = {}
+  path: string = ""
 ): TextView {
-  return createView<VmProps>(path, content, (vm) => {
+  return createView<VmProps>(path, (vm) => {
     const set = vm.set;
     return {
       set: {

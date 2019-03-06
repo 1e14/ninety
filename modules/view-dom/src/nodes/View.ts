@@ -14,11 +14,10 @@ export type View<T> = Node<In<T>, Out>;
 
 export function createView<T>(
   path: string = "",
-  content: Any = {},
   cb?: (vm: Diff<T>) => Diff<any>
 ): View<T> {
   return createNode<In<T>, Out>(["v_diff"], (outputs) => {
-    const diff = {set: content, del: {}};
+    const diff = {set: {}, del: {}};
     return {
       v_diff: (value, tag) => {
         outputs.v_diff(prefixDiffPaths(value, path), tag);
