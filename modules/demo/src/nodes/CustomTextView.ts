@@ -5,7 +5,6 @@ import {
   createTextView,
   TextVmProps
 } from "gravel-view-dom-lib";
-import {TextView} from "gravel-view-dom-lib/dist";
 import {connect, InPorts, Node, OutPorts} from "river-core";
 import {createMapper, createNoop} from "river-stdlib";
 
