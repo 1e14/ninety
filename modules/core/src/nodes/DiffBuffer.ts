@@ -1,5 +1,5 @@
 import {createNode, Node} from "river-core";
-import {Diff, DiffDel, DiffSet} from "../types";
+import {Diff} from "../types";
 import {compoundDiff} from "../utils";
 
 export type In<T> = {

@@ -31,7 +31,7 @@ export function prefixDiffPaths<T>(
  * @param source
  * @param target
  */
-export function compoundDiff(source, target): boolean {
+export function compoundDiff<T>(source: Diff<T>, target: Diff<T>): boolean {
   const targetSet = target.set;
   const targetDel = target.del;
   let changed = false;

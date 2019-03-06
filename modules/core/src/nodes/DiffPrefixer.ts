@@ -1,13 +1,13 @@
-import {createNode, Node} from "river-core";
+import {Any, createNode, Node} from "river-core";
 import {Diff} from "../types";
 import {prefixDiffPaths} from "../utils";
 
 export type In = {
-  d_diff: Diff<any>;
+  d_diff: Diff<Any>;
 };
 
 export type Out = {
-  d_diff: Diff<any>;
+  d_diff: Diff<Any>;
 };
 
 export type DiffPrefixer = Node<In, Out>;
