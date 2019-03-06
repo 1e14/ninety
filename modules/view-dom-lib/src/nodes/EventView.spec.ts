@@ -16,7 +16,7 @@ afterEach(() => {
 });
 
 describe("createEventView()", () => {
-  describe("on input (vm_diff)", () => {
+  describe("on input (ev_smp)", () => {
     let node: EventView<Event>;
 
     beforeEach(() => {
@@ -26,7 +26,7 @@ describe("createEventView()", () => {
     it("should emit on 'v_diff'", () => {
       const spy = jasmine.createSpy();
       connect(node.o.v_diff, spy);
-      node.i.vm_diff(null, "1");
+      node.i.ev_smp(null, "1");
       expect(spy).toHaveBeenCalled();
       const args = spy.calls.argsFor(0);
       expect(typeof args[0].set["foo.onclick"]).toBe("function");
@@ -43,7 +43,7 @@ describe("createEventView()", () => {
       connect(node.o.v_diff, (diff) => {
         onclick = diff.set["foo.onclick"];
       });
-      node.i.vm_diff(null, "1");
+      node.i.ev_smp(null, "1");
     });
 
     it("should stop event propagation", () => {

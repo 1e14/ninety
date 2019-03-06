@@ -11,7 +11,7 @@ export type DomEventHandlers = {
 export type EventViewDiff = Diff<DomEventHandlers>;
 
 export type In<T extends Event> = {
-  vm_diff: any;
+  ev_smp: any;
 };
 
 export type Out<T extends Event> = {
@@ -21,10 +21,14 @@ export type Out<T extends Event> = {
 
 export type EventView<T extends Event> = Node<In<T>, Out<T>>;
 
-export function createEventView<T extends Event>(prefix: string, type: DomEventType): EventView<T> {
-  return createNode<In<T>, Out<T>>(["v_diff", "d_event"], (outputs) => {
+export function createEventView<T extends Event>(
+  prefix: string,
+  type: DomEventType
+): EventView<T> {
+  return createNode<In<T>, Out<T>>
+  (["v_diff", "d_event"], (outputs) => {
     return {
-      vm_diff: (value, tag) => {
+      ev_smp: (value, tag) => {
         outputs.v_diff(prefixDiffPaths({
           set: {
             [type]: (event) => {
