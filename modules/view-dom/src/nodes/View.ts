@@ -19,10 +19,13 @@ export function createView<T>(
   cb?: (vm: Diff<T>) => Diff<Any>
 ): View<T> {
   return createNode<In<T>, Out>(["ev_smp", "v_diff"], (outputs) => {
-    const diff = {set: {}, del: {}};
+    const content = {set: {}, del: {}};
     return {
       ev_smp: (value, tag) => {
-        outputs.v_diff({set: diff.set, del: {}}, tag);
+        outputs.v_diff({
+          del: {[path]: null},
+          set: content.set
+        }, tag);
         outputs.ev_smp(value, tag);
       },
 
@@ -32,10 +35,10 @@ export function createView<T>(
 
       vm_diff: cb ?
         (value, tag) => {
-          const view = cb(value);
-          const changed = compoundDiff(view, diff);
+          const view = prefixDiffPaths(cb(value), path);
+          const changed = compoundDiff(view, content);
           if (changed) {
-            outputs.v_diff(prefixDiffPaths(view, path), tag);
+            outputs.v_diff(view, tag);
           }
         } :
         () => null

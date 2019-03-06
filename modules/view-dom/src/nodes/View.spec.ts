@@ -3,17 +3,31 @@ import {createView, View} from "./View";
 
 describe("createView()", () => {
   describe("on input (ev_smp)", () => {
-    let node: View<{}>;
+    let node: View<{
+      content: string
+    }>;
 
     beforeEach(() => {
-      node = createView("foo");
+      node = createView("foo", (vm) => ({
+        set: {innerText: vm.set.content}
+      }));
+      node.i.vm_diff({
+        set: {content: "bar"}
+      });
     });
 
     it("should emit contents on 'v_diff'", () => {
       const spy = jasmine.createSpy();
       connect(node.o.v_diff, spy);
       node.i.ev_smp(null, "1");
-      expect(spy).toHaveBeenCalledWith({set: {}, del: {}}, "1");
+      expect(spy).toHaveBeenCalledWith({
+        del: {
+          foo: null
+        },
+        set: {
+          "foo.innerText": "bar"
+        }
+      }, "1");
     });
 
     it("should emit on 'ev_smp'", () => {
