@@ -8,7 +8,7 @@ export type DomEventHandlers = {
   [key in DomEventType]: DomEventHandler
 };
 
-export type EventListenerDiff = Diff<DomEventHandlers>;
+export type EventViewDiff = Diff<DomEventHandlers>;
 
 export type In<T extends Event> = {
   d_event: T;
@@ -17,12 +17,12 @@ export type In<T extends Event> = {
 
 export type Out<T extends Event> = {
   d_event: T;
-  d_diff: EventListenerDiff
+  d_diff: EventViewDiff
 };
 
-export type EventListener<T extends Event> = Node<In<T>, Out<T>>;
+export type EventView<T extends Event> = Node<In<T>, Out<T>>;
 
-export function createEventListener<T extends Event>(prefix: string, type: DomEventType): EventListener<T> {
+export function createEventView<T extends Event>(prefix: string, type: DomEventType): EventView<T> {
   return createNode<In<T>, Out<T>>(["d_diff", "d_event"], (outputs) => {
     const i = {
       d_event: (event, tag) => {

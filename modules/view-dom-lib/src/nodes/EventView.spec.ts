@@ -1,5 +1,5 @@
 import {connect} from "river-core";
-import {createEventListener, EventListener} from "./EventListener";
+import {createEventView, EventView} from "./EventView";
 
 const window = <any>global;
 
@@ -15,12 +15,12 @@ afterEach(() => {
   delete window.Event;
 });
 
-describe("createEventListener()", () => {
+describe("createEventView()", () => {
   describe("on input (d_event)", () => {
-    let node: EventListener<Event>;
+    let node: EventView<Event>;
 
     beforeEach(() => {
-      node = createEventListener("foo", "onclick");
+      node = createEventView("foo", "onclick");
     });
 
     it("should stop event propagation", () => {
@@ -40,10 +40,10 @@ describe("createEventListener()", () => {
   });
 
   describe("on input (ev_smp)", () => {
-    let node: EventListener<Event>;
+    let node: EventView<Event>;
 
     beforeEach(() => {
-      node = createEventListener("foo", "onclick");
+      node = createEventView("foo", "onclick");
     });
 
     it("should emit on 'd_diff'", () => {

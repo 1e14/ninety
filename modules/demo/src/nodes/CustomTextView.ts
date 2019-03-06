@@ -1,6 +1,6 @@
 import {createView, ViewIn, ViewOut} from "gravel-view-dom";
 import {
-  createEventListener,
+  createEventView,
   createTextView,
   TextVmProps
 } from "gravel-view-dom-lib";
@@ -23,14 +23,14 @@ export function createCustomTextView(prefix: string = ""): CustomTextView {
       "style.color": "red"
     }
   }));
-  const clickListener = createEventListener(prefix, "onclick");
+  const clickView = createEventView(prefix, "onclick");
   const output = createNoop();
 
   connect(input.o.d_val, textView.i.vm_diff);
-  connect(input.o.d_val, clickListener.i.ev_smp);
+  connect(input.o.d_val, clickView.i.ev_smp);
   connect(input.o.d_val, styleView.i.vm_diff);
   connect(styleView.o.v_diff, output.i.d_val);
-  connect(clickListener.o.d_diff, output.i.d_val);
+  connect(clickView.o.d_diff, output.i.d_val);
   connect(textView.o.v_diff, output.i.d_val);
 
   const i: InPorts<In> = {
@@ -39,7 +39,7 @@ export function createCustomTextView(prefix: string = ""): CustomTextView {
   };
 
   const o: OutPorts<Out> = {
-    ev_click: clickListener.o.d_event,
+    ev_click: clickView.o.d_event,
     v_diff: output.o.d_val
   };
 
