@@ -2,6 +2,28 @@ import {connect} from "river-core";
 import {createView, View} from "./View";
 
 describe("createView()", () => {
+  describe("on input (ev_smp)", () => {
+    let node: View<{}>;
+
+    beforeEach(() => {
+      node = createView("foo");
+    });
+
+    it("should emit contents on 'v_diff'", () => {
+      const spy = jasmine.createSpy();
+      connect(node.o.v_diff, spy);
+      node.i.ev_smp(null, "1");
+      expect(spy).toHaveBeenCalledWith({set: {}, del: {}}, "1");
+    });
+
+    it("should emit on 'ev_smp'", () => {
+      const spy = jasmine.createSpy();
+      connect(node.o.ev_smp, spy);
+      node.i.ev_smp(null, "1");
+      expect(spy).toHaveBeenCalledWith(null, "1");
+    });
+  });
+
   describe("on input (v_diff)", () => {
     let node: View<{}>;
 
