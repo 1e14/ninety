@@ -11,33 +11,29 @@ export type DomEventHandlers = {
 export type EventViewDiff = Diff<DomEventHandlers>;
 
 export type In<T extends Event> = {
-  d_event: T;
-  ev_smp: any;
+  vm_diff: any;
 };
 
 export type Out<T extends Event> = {
   d_event: T;
-  d_diff: EventViewDiff
+  v_diff: EventViewDiff
 };
 
 export type EventView<T extends Event> = Node<In<T>, Out<T>>;
 
 export function createEventView<T extends Event>(prefix: string, type: DomEventType): EventView<T> {
-  return createNode<In<T>, Out<T>>(["d_diff", "d_event"], (outputs) => {
-    const i = {
-      d_event: (event, tag) => {
-        event.stopImmediatePropagation();
-        outputs.d_event(event, tag);
-      },
-
-      ev_smp: (value, tag) => {
-        outputs.d_diff(prefixDiffPaths({
+  return createNode<In<T>, Out<T>>(["v_diff", "d_event"], (outputs) => {
+    return {
+      vm_diff: (value, tag) => {
+        outputs.v_diff(prefixDiffPaths({
           set: {
-            [type]: i.d_event
+            [type]: (event) => {
+              event.stopImmediatePropagation();
+              outputs.d_event(event, tag);
+            }
           }
         }, prefix), tag);
       }
     };
-    return i;
   });
 }

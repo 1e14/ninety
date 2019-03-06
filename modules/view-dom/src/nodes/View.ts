@@ -1,5 +1,5 @@
 import {compoundDiff, Diff, prefixDiffPaths} from "gravel-core";
-import {Any, createNode, Node} from "river-core";
+import {createNode, Node} from "river-core";
 
 export type In<T> = {
   v_diff: Diff<any>;
