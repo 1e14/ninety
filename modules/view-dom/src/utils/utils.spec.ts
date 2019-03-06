@@ -1,8 +1,5 @@
 import {applyDomDiff, delDomProperty, setDomProperty} from "./utils";
 
-// tslint:disable:no-var-requires
-const utils = require("./utils");
-
 const window = <any>global;
 
 beforeEach(() => {

@@ -1,4 +1,5 @@
 import {Diff, DiffDel, DiffSet} from "gravel-core";
+import {Any} from "river-core";
 
 /**
  * Adds placeholder comment nodes to the specified parent node up to the
@@ -143,12 +144,12 @@ export function delDomProperty(path: string): boolean {
  * Applies the specified view diff to the DOM.
  * @param diff
  */
-export function applyDomDiff(diff: Diff<any>): Diff<any> | true {
-  const bounced: Diff<any> = {};
+export function applyDomDiff(diff: Diff<Any>): Diff<Any> | true {
+  const bounced: Diff<Any> = {};
   const viewSet = diff.set;
   let applied = true;
   if (viewSet) {
-    const bouncedSet: DiffSet<any> = bounced.set = {};
+    const bouncedSet: DiffSet<Any> = bounced.set = {};
     for (const path in viewSet) {
       const value = viewSet[path];
       if (!setDomProperty(path, value)) {
@@ -159,7 +160,7 @@ export function applyDomDiff(diff: Diff<any>): Diff<any> | true {
   }
   const viewDel = diff.del;
   if (viewDel) {
-    const bouncedDel: DiffDel<any> = bounced.del = {};
+    const bouncedDel: DiffDel<Any> = bounced.del = {};
     for (const path in viewDel) {
       if (!delDomProperty(path)) {
         bouncedDel[path] = null;

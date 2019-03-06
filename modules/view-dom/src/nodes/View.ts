@@ -1,20 +1,20 @@
 import {compoundDiff, Diff, prefixDiffPaths} from "gravel-core";
-import {createNode, Node} from "river-core";
+import {Any, createNode, Node} from "river-core";
 
 export type In<T> = {
-  v_diff: Diff<any>;
+  v_diff: Diff<Any>;
   vm_diff: Diff<T>;
 };
 
 export type Out = {
-  v_diff: Diff<any>;
+  v_diff: Diff<Any>;
 };
 
 export type View<T> = Node<In<T>, Out>;
 
 export function createView<T>(
   path: string = "",
-  cb?: (vm: Diff<T>) => Diff<any>
+  cb?: (vm: Diff<T>) => Diff<Any>
 ): View<T> {
   return createNode<In<T>, Out>(["v_diff"], (outputs) => {
     const diff = {set: {}, del: {}};
