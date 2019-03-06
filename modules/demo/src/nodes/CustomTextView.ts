@@ -27,10 +27,10 @@ export function createCustomTextView(prefix: string = ""): CustomTextView {
   const output = createNoop();
 
   connect(input.o.d_val, textView.i.vm_diff);
-  connect(input.o.d_val, clickView.i.ev_smp);
+  connect(input.o.d_val, clickView.i.vm_diff);
   connect(input.o.d_val, styleView.i.vm_diff);
   connect(styleView.o.v_diff, output.i.d_val);
-  connect(clickView.o.d_diff, output.i.d_val);
+  connect(clickView.o.v_diff, output.i.d_val);
   connect(textView.o.v_diff, output.i.d_val);
 
   const i: InPorts<In> = {
