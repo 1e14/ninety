@@ -15,34 +15,42 @@ export type Out = ViewOut & {
 
 export type CustomTextView = Node<In, Out>;
 
-export function createCustomTextView(prefix: string = ""): CustomTextView {
-  const input = createNoop();
-  const textView = createTextView(prefix);
+export function createCustomTextView(
+  prefix: string = "",
+  initialVm?: Partial<TextVmProps>
+): CustomTextView {
+  const vmDiff = createNoop();
+  const evSmpIn = createNoop();
+  const evSmpOut = createNoop();
+  const vDiff = createNoop();
+  const textView = createTextView(prefix, initialVm);
   const styleView = createView(prefix, () => ({
     set: {
       "style.color": "red"
     }
-  }));
+  }), {});
   const clickView = createEventView(prefix, "onclick");
-  const output = createNoop();
 
-  connect(input.o.d_val, textView.i.vm_diff);
-  connect(input.o.d_val, clickView.i.ev_smp);
-  connect(input.o.d_val, styleView.i.vm_diff);
-  connect(styleView.o.v_diff, output.i.d_val);
-  connect(clickView.o.v_diff, output.i.d_val);
-  connect(textView.o.v_diff, output.i.d_val);
+  connect(evSmpIn.o.d_val, textView.i.ev_smp);
+  connect(evSmpIn.o.d_val, styleView.i.ev_smp);
+  connect(evSmpIn.o.d_val, clickView.i.ev_smp);
+  connect(vmDiff.o.d_val, textView.i.vm_diff);
+  connect(styleView.o.v_diff, vDiff.i.d_val);
+  connect(clickView.o.v_diff, vDiff.i.d_val);
+  connect(textView.o.v_diff, vDiff.i.d_val);
+  connect(styleView.o.ev_smp, evSmpOut.i.d_val);
+  connect(textView.o.ev_smp, evSmpOut.i.d_val);
 
   const i: InPorts<In> = {
-    ev_smp: null,
+    ev_smp: evSmpIn.i.d_val,
     v_diff: null,
-    vm_diff: input.i.d_val
+    vm_diff: vmDiff.i.d_val
   };
 
   const o: OutPorts<Out> = {
     ev_click: clickView.o.d_event,
-    ev_smp: null,
-    v_diff: output.o.d_val
+    ev_smp: evSmpOut.o.d_val,
+    v_diff: vDiff.o.d_val
   };
 
   return {i, o};

@@ -22,26 +22,17 @@ setInterval(ticker.i.d_val, 10);
 connect(viewBuffer.o.d_diff, domDiffApplier.i.d_diff);
 connect(ticker.o.d_val, viewBuffer.i.ev_res);
 
+// "page" 1: custom text field
+const textView = createCustomTextView("body.childNodes.0:span", {
+  content: "Hello World!"
+});
+connect(textView.o.v_diff, viewBuffer.i.d_diff);
+connect(textView.o.ev_click, console.log);
+
 // setting up routing table
 const router = createRouter([
-  /^render$/,
+  /^custom-text$/,
   /^views$/
 ]);
 connect(hash2Path.o.d_val, router.i.d_path);
-
-// setting up routing "table"
-connect(router.o["/^views$/"], () => {
-  const textView = createCustomTextView("body.childNodes.0:span");
-  const textSource = createMapper(() => ({
-    set: {
-      content: "Hello World!"
-    }
-  }));
-
-  connect(textSource.o.d_val, textView.i.vm_diff);
-  connect(textView.o.v_diff, viewBuffer.i.d_diff);
-  connect(textView.o.ev_click, console.log);
-
-  // nudge
-  textSource.i.d_val(null);
-});
+connect(router.o["/^custom-text$/"], textView.i.ev_smp);
