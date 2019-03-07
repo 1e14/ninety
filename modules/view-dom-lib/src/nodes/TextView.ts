@@ -1,20 +1,21 @@
 import {createView, ViewIn, ViewOut} from "gravel-view-dom";
 import {Any, Node} from "river-core";
 
-export type VmProps = {
+export type TextVmProps = {
   content: string
 };
 
-export type In = ViewIn<VmProps>;
+export type In = ViewIn<TextVmProps>;
 
 export type Out = ViewOut;
 
 export type TextView = Node<In, Out>;
 
 export function createTextView(
-  path: string
+  path: string,
+  initialVm?: Partial<TextVmProps>
 ): TextView {
-  return createView<VmProps>(path, (vm) => {
+  return createView<TextVmProps>(path, (vm) => {
     const vmSet = vm.set;
     const vmDel = vm.del;
     const set: Any = {};
@@ -25,5 +26,5 @@ export function createTextView(
       del.innerText = null;
     }
     return {set, del};
-  });
+  }, initialVm);
 }
