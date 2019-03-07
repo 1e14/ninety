@@ -42,7 +42,7 @@ describe("createView()", () => {
     let node: View<{}>;
 
     beforeEach(() => {
-      node = createView("foo");
+      node = createView("foo", () => null);
     });
 
     it("should emit forwarded view on 'v_diff'", () => {
