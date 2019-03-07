@@ -146,7 +146,7 @@ export function delDomProperty(path: string): boolean {
  * @param diff
  */
 export function applyDomDiff(diff: Diff<Any>): Diff<Any> | true {
-  const bounced = <Diff<Any>>{};
+  const bounced = {del: {}, set: {}};
   const viewSet = diff.set;
   const viewDel = diff.del;
   const bouncedSet = bounced.set;
