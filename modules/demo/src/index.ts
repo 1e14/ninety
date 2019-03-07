@@ -3,6 +3,7 @@
 import {createDiffBuffer} from "gravel-core";
 import {createRouter} from "gravel-routing";
 import {createDomDiffApplier} from "gravel-view-dom";
+import {createLinkView} from "gravel-view-dom-lib";
 import {createLocationHash} from "river-browser";
 import {connect} from "river-core";
 import {createMapper, createNoop} from "river-stdlib";
@@ -22,8 +23,15 @@ setInterval(ticker.i.d_val, 10);
 connect(viewBuffer.o.d_diff, domDiffApplier.i.d_diff);
 connect(ticker.o.d_val, viewBuffer.i.ev_res);
 
+// menu
+const link1 = createLinkView("body.childNodes.1:div.childNodes.0:a", {
+  content: "Custom text",
+  url: "#custom-text"
+});
+connect(link1.o.v_diff, viewBuffer.i.d_diff);
+
 // "page" 1: custom text field
-const textView = createCustomTextView("body.childNodes.0:span", {
+const textView = createCustomTextView("body.childNodes.0:div.childNodes.0:span", {
   content: "Hello World!"
 });
 connect(textView.o.v_diff, viewBuffer.i.d_diff);
@@ -32,7 +40,9 @@ connect(textView.o.ev_click, console.log);
 // setting up routing table
 const router = createRouter([
   /^custom-text$/,
-  /^views$/
+  /^views$/,
+  /^.*$/
 ]);
 connect(hash2Path.o.d_val, router.i.d_path);
 connect(router.o["/^custom-text$/"], textView.i.ev_smp);
+connect(router.o["/^.*$/"], link1.i.ev_smp);
