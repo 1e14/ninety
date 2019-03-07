@@ -102,10 +102,10 @@ describe("setDomProperty()", () => {
   it("should create placeholders along the way", () => {
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
     setDomProperty(path, true);
-    expect(window.document.body.childNodes[0].data).toBe("ph");
-    expect(window.document.body.childNodes[1].childNodes[0].data).toBe("ph");
-    expect(window.document.body.childNodes[1].childNodes[1].data).toBe("ph");
-    expect(window.document.body.childNodes[1].childNodes[2].data).toBe("ph");
+    expect(window.document.body.childNodes[0].data).toBe("");
+    expect(window.document.body.childNodes[1].childNodes[0].data).toBe("");
+    expect(window.document.body.childNodes[1].childNodes[1].data).toBe("");
+    expect(window.document.body.childNodes[1].childNodes[2].data).toBe("");
   });
 
   it("should return true", () => {

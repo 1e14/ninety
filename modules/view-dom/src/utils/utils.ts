@@ -9,7 +9,7 @@ import {Any} from "river-core";
  */
 function addPlaceholders(parent: Node, index: number): void {
   for (let i = parent.childNodes.length; i < index; i++) {
-    const placeholder = document.createComment("ph");
+    const placeholder = document.createComment("");
     parent.appendChild(placeholder);
   }
 }
@@ -121,7 +121,7 @@ export function delDomProperty(path: string): boolean {
     const node = tmp[index];
     if (node !== undefined) {
       // replacing node w/ placeholder
-      tmp = document.createComment("ph");
+      tmp = document.createComment("");
       parent.replaceChild(tmp, node);
     }
   } else if (tmp instanceof NamedNodeMap) {
