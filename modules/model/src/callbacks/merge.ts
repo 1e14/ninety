@@ -10,29 +10,23 @@ const hOP = Object.prototype.hasOwnProperty;
  */
 export function mergeObject<T extends Any>(
   current: Partial<T>,
-  diff: Diff<T>
+  {set, del}: Diff<T>
 ): boolean {
   let changed = false;
 
   current = current || <T>{};
 
-  const set = diff.set;
-  if (set) {
-    for (const key in set) {
-      const value = set[key];
-      if (value !== current[key]) {
-        current[key] = value;
-        changed = true;
-      }
+  for (const key in set) {
+    const value = set[key];
+    if (value !== current[key]) {
+      current[key] = value;
+      changed = true;
     }
   }
-  const del = diff.del;
-  if (del) {
-    for (const key in del) {
-      if (hOP.call(current, key)) {
-        delete current[key];
-        changed = true;
-      }
+  for (const key in del) {
+    if (hOP.call(current, key)) {
+      delete current[key];
+      changed = true;
     }
   }
 

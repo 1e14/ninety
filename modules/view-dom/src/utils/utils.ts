@@ -1,4 +1,4 @@
-import {Diff, DiffDel, DiffSet} from "gravel-core";
+import {Diff} from "gravel-core";
 import {Any} from "river-core";
 
 /**
@@ -146,27 +146,23 @@ export function delDomProperty(path: string): boolean {
  * @param diff
  */
 export function applyDomDiff(diff: Diff<Any>): Diff<Any> | true {
-  const bounced: Diff<Any> = {};
+  const bounced = <Diff<Any>>{};
   const viewSet = diff.set;
-  let applied = true;
   const viewDel = diff.del;
-  if (viewDel) {
-    const bouncedDel: DiffDel<Any> = bounced.del = {};
-    for (const path in viewDel) {
-      if (!delDomProperty(path)) {
-        bouncedDel[path] = null;
-        applied = false;
-      }
+  const bouncedSet = bounced.set;
+  const bouncedDel = bounced.del;
+  let applied = true;
+  for (const path in viewDel) {
+    if (!delDomProperty(path)) {
+      bouncedDel[path] = null;
+      applied = false;
     }
   }
-  if (viewSet) {
-    const bouncedSet: DiffSet<Any> = bounced.set = {};
-    for (const path in viewSet) {
-      const value = viewSet[path];
-      if (!setDomProperty(path, value)) {
-        bouncedSet[path] = value;
-        applied = false;
-      }
+  for (const path in viewSet) {
+    const value = viewSet[path];
+    if (!setDomProperty(path, value)) {
+      bouncedSet[path] = value;
+      applied = false;
     }
   }
   return applied || bounced;

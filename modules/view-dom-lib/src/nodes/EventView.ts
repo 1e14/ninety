@@ -30,6 +30,7 @@ export function createEventView<T extends Event>(
     return {
       ev_smp: (value, tag) => {
         outputs.v_diff(prefixDiffPaths({
+          del: {},
           set: {
             [type]: (event) => {
               event.stopImmediatePropagation();

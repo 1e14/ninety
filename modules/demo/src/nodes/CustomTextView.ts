@@ -25,6 +25,7 @@ export function createCustomTextView(
   const vDiff = createNoop();
   const textView = createTextView(prefix, initialVm);
   const styleView = createView(prefix, () => ({
+    del: {},
     set: {
       "style.color": "red"
     }

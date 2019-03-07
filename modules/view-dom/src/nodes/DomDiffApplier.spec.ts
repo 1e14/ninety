@@ -27,6 +27,7 @@ describe("createDomDiffApplier()", () => {
     it("should invoke applyDomDiff()", () => {
       spyOn(utils, "applyDomDiff");
       const diff = {
+        del: {},
         set: {
           "body.childNodes.1:div.classList.foo": true
         }
@@ -40,6 +41,7 @@ describe("createDomDiffApplier()", () => {
         const spy = jasmine.createSpy();
         connect(node.o.b_d_diff, spy);
         const diff = {
+          del: {},
           set: {
             "body.childNodes.1.classList.foo": true,
             "body.childNodes.2:div.classList.foo": true
@@ -47,6 +49,7 @@ describe("createDomDiffApplier()", () => {
         };
         node.i.d_diff(diff, "1");
         expect(spy).toHaveBeenCalledWith({
+          del: {},
           set: {
             "body.childNodes.1.classList.foo": true
           }

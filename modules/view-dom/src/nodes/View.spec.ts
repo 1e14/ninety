@@ -9,6 +9,7 @@ describe("createView()", () => {
 
     beforeEach(() => {
       node = createView("foo", (vm) => ({
+        del: {},
         set: {innerText: vm.set.content}
       }), {
         content: "bar"
@@ -48,11 +49,13 @@ describe("createView()", () => {
       const spy = jasmine.createSpy();
       connect(node.o.v_diff, spy);
       node.i.v_diff({
+        del: {},
         set: {
           hello: "world"
         }
       }, "1");
       expect(spy).toHaveBeenCalledWith({
+        del: {},
         set: {
           "foo.hello": "world"
         }
@@ -65,6 +68,7 @@ describe("createView()", () => {
 
     beforeEach(() => {
       node = createView("foo", (vm) => ({
+        del: {},
         set: {
           innerText: vm.set.content
         }
@@ -75,11 +79,13 @@ describe("createView()", () => {
       const spy = jasmine.createSpy();
       connect(node.o.v_diff, spy);
       node.i.vm_diff({
+        del: {},
         set: {
           content: "Hello World!"
         }
       }, "1");
       expect(spy).toHaveBeenCalledWith({
+        del: {},
         set: {
           "foo.innerText": "Hello World!"
         }

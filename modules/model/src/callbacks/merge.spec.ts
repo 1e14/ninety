@@ -1,3 +1,4 @@
+import {Diff} from "gravel-core";
 import {mergeObject} from "./merge";
 
 describe("mergeObject()", () => {
@@ -10,6 +11,7 @@ describe("mergeObject()", () => {
     };
 
     mergeObject<T>(contents, {
+      del: {},
       set: {bar: true, foo: 6}
     });
 
@@ -27,7 +29,8 @@ describe("mergeObject()", () => {
     };
 
     mergeObject<T>(contents, {
-      del: {foo: null}
+      del: {foo: null},
+      set: {}
     });
 
     expect(contents).toEqual({
@@ -42,7 +45,8 @@ describe("mergeObject()", () => {
     };
 
     const result = mergeObject<T>(contents, {
-      del: {foo: null}
+      del: {foo: null},
+      set: {}
     });
 
     expect(result).toBe(true);
@@ -55,7 +59,7 @@ describe("mergeObject()", () => {
         foo: 5
       };
 
-      const result = mergeObject<T>(contents, {});
+      const result = mergeObject<T>(contents, <Diff<T>>{});
 
       expect(result).toBe(false);
     });
