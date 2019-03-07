@@ -149,22 +149,22 @@ export function applyDomDiff(diff: Diff<Any>): Diff<Any> | true {
   const bounced: Diff<Any> = {};
   const viewSet = diff.set;
   let applied = true;
-  if (viewSet) {
-    const bouncedSet: DiffSet<Any> = bounced.set = {};
-    for (const path in viewSet) {
-      const value = viewSet[path];
-      if (!setDomProperty(path, value)) {
-        bouncedSet[path] = value;
-        applied = false;
-      }
-    }
-  }
   const viewDel = diff.del;
   if (viewDel) {
     const bouncedDel: DiffDel<Any> = bounced.del = {};
     for (const path in viewDel) {
       if (!delDomProperty(path)) {
         bouncedDel[path] = null;
+        applied = false;
+      }
+    }
+  }
+  if (viewSet) {
+    const bouncedSet: DiffSet<Any> = bounced.set = {};
+    for (const path in viewSet) {
+      const value = viewSet[path];
+      if (!setDomProperty(path, value)) {
+        bouncedSet[path] = value;
         applied = false;
       }
     }
