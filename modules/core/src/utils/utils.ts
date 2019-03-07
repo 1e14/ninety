@@ -8,7 +8,7 @@ import {Diff} from "../types";
 export function prefixDiffPaths<T>(
   diff: Diff<T>, prefix: string
 ): Diff<{ [key: string]: T[keyof T] }> {
-  const result: Diff<T> = {};
+  const result = <Diff<T>>{};
   const diffSet = diff.set;
   if (diffSet) {
     const set = result.set = {};

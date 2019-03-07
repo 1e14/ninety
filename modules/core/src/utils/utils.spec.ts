@@ -1,3 +1,4 @@
+import {Any} from "river-core";
 import {Diff} from "../types";
 import {compoundDiff, prefixDiffPaths} from "./utils";
 
@@ -35,12 +36,12 @@ describe("compoundDiff()", () => {
     });
 
     it("should not change target", () => {
-      compoundDiff({}, diff);
+      compoundDiff(<Diff<Any>>{}, diff);
       expect(diff).toEqual({set: {foo: 5}, del: {}});
     });
 
     it("should return false", () => {
-      const result = compoundDiff({}, diff);
+      const result = compoundDiff(<Diff<Any>>{}, diff);
       expect(result).toBe(false);
     });
   });
@@ -71,12 +72,12 @@ describe("compoundDiff()", () => {
     });
 
     it("should add property to 'set'", () => {
-      compoundDiff({set: {foo: 5}}, diff);
+      compoundDiff({del: {}, set: {foo: 5}}, diff);
       expect(diff.set).toEqual({foo: 5});
     });
 
     it("should remove property from 'del'", () => {
-      compoundDiff({set: {foo: 5}}, diff);
+      compoundDiff({del: {}, set: {foo: 5}}, diff);
       expect(diff.del).toEqual({});
     });
   });
@@ -89,12 +90,12 @@ describe("compoundDiff()", () => {
     });
 
     it("should remove property from 'set'", () => {
-      compoundDiff({del: {foo: null}}, diff);
+      compoundDiff({del: {foo: null}, set: {}}, diff);
       expect(diff.set).toEqual({});
     });
 
     it("should add property to 'del'", () => {
-      compoundDiff({del: {foo: null}}, diff);
+      compoundDiff({del: {foo: null}, set: {}}, diff);
       expect(diff.del).toEqual({foo: null});
     });
   });

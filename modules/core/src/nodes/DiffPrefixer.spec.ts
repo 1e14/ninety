@@ -37,12 +37,14 @@ describe("createDiffPrefixer()", () => {
         node.i.d_diff({
           del: {
             bar: null
-          }
+          },
+          set: {}
         }, "1");
         expect(spy).toHaveBeenCalledWith({
           del: {
             "baz.bar": null
-          }
+          },
+          set: {}
         }, "1");
       });
     });
@@ -52,11 +54,13 @@ describe("createDiffPrefixer()", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_diff, spy);
         node.i.d_diff({
+          del: {},
           set: {
             foo: 5
           }
         }, "1");
         expect(spy).toHaveBeenCalledWith({
+          del: {},
           set: {
             "baz.foo": 5
           }

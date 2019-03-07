@@ -13,7 +13,7 @@ export type Out<T> = {
 
 export type DiffBuffer<T> = Node<In<T>, Out<T>>;
 
-export function createDiffBuffer<T>(buffer: Diff<T> = {}): DiffBuffer<T> {
+export function createDiffBuffer<T>(buffer = <Diff<T>>{}): DiffBuffer<T> {
   return createNode<In<T>, Out<T>>
   (["d_diff"], (outputs) => {
     buffer.set = buffer.set || {};

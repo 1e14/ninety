@@ -6,6 +6,6 @@ import {DiffSet} from "./DiffSet";
  * Describes a diff to be applied to a JSON data structure.
  */
 export type Diff<T extends Any> = {
-  set?: DiffSet<T>;
-  del?: DiffDel<T>;
+  set: DiffSet<T>;
+  del: DiffDel<T>;
 };

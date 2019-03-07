@@ -12,6 +12,7 @@ describe("createDiffBuffer()", () => {
     describe("after multiple diffs", () => {
       beforeEach(() => {
         node.i.d_diff({
+          del: {},
           set: {foo: 5}
         });
         node.i.d_diff({
@@ -19,6 +20,7 @@ describe("createDiffBuffer()", () => {
           set: {bar: true}
         });
         node.i.d_diff({
+          del: {},
           set: {foo: 3, bar: false}
         });
       });
