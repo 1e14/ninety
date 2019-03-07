@@ -1,6 +1,5 @@
 import {createView, ViewIn, ViewOut} from "gravel-view-dom";
 import {Any, Node} from "river-core";
-import {TextVmProps} from "./TextView";
 
 export type LinkVmProps = {
   url: string;
@@ -15,7 +14,7 @@ export type LinkView = Node<In, Out>;
 
 export function createLinkView(
   path: string,
-  initialVm?: Partial<TextVmProps>
+  initialVm?: Partial<LinkVmProps>
 ): LinkView {
   return createView<LinkVmProps>(path, (vm) => {
     const vmSet = vm.set;
