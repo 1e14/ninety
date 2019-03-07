@@ -10,9 +10,8 @@ describe("createView()", () => {
     beforeEach(() => {
       node = createView("foo", (vm) => ({
         set: {innerText: vm.set.content}
-      }));
-      node.i.vm_diff({
-        set: {content: "bar"}
+      }), {
+        content: "bar"
       });
     });
 
