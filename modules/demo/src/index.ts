@@ -24,7 +24,7 @@ connect(viewBuffer.o.d_diff, domDiffApplier.i.d_diff);
 connect(ticker.o.d_val, viewBuffer.i.ev_res);
 
 // menu
-const link1 = createLinkView("body.childNodes.1:div.childNodes.0:a", {
+const link1 = createLinkView("body.childNodes.0:div.childNodes.0:a", {
   content: "Custom text",
   url: "#custom-text"
 });
@@ -38,11 +38,15 @@ connect(textView.o.v_diff, viewBuffer.i.d_diff);
 connect(textView.o.ev_click, console.log);
 
 // setting up routing table
+const ROUTE_CUSTOM_TEXT = /^custom-text$/;
+const ROUTE_VIEWS = /^views$/;
+const ROUTE_REST = /^.*$/;
+
 const router = createRouter([
-  /^custom-text$/,
-  /^views$/,
-  /^.*$/
+  ROUTE_CUSTOM_TEXT,
+  ROUTE_VIEWS,
+  ROUTE_REST
 ]);
 connect(hash2Path.o.d_val, router.i.d_path);
-connect(router.o["/^custom-text$/"], textView.i.ev_smp);
-connect(router.o["/^.*$/"], link1.i.ev_smp);
+connect(router.o[String(ROUTE_CUSTOM_TEXT)], textView.i.ev_smp);
+connect(router.o[String(ROUTE_REST)], link1.i.ev_smp);
