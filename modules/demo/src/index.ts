@@ -4,7 +4,7 @@ import {createDiffBuffer, Diff} from "gravel-core";
 import {createRouter} from "gravel-routing";
 import {createDomDiffApplier} from "gravel-view-dom";
 import {createDomLinkView} from "gravel-view-dom-lib";
-import {createLocationHash} from "river-browser";
+import {createDomReadyNotifier, createLocationHash} from "river-browser";
 import {Any, connect} from "river-core";
 import {createMapper, createNoop} from "river-stdlib";
 import {
@@ -13,6 +13,9 @@ import {
   createTicker
 } from "./nodes";
 import {generateTableData} from "./utils";
+
+// setting up bootstrapper
+const domReadyNotifier = createDomReadyNotifier();
 
 // setting up hash-based routing
 const locationHash = createLocationHash();
@@ -43,6 +46,8 @@ const link2 = createDomLinkView(`${MENU_PATH}.childNodes.1:li.${LINK_PATH}`, {
 });
 connect(link1.o.v_diff, viewBuffer.i.d_diff);
 connect(link2.o.v_diff, viewBuffer.i.d_diff);
+connect(domReadyNotifier.o.ev_ready, link1.i.ev_smp);
+connect(domReadyNotifier.o.ev_ready, link2.i.ev_smp);
 
 // setting up routes
 const ROUTE_CUSTOM_TEXT = /^custom-text$/;
@@ -79,5 +84,3 @@ connect(hash2Path.o.d_val, router.i.d_route);
 connect(router.o[`r_${ROUTE_CUSTOM_TEXT}`], textView.i.ev_smp);
 connect(router.o.d_pattern, tableRouteDetector.i.d_val);
 connect(router.o[`r_${ROUTE_TABLE}`], tableView.i.ev_smp);
-connect(router.o[`r_${ROUTE_REST}`], link1.i.ev_smp);
-connect(router.o[`r_${ROUTE_REST}`], link2.i.ev_smp);
