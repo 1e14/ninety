@@ -10,7 +10,7 @@ export type Out = ViewOut;
 
 export type SimpleTableView = Node<In, Out>;
 
-const RE_VM_PATH = /^(\d+)\.(\d+)$/;
+const RE_VM_PATH = /^(\d+)\.(\d+)\.(.*)$/;
 
 export function createSimpleTableView(
   path: string = "",
@@ -26,7 +26,14 @@ export function createSimpleTableView(
       if (hits) {
         const row = hits[1];
         const column = hits[2];
-        set[`childNodes.${row}:tr.childNodes.${column}:td.innerText`] = vmSet[key];
+        switch (hits[3]) {
+          case "text":
+            set[`childNodes.${row}:tr.childNodes.${column}:td.innerText`] = vmSet[key];
+            break;
+          case "color":
+            set[`childNodes.${row}:tr.childNodes.${column}:td.style.color`] = vmSet[key];
+            break;
+        }
       }
     }
     for (const key in vmDel) {
@@ -34,7 +41,14 @@ export function createSimpleTableView(
       if (hits) {
         const row = hits[1];
         const column = hits[2];
-        del[`childNodes.${row}:tr.childNodes.${column}:td.innerText`] = null;
+        switch (hits[3]) {
+          case "text":
+            del[`childNodes.${row}:tr.childNodes.${column}:td.innerText`] = null;
+            break;
+          case "color":
+            set[`childNodes.${row}:tr.childNodes.${column}:td.style.color`] = null;
+            break;
+        }
       }
     }
     return {set, del};
