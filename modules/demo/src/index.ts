@@ -63,7 +63,7 @@ const router = createRouter([
   ROUTE_REST
 ]);
 connect(hash2Path.o.d_val, router.i.d_path);
-connect(router.o[String(ROUTE_CUSTOM_TEXT)], textView.i.ev_smp);
-connect(router.o[String(ROUTE_TABLE)], tableView.i.ev_smp);
-connect(router.o[String(ROUTE_REST)], link1.i.ev_smp);
-connect(router.o[String(ROUTE_REST)], link2.i.ev_smp);
+connect(router.o[`r_${ROUTE_CUSTOM_TEXT}`], textView.i.ev_smp);
+connect(router.o[`r_${ROUTE_TABLE}`], tableView.i.ev_smp);
+connect(router.o[`r_${ROUTE_REST}`], link1.i.ev_smp);
+connect(router.o[`r_${ROUTE_REST}`], link2.i.ev_smp);

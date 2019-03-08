@@ -15,7 +15,7 @@ describe("createRouter()", () => {
     describe("when path matches route", () => {
       it("should emit on corresponding port", () => {
         const spy = jasmine.createSpy();
-        connect(node.o["/^user\\/(\\d+)$/"], spy);
+        connect(node.o["r_/^user\\/(\\d+)$/"], spy);
         node.i.d_path("user/100", "1");
         expect(spy).toHaveBeenCalledWith(["100"], "1");
       });
@@ -24,7 +24,7 @@ describe("createRouter()", () => {
     describe("when path does not match route", () => {
       it("should not emit on corresponding port", () => {
         const spy = jasmine.createSpy();
-        connect(node.o["/^user\\/(\\d+)$/"], spy);
+        connect(node.o["r_/^user\\/(\\d+)$/"], spy);
         node.i.d_path("foo/100", "1");
         expect(spy).not.toHaveBeenCalled();
       });

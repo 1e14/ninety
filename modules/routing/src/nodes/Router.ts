@@ -13,7 +13,7 @@ export type Router = Node<In, Out>;
 const slice = Array.prototype.slice;
 
 export function createRouter<R extends Array<RegExp>>(routes: R): Router {
-  const paths = routes.map(String);
+  const paths = routes.map((route) => `r_${route}`);
   return createNode<In, Out>(paths, (outputs) => {
     return {
       d_path: (value, tag) => {
