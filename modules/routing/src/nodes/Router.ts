@@ -6,7 +6,7 @@ export type In = {
 };
 
 export type Out = {
-  d_template: RegExp
+  d_pattern: RegExp
 } & {
   [path: string]: Array<any>;
 };
@@ -15,33 +15,34 @@ export type Router = Node<In, Out>;
 
 const slice = Array.prototype.slice;
 
-export function createRouter<R extends Array<RegExp>>(templates: R): Router {
-  const fields = templates.map((template) => `r_${template}`);
+export function createRouter<R extends Array<RegExp>>(patterns: R): Router {
+  const fields = patterns.map((pattern) => `r_${pattern}`);
   return createNode<In, Out>
-  (["d_template", ...fields], (outputs) => {
-    const templateCount = templates.length;
+  (["d_pattern", ...fields], (outputs) => {
+    const patternCount = patterns.length;
     let lastRoute: string;
-    let lastTemplate: RegExp;
+    let lastPattern: RegExp;
     let lastParams: Array<string>;
     return {
       d_route: (value, tag) => {
         if (value !== lastRoute) {
-          // looking for matching template
-          for (let i = 0; i < templateCount; i++) {
-            const template = templates[i];
-            const components = template.exec(value);
-            if (components) {
-              // template matches
-              if (template !== lastTemplate) {
-                // matching template changed
-                lastTemplate = template;
-                outputs.d_template(template, tag);
-              }
-              const params = slice.call(components, 1);
-              if (!eqArray(params, lastParams)) {
-                // parameters differ
-                outputs[fields[i]](params, tag);
+          // looking for matching pattern
+          for (let i = 0; i < patternCount; i++) {
+            const pattern = patterns[i];
+            const hits = pattern.exec(value);
+            if (hits) {
+              // pattern matches
+              const params = slice.call(hits, 1);
+              if (pattern !== lastPattern) {
+                // route matches different pattern
+                lastPattern = pattern;
                 lastParams = params;
+                outputs.d_pattern(pattern, tag);
+                outputs[fields[i]](params, tag);
+              } else if (!eqArray(params, lastParams)) {
+                // route matches same pattern but parameters differ
+                lastParams = params;
+                outputs[fields[i]](params, tag);
               }
               break;
             }
