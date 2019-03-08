@@ -7,8 +7,7 @@ import {createDomLinkView} from "gravel-view-dom-lib";
 import {createLocationHash} from "river-browser";
 import {connect} from "river-core";
 import {createMapper, createNoop} from "river-stdlib";
-import {createCustomTextView} from "./nodes/CustomTextView";
-import {createSimpleTableView} from "./nodes/SimpleTableView";
+import {createCustomTextView, createSimpleTableView} from "./nodes";
 import {generateTableData} from "./utils";
 
 // setting up hash-based routing
