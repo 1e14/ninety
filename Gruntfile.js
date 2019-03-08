@@ -8,6 +8,7 @@ module.exports = function (grunt) {
     "core",
     "model",
     "routing",
+    "view",
     "view-dom",
     "view-dom-lib",
     "demo"

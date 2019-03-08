@@ -1,4 +1,4 @@
-import {createView, ViewIn, ViewOut} from "gravel-view-dom";
+import {createView, ViewIn, ViewOut} from "gravel-view";
 import {Any, Node} from "river-core";
 
 export type LinkVmProps = {
