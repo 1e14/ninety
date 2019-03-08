@@ -9,6 +9,7 @@ import {connect} from "river-core";
 import {createMapper, createNoop} from "river-stdlib";
 import {createCustomTextView} from "./nodes/CustomTextView";
 import {createSimpleTableView} from "./nodes/SimpleTableView";
+import {generateTableData} from "./utils";
 
 // setting up hash-based routing
 const locationHash = createLocationHash();
@@ -24,14 +25,16 @@ setInterval(ticker.i.d_val, 10);
 connect(viewBuffer.o.d_diff, domDiffApplier.i.d_diff);
 connect(ticker.o.d_val, viewBuffer.i.ev_res);
 
-const ROOT_PATH = "body.childNodes.0:div";
+const ROOT_PATH = "body";
 
 // menu
-const link1 = createDomLinkView(`${ROOT_PATH}.childNodes.0:a`, {
+const MENU_PATH = `${ROOT_PATH}.childNodes.0:ul`;
+const LINK_PATH = "childNodes.0:a";
+const link1 = createDomLinkView(`${MENU_PATH}.childNodes.0:li.${LINK_PATH}`, {
   content: "Custom text",
   url: "#custom-text"
 });
-const link2 = createDomLinkView(`${ROOT_PATH}.childNodes.1:a`, {
+const link2 = createDomLinkView(`${MENU_PATH}.childNodes.1:li.${LINK_PATH}`, {
   content: "Table with numbers",
   url: "#table"
 });
@@ -39,19 +42,15 @@ connect(link1.o.v_diff, viewBuffer.i.d_diff);
 connect(link2.o.v_diff, viewBuffer.i.d_diff);
 
 // "page" 1: custom text field
-const textView = createCustomTextView(`${ROOT_PATH}.childNodes.0:span`, {
+const textView = createCustomTextView(`${ROOT_PATH}.childNodes.1:span`, {
   content: "Hello World!"
 });
 connect(textView.o.v_diff, viewBuffer.i.d_diff);
 connect(textView.o.ev_click, console.log);
 
 // "page" 2: table w/ numbers
-const tableView = createSimpleTableView(`${ROOT_PATH}.childNodes.0:table`, {
-  "0.0": 1,
-  "0.1": 2,
-  "1.0": 3,
-  "1.1": 4
-});
+const tableView = createSimpleTableView(`${ROOT_PATH}.childNodes.1:table`);
+tableView.i.vm_diff(generateTableData(20, 20));
 connect(tableView.o.v_diff, viewBuffer.i.d_diff);
 
 // setting up routing table
