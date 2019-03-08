@@ -59,7 +59,7 @@ connect(textView.o.ev_click, console.log);
 // "page" 2: table w/ numbers
 const tableTicker = createTicker(100);
 const tableRouteDetector = createMapper<RegExp, boolean>(
-  (template) => template === ROUTE_TABLE);
+  (pattern) => pattern === ROUTE_TABLE);
 const tableSource = createMapper<any, Diff<Any>>(() => {
   return generateTableData(30, 30);
 });
@@ -77,7 +77,7 @@ const router = createRouter([
 ]);
 connect(hash2Path.o.d_val, router.i.d_route);
 connect(router.o[`r_${ROUTE_CUSTOM_TEXT}`], textView.i.ev_smp);
-connect(router.o.d_template, tableRouteDetector.i.d_val);
+connect(router.o.d_pattern, tableRouteDetector.i.d_val);
 connect(router.o[`r_${ROUTE_TABLE}`], tableView.i.ev_smp);
 connect(router.o[`r_${ROUTE_REST}`], link1.i.ev_smp);
 connect(router.o[`r_${ROUTE_REST}`], link2.i.ev_smp);
