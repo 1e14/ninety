@@ -1,13 +1,17 @@
 // tslint:disable:no-console
 
-import {createDiffBuffer} from "gravel-core";
+import {createDiffBuffer, Diff} from "gravel-core";
 import {createRouter} from "gravel-routing";
 import {createDomDiffApplier} from "gravel-view-dom";
 import {createDomLinkView} from "gravel-view-dom-lib";
 import {createLocationHash} from "river-browser";
-import {connect} from "river-core";
+import {Any, connect} from "river-core";
 import {createMapper, createNoop} from "river-stdlib";
-import {createCustomTextView, createSimpleTableView} from "./nodes";
+import {
+  createCustomTextView,
+  createSimpleTableView,
+  createTicker
+} from "./nodes";
 import {generateTableData} from "./utils";
 
 // setting up hash-based routing
@@ -22,6 +26,7 @@ const viewBuffer = createDiffBuffer();
 const domDiffApplier = createDomDiffApplier();
 setInterval(ticker.i.d_val, 10);
 connect(viewBuffer.o.d_diff, domDiffApplier.i.d_diff);
+connect(viewBuffer.o.d_diff, console.log);
 connect(ticker.o.d_val, viewBuffer.i.ev_res);
 
 const ROOT_PATH = "body";
@@ -40,6 +45,11 @@ const link2 = createDomLinkView(`${MENU_PATH}.childNodes.1:li.${LINK_PATH}`, {
 connect(link1.o.v_diff, viewBuffer.i.d_diff);
 connect(link2.o.v_diff, viewBuffer.i.d_diff);
 
+// setting up routes
+const ROUTE_CUSTOM_TEXT = /^custom-text$/;
+const ROUTE_TABLE = /^table$/;
+const ROUTE_REST = /^.*$/;
+
 // "page" 1: custom text field
 const textView = createCustomTextView(`${ROOT_PATH}.childNodes.1:span`, {
   content: "Hello World!"
@@ -48,22 +58,27 @@ connect(textView.o.v_diff, viewBuffer.i.d_diff);
 connect(textView.o.ev_click, console.log);
 
 // "page" 2: table w/ numbers
+const tableTicker = createTicker(100);
+const tableRouteDetector = createMapper<RegExp, boolean>(
+  (template) => template === ROUTE_TABLE);
+const tableSource = createMapper<any, Diff<Any>>(() => {
+  return generateTableData(30, 30);
+});
 const tableView = createSimpleTableView(`${ROOT_PATH}.childNodes.1:table`);
-tableView.i.vm_diff(generateTableData(20, 20));
+connect(tableRouteDetector.o.d_val, tableTicker.i.st_active);
+connect(tableTicker.o.ev_tick, tableSource.i.d_val);
+connect(tableSource.o.d_val, tableView.i.vm_diff);
 connect(tableView.o.v_diff, viewBuffer.i.d_diff);
 
 // setting up routing table
-const ROUTE_CUSTOM_TEXT = /^custom-text$/;
-const ROUTE_TABLE = /^table$/;
-const ROUTE_REST = /^.*$/;
-
 const router = createRouter([
   ROUTE_CUSTOM_TEXT,
   ROUTE_TABLE,
   ROUTE_REST
 ]);
-connect(hash2Path.o.d_val, router.i.d_path);
+connect(hash2Path.o.d_val, router.i.d_route);
 connect(router.o[`r_${ROUTE_CUSTOM_TEXT}`], textView.i.ev_smp);
+connect(router.o.d_template, tableRouteDetector.i.d_val);
 connect(router.o[`r_${ROUTE_TABLE}`], tableView.i.ev_smp);
 connect(router.o[`r_${ROUTE_REST}`], link1.i.ev_smp);
 connect(router.o[`r_${ROUTE_REST}`], link2.i.ev_smp);
