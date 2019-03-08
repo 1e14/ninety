@@ -22,18 +22,18 @@ export function createSimpleTableView(
     const set = {};
     const del = {};
     for (const key in vmSet) {
-      const components = RE_VM_PATH.exec(key);
-      if (components) {
-        const row = components[1];
-        const column = components[2];
+      const hits = RE_VM_PATH.exec(key);
+      if (hits) {
+        const row = hits[1];
+        const column = hits[2];
         set[`childNodes.${row}:tr.childNodes.${column}:td.innerText`] = vmSet[key];
       }
     }
     for (const key in vmDel) {
-      const components = RE_VM_PATH.exec(key);
-      if (components) {
-        const row = components[1];
-        const column = components[2];
+      const hits = RE_VM_PATH.exec(key);
+      if (hits) {
+        const row = hits[1];
+        const column = hits[2];
         del[`childNodes.${row}:tr.childNodes.${column}:td.innerText`] = null;
       }
     }
