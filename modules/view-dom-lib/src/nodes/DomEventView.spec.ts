@@ -1,5 +1,5 @@
 import {connect} from "river-core";
-import {createEventView, EventView} from "./EventView";
+import {createDomEventView, DomEventView} from "./DomEventView";
 
 const window = <any>global;
 
@@ -17,10 +17,10 @@ afterEach(() => {
 
 describe("createEventView()", () => {
   describe("on input (ev_smp)", () => {
-    let node: EventView<Event>;
+    let node: DomEventView<Event>;
 
     beforeEach(() => {
-      node = createEventView("foo", "onclick");
+      node = createDomEventView("foo", "onclick");
     });
 
     it("should emit on 'v_diff'", () => {
@@ -35,11 +35,11 @@ describe("createEventView()", () => {
   });
 
   describe("on click event", () => {
-    let node: EventView<Event>;
+    let node: DomEventView<Event>;
     let onclick: (event: Event) => void;
 
     beforeEach(() => {
-      node = createEventView("foo", "onclick");
+      node = createDomEventView("foo", "onclick");
       connect(node.o.v_diff, (diff) => {
         onclick = diff.set["foo.onclick"];
       });

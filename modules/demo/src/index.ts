@@ -3,7 +3,7 @@
 import {createDiffBuffer} from "gravel-core";
 import {createRouter} from "gravel-routing";
 import {createDomDiffApplier} from "gravel-view-dom";
-import {createLinkView} from "gravel-view-dom-lib";
+import {createDomLinkView} from "gravel-view-dom-lib";
 import {createLocationHash} from "river-browser";
 import {connect} from "river-core";
 import {createMapper, createNoop} from "river-stdlib";
@@ -24,7 +24,7 @@ connect(viewBuffer.o.d_diff, domDiffApplier.i.d_diff);
 connect(ticker.o.d_val, viewBuffer.i.ev_res);
 
 // menu
-const link1 = createLinkView("body.childNodes.0:div.childNodes.0:a", {
+const link1 = createDomLinkView("body.childNodes.0:div.childNodes.0:a", {
   content: "Custom text",
   url: "#custom-text"
 });

@@ -8,9 +8,10 @@ export type DomEventHandlers = {
   [key in DomEventType]: DomEventHandler
 };
 
+// TODO: Move to EventVm
 export type EventViewDiff = Diff<DomEventHandlers>;
 
-export type In<T extends Event> = {
+export type In = {
   ev_smp: any;
 };
 
@@ -19,13 +20,13 @@ export type Out<T extends Event> = {
   v_diff: EventViewDiff
 };
 
-export type EventView<T extends Event> = Node<In<T>, Out<T>>;
+export type DomEventView<T extends Event> = Node<In, Out<T>>;
 
-export function createEventView<T extends Event>(
+export function createDomEventView<T extends Event>(
   prefix: string,
   type: DomEventType
-): EventView<T> {
-  return createNode<In<T>, Out<T>>
+): DomEventView<T> {
+  return createNode<In, Out<T>>
   (["v_diff", "d_event"], (outputs) => {
     return {
       ev_smp: (value, tag) => {

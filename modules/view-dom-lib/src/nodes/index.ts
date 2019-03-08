@@ -1,3 +1,3 @@
-export {EventView, createEventView} from "./EventView";
-export {LinkView, createLinkView, LinkVmProps} from "./LinkView";
-export {TextView, createTextView, TextVmProps} from "./TextView";
+export {DomEventView, createDomEventView} from "./DomEventView";
+export {DomLinkView, createDomLinkView, LinkVmProps} from "./DomLinkView";
+export {DomTextView, createDomTextView, TextVmProps} from "./DomTextView";

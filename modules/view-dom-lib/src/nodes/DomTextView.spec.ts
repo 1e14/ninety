@@ -1,12 +1,12 @@
 import {connect} from "river-core";
-import {createTextView, TextView} from "./TextView";
+import {createDomTextView, DomTextView} from "./DomTextView";
 
-describe("createTextView()", () => {
+describe("createDomTextView()", () => {
   describe("on input (vm_diff)", () => {
-    let node: TextView;
+    let node: DomTextView;
 
     beforeEach(() => {
-      node = createTextView("foo");
+      node = createDomTextView("foo");
     });
 
     describe("on set", () => {

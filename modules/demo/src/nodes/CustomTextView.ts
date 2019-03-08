@@ -1,7 +1,7 @@
 import {createView, ViewIn, ViewOut} from "gravel-view";
 import {
-  createEventView,
-  createTextView,
+  createDomEventView,
+  createDomTextView,
   TextVmProps
 } from "gravel-view-dom-lib";
 import {connect, InPorts, Node, OutPorts} from "river-core";
@@ -23,14 +23,14 @@ export function createCustomTextView(
   const evSmpIn = createNoop();
   const evSmpOut = createNoop();
   const vDiff = createNoop();
-  const textView = createTextView(prefix, initialVm);
+  const textView = createDomTextView(prefix, initialVm);
   const styleView = createView(prefix, () => ({
     del: {},
     set: {
       "style.color": "red"
     }
   }), {});
-  const clickView = createEventView(prefix, "onclick");
+  const clickView = createDomEventView(prefix, "onclick");
 
   connect(evSmpIn.o.d_val, textView.i.ev_smp);
   connect(evSmpIn.o.d_val, styleView.i.ev_smp);
