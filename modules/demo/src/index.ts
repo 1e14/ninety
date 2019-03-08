@@ -26,7 +26,6 @@ const viewBuffer = createDiffBuffer();
 const domDiffApplier = createDomDiffApplier();
 setInterval(ticker.i.d_val, 10);
 connect(viewBuffer.o.d_diff, domDiffApplier.i.d_diff);
-connect(viewBuffer.o.d_diff, console.log);
 connect(ticker.o.d_val, viewBuffer.i.ev_res);
 
 const ROOT_PATH = "body";
