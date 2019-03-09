@@ -24,11 +24,9 @@ export function getDomProperty(path: string): any {
   let parent: Node = document;
   let component: string;
 
-  // finding parent node / property
-  do {
+  while (components.length && tmp !== undefined) {
     component = components.shift();
     if (tmp instanceof Node) {
-      parent = tmp;
       tmp = tmp[component];
     } else if (tmp instanceof NodeList) {
       const [index] = component.split(":");
@@ -45,11 +43,10 @@ export function getDomProperty(path: string): any {
       tmp = tmp[component];
     }
 
-    if (tmp === undefined) {
-      // path not found
-      return undefined;
+    if (tmp instanceof Node) {
+      parent = tmp;
     }
-  } while (components.length);
+  }
 
   return tmp;
 }
@@ -99,13 +96,11 @@ export function setDomProperty(path: string, value: any): boolean {
   const components = path.split(".");
   let tmp: any = document;
   let parent: Node = document;
-  do {
+  while (components.length && tmp !== undefined) {
     const component = components.shift();
     if (tmp instanceof Node) {
       if (components.length) {
-        // setting current node as last parent, and going on to the specified
-        // property
-        parent = tmp;
+        // going on to the specified property
         tmp = tmp[component];
       } else {
         // node property
@@ -153,7 +148,11 @@ export function setDomProperty(path: string, value: any): boolean {
       // unrecognized property parent
       return false;
     }
-  } while (components.length);
+
+    if (tmp instanceof Node) {
+      parent = tmp;
+    }
+  }
 }
 
 /**
@@ -167,10 +166,13 @@ export function delDomProperty(path: string): boolean {
   let component: string;
 
   // finding parent node / property
-  for (let i = 0, length = components.length - 1; i < length; i++) {
+  for (
+    let i = 0, length = components.length - 1;
+    i < length && tmp !== undefined;
+    i++
+  ) {
     component = components.shift();
     if (tmp instanceof Node) {
-      parent = tmp;
       tmp = tmp[component];
     } else if (tmp instanceof NodeList) {
       const [index] = component.split(":");
@@ -179,9 +181,8 @@ export function delDomProperty(path: string): boolean {
       tmp = tmp[component];
     }
 
-    if (tmp === undefined) {
-      // path not found
-      return true;
+    if (tmp instanceof Node) {
+      parent = tmp;
     }
   }
 
