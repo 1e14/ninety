@@ -88,127 +88,127 @@ export function getClosestDomNode(path: string): any {
 
 /**
  * Sets a single property in the DOM.
+ * @param property Root Property
+ * @param parent Root parent node
  * @param path Path to a DOM node. Elements must specify both childIndex &
  * tagName, otherwise follows hierarchy.
  * @param value Property value to be set.
  */
-export function setDomProperty(path: string, value: any): boolean {
+export function setDomProperty(property: any, parent: Node, path: string, value: any): boolean {
   const components = path.split(".");
-  let tmp: any = document;
-  let parent: Node = document;
-  while (components.length && tmp !== undefined) {
+  while (components.length && property !== undefined) {
     const component = components.shift();
-    if (tmp instanceof Node) {
+    if (property instanceof Node) {
       if (components.length) {
         // going on to the specified property
-        tmp = tmp[component];
+        property = property[component];
       } else {
         // node property
-        tmp[component] = value;
+        property[component] = value;
         return true;
       }
-    } else if (tmp instanceof NodeList) {
+    } else if (property instanceof NodeList) {
       // extracting child index & tagName from path component
       const [index, tagName] = component.split(":");
-      const node = tmp[index];
+      const node = property[index];
       if (node === undefined) {
         if (tagName === undefined) {
           // no tagName - can't proceed
           return false;
         }
         addPlaceholders(parent, +index);
-        tmp = document.createElement(tagName);
-        parent.appendChild(tmp);
+        property = document.createElement(tagName);
+        parent.appendChild(property);
       } else if (node instanceof Comment || node instanceof Text) {
         // replacing existing placeholder
-        tmp = document.createElement(tagName);
-        parent.replaceChild(tmp, node);
+        property = document.createElement(tagName);
+        parent.replaceChild(property, node);
       } else {
         // in any other case - proceed to specified property
-        tmp = tmp[index];
+        property = property[index];
       }
-    } else if (tmp instanceof NamedNodeMap) {
+    } else if (property instanceof NamedNodeMap) {
       // attributes
-      let attribute = tmp.getNamedItem(component);
+      let attribute = property.getNamedItem(component);
       if (!attribute) {
         attribute = document.createAttribute(component);
-        tmp.setNamedItem(attribute);
+        property.setNamedItem(attribute);
       }
       attribute.value = value;
       return true;
-    } else if (tmp instanceof DOMTokenList) {
+    } else if (property instanceof DOMTokenList) {
       // CSS classes
-      tmp.add(component, component);
+      property.add(component, component);
       return true;
-    } else if (tmp instanceof CSSStyleDeclaration) {
+    } else if (property instanceof CSSStyleDeclaration) {
       // CSS styles
-      tmp[component] = value;
+      property[component] = value;
       return true;
     } else {
       // unrecognized property parent
       return false;
     }
 
-    if (tmp instanceof Node) {
-      parent = tmp;
+    if (property instanceof Node) {
+      parent = property;
     }
   }
 }
 
 /**
  * Deletes a single property from the DOM.
+ * @param property Root Property
+ * @param parent Root parent node
  * @param path Path to DOM node.
  */
-export function delDomProperty(path: string): boolean {
+export function delDomProperty(property: any, parent: Node, path: string): boolean {
   const components = path.split(".");
-  let tmp: any = document;
-  let parent: Node = document;
   let component: string;
 
   // finding parent node / property
   for (
     let i = 0, length = components.length - 1;
-    i < length && tmp !== undefined;
+    i < length && property !== undefined;
     i++
   ) {
     component = components.shift();
-    if (tmp instanceof Node) {
-      tmp = tmp[component];
-    } else if (tmp instanceof NodeList) {
+    if (property instanceof Node) {
+      property = property[component];
+    } else if (property instanceof NodeList) {
       const [index] = component.split(":");
-      tmp = tmp[index];
+      property = property[index];
     } else {
-      tmp = tmp[component];
+      property = property[component];
     }
 
-    if (tmp instanceof Node) {
-      parent = tmp;
+    if (property instanceof Node) {
+      parent = property;
     }
   }
 
   // deleting property
   component = components.shift();
-  if (tmp instanceof Node) {
+  if (property instanceof Node) {
     // node property
-    tmp[component] = null;
-  } else if (tmp instanceof NodeList) {
+    property[component] = null;
+  } else if (property instanceof NodeList) {
     // extracting child index from path component
     const [index] = component.split(":");
-    const node = tmp[index];
+    const node = property[index];
     if (node !== undefined) {
       // replacing node w/ placeholder
-      tmp = document.createComment("");
-      parent.replaceChild(tmp, node);
+      property = document.createComment("");
+      parent.replaceChild(property, node);
     }
-  } else if (tmp instanceof NamedNodeMap) {
+  } else if (property instanceof NamedNodeMap) {
     // attributes
-    tmp.removeNamedItem(component);
-  } else if (tmp instanceof DOMTokenList) {
+    property.removeNamedItem(component);
+  } else if (property instanceof DOMTokenList) {
     // CSS classes
-    tmp.remove(component);
-  } else if (tmp instanceof CSSStyleDeclaration) {
+    property.remove(component);
+  } else if (property instanceof CSSStyleDeclaration) {
     // CSS styles
-    tmp[component] = null;
+    property[component] = null;
   } else {
     // unrecognized property parent
     return false;
@@ -229,14 +229,14 @@ export function applyDomDiff(diff: Diff<Any>): Diff<Any> | true {
   const bouncedDel = bounced.del;
   let applied = true;
   for (const path in viewDel) {
-    if (!delDomProperty(path)) {
+    if (!delDomProperty(document, document, path)) {
       bouncedDel[path] = null;
       applied = false;
     }
   }
   for (const path in viewSet) {
     const value = viewSet[path];
-    if (!setDomProperty(path, value)) {
+    if (!setDomProperty(document, document, path, value)) {
       bouncedSet[path] = value;
       applied = false;
     }

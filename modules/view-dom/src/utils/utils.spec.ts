@@ -100,7 +100,7 @@ afterEach(() => {
 describe("getDomProperty()", () => {
   beforeEach(() => {
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    setDomProperty(path, true);
+    setDomProperty(window.document, window.document, path, true);
   });
 
   it("should return DOM property", () => {
@@ -123,7 +123,7 @@ describe("getDomProperty()", () => {
 describe("getClosestDomNode()", () => {
   beforeEach(() => {
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    setDomProperty(path, true);
+    setDomProperty(window.document, window.document, path, true);
   });
 
   it("should return closest node", () => {
@@ -146,14 +146,14 @@ describe("getClosestDomNode()", () => {
 describe("setDomProperty()", () => {
   it("should create nodes along the way", () => {
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    setDomProperty(path, true);
+    setDomProperty(window.document, window.document, path, true);
     expect(window.document.body.childNodes[1].tagName).toBe("div");
     expect(window.document.body.childNodes[1].childNodes[3].tagName).toBe("span");
   });
 
   it("should create placeholders along the way", () => {
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    setDomProperty(path, true);
+    setDomProperty(window.document, window.document, path, true);
     expect(window.document.body.childNodes[0].data).toBe("");
     expect(window.document.body.childNodes[1].childNodes[0].data).toBe("");
     expect(window.document.body.childNodes[1].childNodes[1].data).toBe("");
@@ -162,18 +162,18 @@ describe("setDomProperty()", () => {
 
   it("should return true", () => {
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    expect(setDomProperty(path, true)).toBe(true);
+    expect(setDomProperty(window.document, window.document, path, true)).toBe(true);
   });
 
   describe("when comments are in the way", () => {
     beforeEach(() => {
       const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      setDomProperty(path, true);
+      setDomProperty(window.document, window.document, path, true);
     });
 
     it("should replace comments with nodes", () => {
       const path = "body.childNodes.0:span.innerText";
-      setDomProperty(path, "Hello");
+      setDomProperty(window.document, window.document, path, "Hello");
       expect(window.document.body.childNodes[0].tagName).toBe("span");
       expect(window.document.body.childNodes[0].innerText).toBe("Hello");
     });
@@ -183,7 +183,7 @@ describe("setDomProperty()", () => {
     describe("when attribute does not exist yet", () => {
       it("should add new attribute", () => {
         const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
-        setDomProperty(path, "bar");
+        setDomProperty(window.document, window.document, path, "bar");
         expect(
           window.document.body.childNodes[1].childNodes[3].attributes
           .getNamedItem("foo").value
@@ -194,12 +194,12 @@ describe("setDomProperty()", () => {
     describe("when attribute already exists", () => {
       beforeEach(() => {
         const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
-        setDomProperty(path, "bar");
+        setDomProperty(window.document, window.document, path, "bar");
       });
 
       it("should set attribute value", () => {
         const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
-        setDomProperty(path, "baz");
+        setDomProperty(window.document, window.document, path, "baz");
         expect(
           window.document.body.childNodes[1].childNodes[3].attributes
           .getNamedItem("foo").value
@@ -211,7 +211,7 @@ describe("setDomProperty()", () => {
   describe("for CSS class", () => {
     it("should add class", () => {
       const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      setDomProperty(path, true);
+      setDomProperty(window.document, window.document, path, true);
       expect(
         window.document.body.childNodes[1].childNodes[3].classList.contains("foo")
       ).toBeTruthy();
@@ -221,7 +221,7 @@ describe("setDomProperty()", () => {
   describe("for style", () => {
     it("should set style property", () => {
       const path = "body.childNodes.1:div.childNodes.3:span.style.foo";
-      setDomProperty(path, "bar");
+      setDomProperty(window.document, window.document, path, "bar");
       expect(window.document.body.childNodes[1].childNodes[3].style.foo)
       .toBe("bar");
     });
@@ -231,7 +231,7 @@ describe("setDomProperty()", () => {
     it("should set handler property", () => {
       const cb = () => null;
       const path = "body.childNodes.1:div.childNodes.3:span.onclick";
-      setDomProperty(path, cb);
+      setDomProperty(window.document, window.document, path, cb);
       expect(window.document.body.childNodes[1].childNodes[3].onclick)
       .toBe(cb);
     });
@@ -240,7 +240,7 @@ describe("setDomProperty()", () => {
   describe("when unsuccessful", () => {
     it("should return false", () => {
       const path = "body.childNodes.1.classList.foo";
-      expect(setDomProperty(path, true)).toBe(false);
+      expect(setDomProperty(window.document, window.document, path, true)).toBe(false);
     });
   });
 });
@@ -248,20 +248,20 @@ describe("setDomProperty()", () => {
 describe("delDomProperty()", () => {
   it("should return true", () => {
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    setDomProperty(path, true);
-    const result = delDomProperty(path);
+    setDomProperty(window.document, window.document, path, true);
+    const result = delDomProperty(window.document, window.document, path);
     expect(result).toBe(true);
   });
 
   describe("for node", () => {
     beforeEach(() => {
       const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
-      setDomProperty(path, "bar");
+      setDomProperty(window.document, window.document, path, "bar");
     });
 
     it("should replace node w/ comment", () => {
       const path = "body.childNodes.1:div.childNodes.3";
-      delDomProperty(path);
+      delDomProperty(window.document, window.document, path);
       const node = window.document.body.childNodes[1].childNodes[3];
       expect(node instanceof window.Comment).toBeTruthy();
     });
@@ -270,12 +270,12 @@ describe("delDomProperty()", () => {
   describe("for attribute", () => {
     beforeEach(() => {
       const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
-      setDomProperty(path, "bar");
+      setDomProperty(window.document, window.document, path, "bar");
     });
 
     it("should remove attribute", () => {
       const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
-      delDomProperty(path);
+      delDomProperty(window.document, window.document, path);
       expect(
         window.document.body.childNodes[1].childNodes[3].attributes
         .getNamedItem("foo")
@@ -286,12 +286,12 @@ describe("delDomProperty()", () => {
   describe("for CSS class", () => {
     beforeEach(() => {
       const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      setDomProperty(path, true);
+      setDomProperty(window.document, window.document, path, true);
     });
 
     it("should remove class", () => {
       const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      delDomProperty(path);
+      delDomProperty(window.document, window.document, path);
       expect(
         window.document.body.childNodes[1].childNodes[3].classList.contains("foo")
       ).toBeFalsy();
@@ -301,12 +301,12 @@ describe("delDomProperty()", () => {
   describe("for style", () => {
     beforeEach(() => {
       const path = "body.childNodes.1:div.childNodes.3:span.style.foo";
-      setDomProperty(path, "bar");
+      setDomProperty(window.document, window.document, path, "bar");
     });
 
     it("should remove class", () => {
       const path = "body.childNodes.1:div.childNodes.3:span.style.foo";
-      delDomProperty(path);
+      delDomProperty(window.document, window.document, path);
       expect(
         window.document.body.childNodes[1].childNodes[3].style.foo
       ).toBe(null);
@@ -316,12 +316,12 @@ describe("delDomProperty()", () => {
   describe("for event handler", () => {
     beforeEach(() => {
       const path = "body.childNodes.1:div.childNodes.3:span.onclick";
-      setDomProperty(path, () => null);
+      setDomProperty(window.document, window.document, path, () => null);
     });
 
     it("should reset handler property", () => {
       const path = "body.childNodes.1:div.childNodes.3:span.onclick";
-      delDomProperty(path);
+      delDomProperty(window.document, window.document, path);
       expect(window.document.body.childNodes[1].childNodes[3].onclick)
       .toBe(null);
     });
