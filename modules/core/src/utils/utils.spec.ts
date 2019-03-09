@@ -1,6 +1,6 @@
 import {Any} from "river-core";
 import {Diff} from "../types";
-import {compoundDiff, prefixDiffPaths} from "./utils";
+import {compoundDiff, getCommonStem, prefixDiffPaths} from "./utils";
 
 describe("prependPaths()", () => {
   it("should prepend paths in diff", () => {
@@ -98,5 +98,15 @@ describe("compoundDiff()", () => {
       compoundDiff({del: {foo: null}, set: {}}, diff);
       expect(diff.del).toEqual({foo: null});
     });
+  });
+});
+
+describe("getCommonStem()", () => {
+  it("should return common stem", () => {
+    expect(getCommonStem("foo")).toBe("");
+    expect(getCommonStem("foo", "bar")).toBe("");
+    expect(getCommonStem("foo", "foo")).toBe("foo");
+    expect(getCommonStem("foo.bar", "foo.baz")).toBe("foo.ba");
+    expect(getCommonStem("foo.bar", "foo.quux")).toBe("foo.");
   });
 });

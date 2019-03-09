@@ -58,3 +58,23 @@ export function compoundDiff<T>(source: Diff<T>, target: Diff<T>): boolean {
 
   return changed;
 }
+
+/**
+ * Extracts common stem from the specified string pair.
+ * @param a
+ * @param b
+ */
+export function getCommonStem(a: string, b?: string): string {
+  if (a === b) {
+    return a;
+  } else {
+    const length = Math.min(a.length, b && b.length);
+    let i;
+    for (i = 0; i < length; i++) {
+      if (a[i] !== b[i]) {
+        break;
+      }
+    }
+    return a.substr(0, i);
+  }
+}
