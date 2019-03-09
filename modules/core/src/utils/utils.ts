@@ -1,5 +1,7 @@
 import {Diff} from "../types";
 
+export const PATH_DELIMITER = ".";
+
 /**
  * Prepends all paths in the specified diff with the specified prefix.
  * @param diff
@@ -13,10 +15,10 @@ export function prefixDiffPaths<T>(
   const set = {};
   const del = {};
   for (const key in diffSet) {
-    set[prefix + "." + key] = diffSet[key];
+    set[prefix + PATH_DELIMITER + key] = diffSet[key];
   }
   for (const key in diffDel) {
-    del[prefix + "." + key] = diffDel[key];
+    del[prefix + PATH_DELIMITER + key] = diffDel[key];
   }
   return {set, del};
 }
@@ -60,21 +62,24 @@ export function compoundDiff<T>(source: Diff<T>, target: Diff<T>): boolean {
 }
 
 /**
- * Extracts common stem from the specified string pair.
+ * Extracts root path from the specified string pair.
  * @param a
  * @param b
  */
-export function getCommonStem(a: string, b?: string): string {
+export function getRootPath(a: string, b?: string): string {
+  const tmpA = a.split(PATH_DELIMITER);
   if (a === b || b === undefined) {
-    return a;
+    tmpA.pop();
+    return tmpA.join(PATH_DELIMITER);
   } else {
     const length = Math.min(a.length, b.length);
+    const tmpB = b.split(PATH_DELIMITER);
     let i;
     for (i = 0; i < length; i++) {
-      if (a[i] !== b[i]) {
+      if (tmpA[i] !== tmpB[i]) {
         break;
       }
     }
-    return a.substr(0, i);
+    return tmpA.slice(0, i).join(PATH_DELIMITER);
   }
 }

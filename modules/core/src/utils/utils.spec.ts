@@ -1,6 +1,6 @@
 import {Any} from "river-core";
 import {Diff} from "../types";
-import {compoundDiff, getCommonStem, prefixDiffPaths} from "./utils";
+import {compoundDiff, getRootPath, prefixDiffPaths} from "./utils";
 
 describe("prependPaths()", () => {
   it("should prepend paths in diff", () => {
@@ -101,23 +101,22 @@ describe("compoundDiff()", () => {
   });
 });
 
-describe("getCommonStem()", () => {
-  describe("when args are equal", () => {
-    it("should return first argument", () => {
-      expect(getCommonStem("foo", "foo")).toBe("foo");
+describe("getRootPath()", () => {
+  describe("when paths are equal", () => {
+    it("should return parent path", () => {
+      expect(getRootPath("foo.bar", "foo.bar")).toBe("foo");
     });
   });
 
-  describe("when second arg is undefined", () => {
-    it("should return first argument", () => {
-      expect(getCommonStem("foo", undefined)).toBe("foo");
+  describe("when second path is undefined", () => {
+    it("should return parent path", () => {
+      expect(getRootPath("foo.bar", undefined)).toBe("foo");
     });
   });
 
-  describe("when args have a common stem", () => {
-    it("should return common stem", () => {
-      expect(getCommonStem("foo.bar", "foo.baz")).toBe("foo.ba");
-      expect(getCommonStem("foo.bar", "foo.quux")).toBe("foo.");
+  describe("when paths have a common root", () => {
+    it("should return common root path", () => {
+      expect(getRootPath("foo.bar", "foo.baz")).toBe("foo");
     });
   });
 });
