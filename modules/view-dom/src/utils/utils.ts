@@ -4,13 +4,13 @@ import {Any} from "river-core";
 /**
  * Adds placeholder comment nodes to the specified parent node up to the
  * (but not including) the specified index.
- * @param parent Parent DOM node
+ * @param node DOM node in which to add placeholders
  * @param index Index up to which to create placeholder nodes.
  */
-function addPlaceholders(parent: Node, index: number): void {
-  for (let i = parent.childNodes.length; i < index; i++) {
+function addPlaceholders(node: Node, index: number): void {
+  for (let i = node.childNodes.length; i < index; i++) {
     const placeholder = document.createComment("");
-    parent.appendChild(placeholder);
+    node.appendChild(placeholder);
   }
 }
 
@@ -18,83 +18,48 @@ function addPlaceholders(parent: Node, index: number): void {
  * Retrieves a property from the DOM.
  * @param path Path to a DOM property.
  */
-export function getDomProperty(path: string): any {
+export function getDomProperty(path: string): { node: Node, property: any } {
   const components = path.split(".");
-  let tmp: any = document;
-  let parent: Node = document;
+  let property: any = document;
+  let node: Node = document;
   let component: string;
 
-  while (components.length && tmp !== undefined) {
+  while (components.length && property !== undefined) {
     component = components.shift();
-    if (tmp instanceof Node) {
-      tmp = tmp[component];
-    } else if (tmp instanceof NodeList) {
+    if (property instanceof Node) {
+      property = property[component];
+    } else if (property instanceof NodeList) {
       const [index] = component.split(":");
-      tmp = tmp[index];
-    } else if (tmp instanceof NamedNodeMap) {
+      property = property[index];
+    } else if (property instanceof NamedNodeMap) {
       // attributes
-      tmp = tmp.getNamedItem(component);
-    } else if (tmp instanceof DOMTokenList) {
+      property = property.getNamedItem(component);
+    } else if (property instanceof DOMTokenList) {
       // CSS classes
-      tmp = tmp.contains(component);
+      property = property.contains(component);
     } else {
       // CSS styles
       // and everything else
-      tmp = tmp[component];
+      property = property[component];
     }
 
-    if (tmp instanceof Node) {
-      parent = tmp;
-    }
-  }
-
-  return tmp;
-}
-
-/**
- * Retrieves closest Node to the specified path in the DOM.
- * @param path Path to a DOM property.
- */
-export function getClosestDomNode(path: string): any {
-  const components = path.split(".");
-  let tmp: any = document;
-  let parent: Node = document;
-  let component: string;
-
-  // finding parent node / property
-  while (components.length && tmp !== undefined) {
-    component = components.shift();
-    if (tmp instanceof Node) {
-      tmp = tmp[component];
-    } else if (tmp instanceof NodeList) {
-      const [index] = component.split(":");
-      tmp = tmp[index];
-    } else if (tmp instanceof NamedNodeMap) {
-      // attributes
-      tmp = tmp.getNamedItem(component);
-    } else {
-      // CSS styles
-      // and everything else
-      tmp = tmp[component];
-    }
-
-    if (tmp instanceof Node) {
-      parent = tmp;
+    if (property instanceof Node) {
+      node = property;
     }
   }
 
-  return parent;
+  return property && {node, property};
 }
 
 /**
  * Sets a single property in the DOM.
  * @param property Root Property
- * @param parent Root parent node
+ * @param node Root parent node
  * @param path Path to a DOM node. Elements must specify both childIndex &
  * tagName, otherwise follows hierarchy.
  * @param value Property value to be set.
  */
-export function setDomProperty(property: any, parent: Node, path: string, value: any): boolean {
+export function setDomProperty(property: any, node: Node, path: string, value: any): boolean {
   const components = path.split(".");
   while (components.length && property !== undefined) {
     const component = components.shift();
@@ -110,19 +75,19 @@ export function setDomProperty(property: any, parent: Node, path: string, value:
     } else if (property instanceof NodeList) {
       // extracting child index & tagName from path component
       const [index, tagName] = component.split(":");
-      const node = property[index];
-      if (node === undefined) {
+      const child = property[index];
+      if (child === undefined) {
         if (tagName === undefined) {
           // no tagName - can't proceed
           return false;
         }
-        addPlaceholders(parent, +index);
+        addPlaceholders(node, +index);
         property = document.createElement(tagName);
-        parent.appendChild(property);
-      } else if (node instanceof Comment || node instanceof Text) {
+        node.appendChild(property);
+      } else if (child instanceof Comment || child instanceof Text) {
         // replacing existing placeholder
         property = document.createElement(tagName);
-        parent.replaceChild(property, node);
+        node.replaceChild(property, child);
       } else {
         // in any other case - proceed to specified property
         property = property[index];
@@ -150,7 +115,7 @@ export function setDomProperty(property: any, parent: Node, path: string, value:
     }
 
     if (property instanceof Node) {
-      parent = property;
+      node = property;
     }
   }
 }
@@ -158,10 +123,10 @@ export function setDomProperty(property: any, parent: Node, path: string, value:
 /**
  * Deletes a single property from the DOM.
  * @param property Root Property
- * @param parent Root parent node
+ * @param node Root parent node
  * @param path Path to DOM node.
  */
-export function delDomProperty(property: any, parent: Node, path: string): boolean {
+export function delDomProperty(property: any, node: Node, path: string): boolean {
   const components = path.split(".");
   let component: string;
 
@@ -182,7 +147,7 @@ export function delDomProperty(property: any, parent: Node, path: string): boole
     }
 
     if (property instanceof Node) {
-      parent = property;
+      node = property;
     }
   }
 
@@ -194,11 +159,11 @@ export function delDomProperty(property: any, parent: Node, path: string): boole
   } else if (property instanceof NodeList) {
     // extracting child index from path component
     const [index] = component.split(":");
-    const node = property[index];
-    if (node !== undefined) {
+    const child = property[index];
+    if (child !== undefined) {
       // replacing node w/ placeholder
       property = document.createComment("");
-      parent.replaceChild(property, node);
+      node.replaceChild(property, child);
     }
   } else if (property instanceof NamedNodeMap) {
     // attributes
