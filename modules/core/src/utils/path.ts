@@ -1,3 +1,4 @@
+import {Any} from "river-core";
 import {Diff} from "../types";
 
 export const PATH_DELIMITER = ".";
@@ -24,24 +25,32 @@ export function prefixDiffPaths<T>(
 }
 
 /**
- * Extracts root path from the specified string pair.
- * @param a
- * @param b
+ * Extracts root path from the specified path-indexed lookup.
+ * @param paths
  */
-export function getRootPath(a: string, b?: string): string {
-  const tmpA = a.split(PATH_DELIMITER);
-  if (a === b || b === undefined) {
-    tmpA.pop();
-    return tmpA.join(PATH_DELIMITER);
-  } else {
-    const length = Math.min(a.length, b.length);
-    const tmpB = b.split(PATH_DELIMITER);
-    let i;
-    for (i = 0; i < length; i++) {
-      if (tmpA[i] !== tmpB[i]) {
-        break;
+export function getRootPath(paths: Any): string {
+  let keys: Array<string>;
+  let root: string;
+  for (const path in paths) {
+    if (keys) {
+      if (!path.startsWith(root)) {
+        const split = path.split(PATH_DELIMITER);
+        const length = Math.min(keys.length, split.length);
+        let i;
+        for (i = 0; i < length; i++) {
+          if (keys[i] !== split[i]) {
+            break;
+          }
+        }
+        keys = keys.splice(0, i);
+        root = keys.join(PATH_DELIMITER);
       }
+    } else {
+      const split = path.split(PATH_DELIMITER);
+      split.pop();
+      keys = split;
+      root = keys.join(PATH_DELIMITER);
     }
-    return tmpA.slice(0, i).join(PATH_DELIMITER);
   }
+  return keys.join(PATH_DELIMITER);
 }

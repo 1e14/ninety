@@ -26,21 +26,26 @@ describe("prependPaths()", () => {
 });
 
 describe("getRootPath()", () => {
-  describe("when paths are equal", () => {
+  describe("for single path", () => {
     it("should return parent path", () => {
-      expect(getRootPath("foo.bar", "foo.bar")).toBe("foo");
+      expect(getRootPath({
+        "foo.bar": null
+      })).toBe("foo");
     });
   });
 
-  describe("when second path is undefined", () => {
-    it("should return parent path", () => {
-      expect(getRootPath("foo.bar", undefined)).toBe("foo");
-    });
-  });
-
-  describe("when paths have a common root", () => {
-    it("should return common root path", () => {
-      expect(getRootPath("foo.bar", "foo.baz")).toBe("foo");
+  describe("for multiple paths", () => {
+    it("should return root path", () => {
+      expect(getRootPath({
+        "foo.bar.baz": null,
+        "foo.bar.quux": null,
+        "foo.baz": null
+      })).toBe("foo");
+      expect(getRootPath({
+        "bar.baz": null,
+        "bar.quux": null,
+        "baz": null
+      })).toBe("");
     });
   });
 });
