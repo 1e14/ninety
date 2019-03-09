@@ -65,10 +65,10 @@ export function compoundDiff<T>(source: Diff<T>, target: Diff<T>): boolean {
  * @param b
  */
 export function getCommonStem(a: string, b?: string): string {
-  if (a === b) {
+  if (a === b || b === undefined) {
     return a;
   } else {
-    const length = Math.min(a.length, b && b.length);
+    const length = Math.min(a.length, b.length);
     let i;
     for (i = 0; i < length; i++) {
       if (a[i] !== b[i]) {

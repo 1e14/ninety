@@ -102,11 +102,22 @@ describe("compoundDiff()", () => {
 });
 
 describe("getCommonStem()", () => {
-  it("should return common stem", () => {
-    expect(getCommonStem("foo")).toBe("");
-    expect(getCommonStem("foo", "bar")).toBe("");
-    expect(getCommonStem("foo", "foo")).toBe("foo");
-    expect(getCommonStem("foo.bar", "foo.baz")).toBe("foo.ba");
-    expect(getCommonStem("foo.bar", "foo.quux")).toBe("foo.");
+  describe("when args are equal", () => {
+    it("should return first argument", () => {
+      expect(getCommonStem("foo", "foo")).toBe("foo");
+    });
+  });
+
+  describe("when second arg is undefined", () => {
+    it("should return first argument", () => {
+      expect(getCommonStem("foo", undefined)).toBe("foo");
+    });
+  });
+
+  describe("when args have a common stem", () => {
+    it("should return common stem", () => {
+      expect(getCommonStem("foo.bar", "foo.baz")).toBe("foo.ba");
+      expect(getCommonStem("foo.bar", "foo.quux")).toBe("foo.");
+    });
   });
 });
