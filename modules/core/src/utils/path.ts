@@ -52,5 +52,5 @@ export function getRootPath(paths: Any): string {
       root = keys.join(PATH_DELIMITER);
     }
   }
-  return keys.join(PATH_DELIMITER);
+  return root;
 }

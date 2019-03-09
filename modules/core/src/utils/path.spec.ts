@@ -26,6 +26,12 @@ describe("prependPaths()", () => {
 });
 
 describe("getRootPath()", () => {
+  describe("for empty path set", () => {
+    it("should return undefined", () => {
+      expect(getRootPath({})).toBeUndefined();
+    });
+  });
+
   describe("for single path", () => {
     it("should return parent path", () => {
       expect(getRootPath({
