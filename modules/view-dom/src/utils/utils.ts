@@ -16,7 +16,7 @@ function addPlaceholders(parent: Node, index: number): void {
 
 /**
  * Retrieves a property from the DOM.
- * @param path Path to a DOM node.
+ * @param path Path to a DOM property.
  */
 export function getDomProperty(path: string): any {
   const components = path.split(".");
@@ -25,7 +25,7 @@ export function getDomProperty(path: string): any {
   let component: string;
 
   // finding parent node / property
-  for (let i = 0, length = components.length; i < length; i++) {
+  do {
     component = components.shift();
     if (tmp instanceof Node) {
       parent = tmp;
@@ -49,9 +49,44 @@ export function getDomProperty(path: string): any {
       // path not found
       return undefined;
     }
-  }
+  } while (components.length);
 
   return tmp;
+}
+
+/**
+ * Retrieves closest Node to the specified path in the DOM.
+ * @param path Path to a DOM property.
+ */
+export function getClosestDomNode(path: string): any {
+  const components = path.split(".");
+  let tmp: any = document;
+  let parent: Node = document;
+  let component: string;
+
+  // finding parent node / property
+  while (components.length && tmp !== undefined) {
+    component = components.shift();
+    if (tmp instanceof Node) {
+      tmp = tmp[component];
+    } else if (tmp instanceof NodeList) {
+      const [index] = component.split(":");
+      tmp = tmp[index];
+    } else if (tmp instanceof NamedNodeMap) {
+      // attributes
+      tmp = tmp.getNamedItem(component);
+    } else {
+      // CSS styles
+      // and everything else
+      tmp = tmp[component];
+    }
+
+    if (tmp instanceof Node) {
+      parent = tmp;
+    }
+  }
+
+  return parent;
 }
 
 /**

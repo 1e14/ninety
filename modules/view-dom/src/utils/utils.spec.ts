@@ -1,6 +1,7 @@
 import {
   applyDomDiff,
   delDomProperty,
+  getClosestDomNode,
   getDomProperty,
   setDomProperty
 } from "./utils";
@@ -116,6 +117,29 @@ describe("getDomProperty()", () => {
     .toBe(window.document.body.childNodes[1].childNodes[3].classList);
     expect(getDomProperty("body.childNodes.1:div.childNodes.3:span.classList.foo"))
     .toBe(true);
+  });
+});
+
+describe("getClosestDomNode()", () => {
+  beforeEach(() => {
+    const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
+    setDomProperty(path, true);
+  });
+
+  it("should return closest node", () => {
+    expect(getClosestDomNode("body")).toBe(window.document.body);
+    expect(getClosestDomNode("body.childNodes"))
+    .toBe(window.document.body);
+    expect(getClosestDomNode("body.childNodes.1:div"))
+    .toBe(window.document.body.childNodes[1]);
+    expect(getClosestDomNode("body.childNodes.1:div.childNodes"))
+    .toBe(window.document.body.childNodes[1]);
+    expect(getClosestDomNode("body.childNodes.1:div.childNodes.3:span"))
+    .toBe(window.document.body.childNodes[1].childNodes[3]);
+    expect(getClosestDomNode("body.childNodes.1:div.childNodes.3:span.classList"))
+    .toBe(window.document.body.childNodes[1].childNodes[3]);
+    expect(getClosestDomNode("body.childNodes.1:div.childNodes.3:span.classList.foo"))
+    .toBe(window.document.body.childNodes[1].childNodes[3]);
   });
 });
 
