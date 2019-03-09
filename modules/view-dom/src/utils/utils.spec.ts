@@ -1,4 +1,9 @@
-import {applyDomDiff, delDomProperty, setDomProperty} from "./utils";
+import {
+  applyDomDiff,
+  delDomProperty,
+  getDomProperty,
+  setDomProperty
+} from "./utils";
 
 const window = <any>global;
 
@@ -89,6 +94,29 @@ afterEach(() => {
   delete window.Node;
   delete window.NodeList;
   delete window.document;
+});
+
+describe("getDomProperty()", () => {
+  beforeEach(() => {
+    const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
+    setDomProperty(path, true);
+  });
+
+  it("should return DOM property", () => {
+    expect(getDomProperty("body")).toBe(window.document.body);
+    expect(getDomProperty("body.childNodes"))
+    .toBe(window.document.body.childNodes);
+    expect(getDomProperty("body.childNodes.1:div"))
+    .toBe(window.document.body.childNodes[1]);
+    expect(getDomProperty("body.childNodes.1:div.childNodes"))
+    .toBe(window.document.body.childNodes[1].childNodes);
+    expect(getDomProperty("body.childNodes.1:div.childNodes.3:span"))
+    .toBe(window.document.body.childNodes[1].childNodes[3]);
+    expect(getDomProperty("body.childNodes.1:div.childNodes.3:span.classList"))
+    .toBe(window.document.body.childNodes[1].childNodes[3].classList);
+    expect(getDomProperty("body.childNodes.1:div.childNodes.3:span.classList.foo"))
+    .toBe(true);
+  });
 });
 
 describe("setDomProperty()", () => {

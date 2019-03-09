@@ -15,6 +15,46 @@ function addPlaceholders(parent: Node, index: number): void {
 }
 
 /**
+ * Retrieves a property from the DOM.
+ * @param path Path to a DOM node.
+ */
+export function getDomProperty(path: string): any {
+  const components = path.split(".");
+  let tmp: any = document;
+  let parent: Node = document;
+  let component: string;
+
+  // finding parent node / property
+  for (let i = 0, length = components.length; i < length; i++) {
+    component = components.shift();
+    if (tmp instanceof Node) {
+      parent = tmp;
+      tmp = tmp[component];
+    } else if (tmp instanceof NodeList) {
+      const [index] = component.split(":");
+      tmp = tmp[index];
+    } else if (tmp instanceof NamedNodeMap) {
+      // attributes
+      tmp = tmp.getNamedItem(component);
+    } else if (tmp instanceof DOMTokenList) {
+      // CSS classes
+      tmp = tmp.contains(component);
+    } else {
+      // CSS styles
+      // and everything else
+      tmp = tmp[component];
+    }
+
+    if (tmp === undefined) {
+      // path not found
+      return undefined;
+    }
+  }
+
+  return tmp;
+}
+
+/**
  * Sets a single property in the DOM.
  * @param path Path to a DOM node. Elements must specify both childIndex &
  * tagName, otherwise follows hierarchy.
