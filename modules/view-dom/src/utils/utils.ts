@@ -1,4 +1,4 @@
-import {Diff} from "gravel-core";
+import {Diff, DiffDel, DiffSet, getRootPath} from "gravel-core";
 import {Any} from "river-core";
 
 /**
@@ -183,28 +183,89 @@ export function delDomProperty(property: any, node: Node, path: string): boolean
 }
 
 /**
+ * TODO: Tests
+ * @param diffDel
+ */
+function applyDomDiffDel(diffDel: DiffDel<Any>): DiffDel<Any> {
+  const bounced = {};
+  const root = getRootPath(diffDel);
+  let applied = true;
+  if (root) {
+    const {node, property} = getDomProperty(root);
+    if (node) {
+      for (const path in diffDel) {
+        const success = delDomProperty(
+          node,
+          property,
+          path.substr(root.length + 1));
+        if (!success) {
+          bounced[path] = null;
+          applied = false;
+        }
+      }
+    }
+  } else {
+    for (const path in diffDel) {
+      if (!delDomProperty(document, document, path)) {
+        bounced[path] = null;
+        applied = false;
+      }
+    }
+  }
+  return applied ? undefined : bounced;
+}
+
+/**
+ * TODO: Tests
+ * @param diffSet
+ */
+function applyDomDiffSet(diffSet: DiffSet<Any>): DiffSet<Any> {
+  const bounced = {};
+  const root = getRootPath(diffSet);
+  let applied = true;
+  if (root) {
+    for (const path in diffSet) {
+      setDomProperty(document, document, path, diffSet[path]);
+      break;
+    }
+    const {node, property} = getDomProperty(root);
+    for (const path in diffSet) {
+      const value = diffSet[path];
+      const success = setDomProperty(
+        property,
+        node,
+        path.substr(root.length + 1),
+        value);
+      if (!success) {
+        bounced[path] = value;
+        applied = false;
+      }
+    }
+  } else {
+    for (const path in diffSet) {
+      const value = diffSet[path];
+      if (!setDomProperty(document, document, path, value)) {
+        bounced[path] = value;
+        applied = false;
+      }
+    }
+  }
+  return applied ? undefined : bounced;
+}
+
+/**
  * Applies the specified view diff to the DOM.
  * @param diff
  */
-export function applyDomDiff(diff: Diff<Any>): Diff<Any> | true {
-  const bounced = {del: {}, set: {}};
-  const viewSet = diff.set;
-  const viewDel = diff.del;
-  const bouncedSet = bounced.set;
-  const bouncedDel = bounced.del;
-  let applied = true;
-  for (const path in viewDel) {
-    if (!delDomProperty(document, document, path)) {
-      bouncedDel[path] = null;
-      applied = false;
-    }
-  }
-  for (const path in viewSet) {
-    const value = viewSet[path];
-    if (!setDomProperty(document, document, path, value)) {
-      bouncedSet[path] = value;
-      applied = false;
-    }
-  }
-  return applied || bounced;
+export function applyDomDiff(diff: Diff<Any>): Diff<Any> {
+  const diffDel = diff.del;
+  const diffSet = diff.set;
+  const bouncedDel = applyDomDiffDel(diffDel);
+  const bouncedSet = applyDomDiffSet(diffSet);
+  return bouncedDel === undefined && bouncedSet === undefined ?
+    undefined :
+    {
+      del: bouncedDel || {},
+      set: bouncedSet || {}
+    };
 }

@@ -23,9 +23,9 @@ export function createDomDiffApplier(): DomDiffApplier {
     return {
       d_diff: (value, tag) => {
         requestAnimationFrame(() => {
-          const applied = applyDomDiff(value);
-          if (applied !== true) {
-            outputs.b_d_diff(applied, tag);
+          const bounced = applyDomDiff(value);
+          if (bounced !== undefined) {
+            outputs.b_d_diff(bounced, tag);
           }
         });
       }

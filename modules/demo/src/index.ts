@@ -68,7 +68,8 @@ const tableRouteDetector = createMapper<RegExp, boolean>(
 const tableSource = createMapper<any, Diff<Any>>(() => {
   return generateTableData(30, 30);
 });
-const tableView = createSimpleTableView(`${ROOT_PATH}.childNodes.1:table`);
+const midPath = new Array(10).join("childNodes.0:div.");
+const tableView = createSimpleTableView(`${ROOT_PATH}.childNodes.1:div.${midPath}childNodes.0:table`);
 connect(tableRouteDetector.o.d_val, tableTicker.i.st_active);
 connect(tableTicker.o.ev_tick, tableSource.i.d_val);
 connect(tableSource.o.d_val, tableView.i.vm_diff);

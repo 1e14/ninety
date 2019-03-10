@@ -325,9 +325,9 @@ describe("delDomProperty()", () => {
   });
 });
 
-xdescribe("applyDomDiff()", () => {
+describe("applyDomDiff()", () => {
   describe("when fully applied", () => {
-    it("should return true", () => {
+    it("should return undefined", () => {
       const result = applyDomDiff({
         del: {
           "body.childNodes.1:section": null
@@ -336,7 +336,7 @@ xdescribe("applyDomDiff()", () => {
           "body.childNodes.2:div.attributes.id": "quux"
         }
       });
-      expect(result).toBe(true);
+      expect(result).toBe(undefined);
     });
   });
 
