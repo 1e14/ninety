@@ -4,7 +4,7 @@ import {Any} from "river-core";
 /**
  * Adds placeholder comment nodes to the specified parent node up to the
  * (but not including) the specified index.
- * @param node Parent DOM node
+ * @param node DOM node in which to add placeholders
  * @param index Index up to which to create placeholder nodes.
  */
 function addPlaceholders(node: Node, index: number): void {
@@ -22,63 +22,65 @@ function addPlaceholders(node: Node, index: number): void {
  */
 export function setDomProperty(path: string, value: any): boolean {
   const components = path.split(".");
-  let tmp: any = document;
+  let property: any = document;
   let node: Node = document;
-  do {
+  while (components.length && property !== undefined) {
     const component = components.shift();
-    if (tmp instanceof Node) {
+    if (property instanceof Node) {
       if (components.length) {
-        // setting current node as last parent, and going on to the specified
-        // property
-        node = tmp;
-        tmp = tmp[component];
+        // going on to the specified property
+        property = property[component];
       } else {
         // node property
-        tmp[component] = value;
+        property[component] = value;
         return true;
       }
-    } else if (tmp instanceof NodeList) {
+    } else if (property instanceof NodeList) {
       // extracting child index & tagName from path component
       const [index, tagName] = component.split(":");
-      const child = tmp[index];
+      const child = property[index];
       if (child === undefined) {
         if (tagName === undefined) {
           // no tagName - can't proceed
           return false;
         }
         addPlaceholders(node, +index);
-        tmp = document.createElement(tagName);
-        node.appendChild(tmp);
+        property = document.createElement(tagName);
+        node.appendChild(property);
       } else if (child instanceof Comment || child instanceof Text) {
         // replacing existing placeholder
-        tmp = document.createElement(tagName);
-        node.replaceChild(tmp, child);
+        property = document.createElement(tagName);
+        node.replaceChild(property, child);
       } else {
         // in any other case - proceed to specified property
-        tmp = tmp[index];
+        property = property[index];
       }
-    } else if (tmp instanceof NamedNodeMap) {
+    } else if (property instanceof NamedNodeMap) {
       // attributes
-      let attribute = tmp.getNamedItem(component);
+      let attribute = property.getNamedItem(component);
       if (!attribute) {
         attribute = document.createAttribute(component);
-        tmp.setNamedItem(attribute);
+        property.setNamedItem(attribute);
       }
       attribute.value = value;
       return true;
-    } else if (tmp instanceof DOMTokenList) {
+    } else if (property instanceof DOMTokenList) {
       // CSS classes
-      tmp.add(component, component);
+      property.add(component, component);
       return true;
-    } else if (tmp instanceof CSSStyleDeclaration) {
+    } else if (property instanceof CSSStyleDeclaration) {
       // CSS styles
-      tmp[component] = value;
+      property[component] = value;
       return true;
     } else {
       // unrecognized property parent
       return false;
     }
-  } while (components.length);
+
+    if (property instanceof Node) {
+      node = property;
+    }
+  }
 }
 
 /**
@@ -87,52 +89,54 @@ export function setDomProperty(path: string, value: any): boolean {
  */
 export function delDomProperty(path: string): boolean {
   const components = path.split(".");
-  let tmp: any = document;
+  let property: any = document;
   let node: Node = document;
   let component: string;
 
   // finding property
-  for (let i = 0, length = components.length - 1; i < length; i++) {
+  for (
+    let i = 0, length = components.length - 1;
+    i < length && property !== undefined;
+    i++
+  ) {
     component = components.shift();
-    if (tmp instanceof Node) {
-      node = tmp;
-      tmp = tmp[component];
-    } else if (tmp instanceof NodeList) {
+    if (property instanceof Node) {
+      property = property[component];
+    } else if (property instanceof NodeList) {
       const [index] = component.split(":");
-      tmp = tmp[index];
+      property = property[index];
     } else {
-      tmp = tmp[component];
+      property = property[component];
     }
 
-    if (tmp === undefined) {
-      // path not found
-      return true;
+    if (property instanceof Node) {
+      node = property;
     }
   }
 
   // deleting property
   component = components.shift();
-  if (tmp instanceof Node) {
+  if (property instanceof Node) {
     // node property
-    tmp[component] = null;
-  } else if (tmp instanceof NodeList) {
+    property[component] = null;
+  } else if (property instanceof NodeList) {
     // extracting child index from path component
     const [index] = component.split(":");
-    const child = tmp[index];
+    const child = property[index];
     if (child !== undefined) {
       // replacing child w/ placeholder
-      tmp = document.createComment("");
-      node.replaceChild(tmp, child);
+      property = document.createComment("");
+      node.replaceChild(property, child);
     }
-  } else if (tmp instanceof NamedNodeMap) {
+  } else if (property instanceof NamedNodeMap) {
     // attributes
-    tmp.removeNamedItem(component);
-  } else if (tmp instanceof DOMTokenList) {
+    property.removeNamedItem(component);
+  } else if (property instanceof DOMTokenList) {
     // CSS classes
-    tmp.remove(component);
-  } else if (tmp instanceof CSSStyleDeclaration) {
+    property.remove(component);
+  } else if (property instanceof CSSStyleDeclaration) {
     // CSS styles
-    tmp[component] = null;
+    property[component] = null;
   } else {
     // unrecognized property parent
     return false;
