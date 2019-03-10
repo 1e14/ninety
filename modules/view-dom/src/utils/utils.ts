@@ -4,33 +4,33 @@ import {Any} from "river-core";
 /**
  * Adds placeholder comment nodes to the specified parent node up to the
  * (but not including) the specified index.
- * @param parent Parent DOM node
+ * @param node Parent DOM node
  * @param index Index up to which to create placeholder nodes.
  */
-function addPlaceholders(parent: Node, index: number): void {
-  for (let i = parent.childNodes.length; i < index; i++) {
+function addPlaceholders(node: Node, index: number): void {
+  for (let i = node.childNodes.length; i < index; i++) {
     const placeholder = document.createComment("");
-    parent.appendChild(placeholder);
+    node.appendChild(placeholder);
   }
 }
 
 /**
  * Sets a single property in the DOM.
- * @param path Path to a DOM node. Elements must specify both childIndex &
+ * @param path Path to a DOM property. Elements must specify both childIndex &
  * tagName, otherwise follows hierarchy.
  * @param value Property value to be set.
  */
 export function setDomProperty(path: string, value: any): boolean {
   const components = path.split(".");
   let tmp: any = document;
-  let parent: Node = document;
+  let node: Node = document;
   do {
     const component = components.shift();
     if (tmp instanceof Node) {
       if (components.length) {
         // setting current node as last parent, and going on to the specified
         // property
-        parent = tmp;
+        node = tmp;
         tmp = tmp[component];
       } else {
         // node property
@@ -40,19 +40,19 @@ export function setDomProperty(path: string, value: any): boolean {
     } else if (tmp instanceof NodeList) {
       // extracting child index & tagName from path component
       const [index, tagName] = component.split(":");
-      const node = tmp[index];
-      if (node === undefined) {
+      const child = tmp[index];
+      if (child === undefined) {
         if (tagName === undefined) {
           // no tagName - can't proceed
           return false;
         }
-        addPlaceholders(parent, +index);
+        addPlaceholders(node, +index);
         tmp = document.createElement(tagName);
-        parent.appendChild(tmp);
-      } else if (node instanceof Comment || node instanceof Text) {
+        node.appendChild(tmp);
+      } else if (child instanceof Comment || child instanceof Text) {
         // replacing existing placeholder
         tmp = document.createElement(tagName);
-        parent.replaceChild(tmp, node);
+        node.replaceChild(tmp, child);
       } else {
         // in any other case - proceed to specified property
         tmp = tmp[index];
@@ -88,14 +88,14 @@ export function setDomProperty(path: string, value: any): boolean {
 export function delDomProperty(path: string): boolean {
   const components = path.split(".");
   let tmp: any = document;
-  let parent: Node = document;
+  let node: Node = document;
   let component: string;
 
-  // finding parent node / property
+  // finding property
   for (let i = 0, length = components.length - 1; i < length; i++) {
     component = components.shift();
     if (tmp instanceof Node) {
-      parent = tmp;
+      node = tmp;
       tmp = tmp[component];
     } else if (tmp instanceof NodeList) {
       const [index] = component.split(":");
@@ -118,11 +118,11 @@ export function delDomProperty(path: string): boolean {
   } else if (tmp instanceof NodeList) {
     // extracting child index from path component
     const [index] = component.split(":");
-    const node = tmp[index];
-    if (node !== undefined) {
-      // replacing node w/ placeholder
+    const child = tmp[index];
+    if (child !== undefined) {
+      // replacing child w/ placeholder
       tmp = document.createComment("");
-      parent.replaceChild(tmp, node);
+      node.replaceChild(tmp, child);
     }
   } else if (tmp instanceof NamedNodeMap) {
     // attributes
