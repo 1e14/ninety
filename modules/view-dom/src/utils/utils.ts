@@ -55,7 +55,7 @@ export function getDomProperty(path: string): { node: Node, property: any } {
  * Sets a single property in the DOM.
  * @param property Root Property
  * @param node Root parent node
- * @param path Path to a DOM node. Elements must specify both childIndex &
+ * @param path Path to a DOM property. Elements must specify both childIndex &
  * tagName, otherwise follows hierarchy.
  * @param value Property value to be set.
  */
@@ -161,7 +161,7 @@ export function delDomProperty(property: any, node: Node, path: string): boolean
     const [index] = component.split(":");
     const child = property[index];
     if (child !== undefined) {
-      // replacing node w/ placeholder
+      // replacing child w/ placeholder
       property = document.createComment("");
       node.replaceChild(property, child);
     }
