@@ -37,7 +37,7 @@ export function getDomProperty(path: string): { node: Node, property: any } {
     } else if (property instanceof DOMTokenList) {
       // CSS classes
       property = property.contains(component);
-    } else {
+    } else if (property) {
       // CSS styles
       // and everything else
       property = property[component];
@@ -142,7 +142,7 @@ export function delDomProperty(property: any, node: Node, path: string): boolean
     } else if (property instanceof NodeList) {
       const [index] = component.split(":");
       property = property[index];
-    } else {
+    } else if (property) {
       property = property[component];
     }
 

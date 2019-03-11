@@ -1,18 +1,13 @@
 // tslint:disable:no-console
 
-import {createDiffBuffer, Diff} from "gravel-core";
+import {createDiffBuffer} from "gravel-core";
 import {createRouter} from "gravel-routing";
 import {createDomDiffApplier} from "gravel-view-dom";
-import {createDomLinkView} from "gravel-view-dom-lib";
+import {createDomLinkView, createDomTextView} from "gravel-view-dom-lib";
 import {createDomReadyNotifier, createLocationHash} from "river-browser";
-import {Any, connect} from "river-core";
+import {connect} from "river-core";
 import {createMapper, createNoop} from "river-stdlib";
-import {
-  createCustomTextView,
-  createSimpleTableView,
-  createTicker
-} from "./nodes";
-import {generateTableData} from "./utils";
+import {createAnimatedTablePageView} from "./nodes";
 
 // setting up bootstrapper
 const domReadyNotifier = createDomReadyNotifier();
@@ -37,12 +32,12 @@ const ROOT_PATH = "body";
 const MENU_PATH = `${ROOT_PATH}.childNodes.0:ul`;
 const LINK_PATH = "childNodes.0:a";
 const link1 = createDomLinkView(`${MENU_PATH}.childNodes.0:li.${LINK_PATH}`, {
-  content: "Custom text",
-  url: "#custom-text"
+  content: "Hello World",
+  url: "#hello-world"
 });
 const link2 = createDomLinkView(`${MENU_PATH}.childNodes.1:li.${LINK_PATH}`, {
-  content: "Table with numbers",
-  url: "#table"
+  content: "Animated table",
+  url: "#animated-table"
 });
 connect(link1.o.v_diff, viewBuffer.i.d_diff);
 connect(link2.o.v_diff, viewBuffer.i.d_diff);
@@ -50,30 +45,22 @@ connect(domReadyNotifier.o.ev_ready, link1.i.ev_smp);
 connect(domReadyNotifier.o.ev_ready, link2.i.ev_smp);
 
 // setting up routes
-const ROUTE_CUSTOM_TEXT = /^custom-text$/;
-const ROUTE_TABLE = /^table$/;
+const ROUTE_CUSTOM_TEXT = /^hello-world$/;
+const ROUTE_TABLE = /^animated-table$/;
 const ROUTE_REST = /^.*$/;
 
 // "page" 1: custom text field
-const textView = createCustomTextView(`${ROOT_PATH}.childNodes.1:span`, {
+const textView = createDomTextView(`${ROOT_PATH}.childNodes.1:span`, {
   content: "Hello World!"
 });
 connect(textView.o.v_diff, viewBuffer.i.d_diff);
-connect(textView.o.ev_click, console.log);
 
 // "page" 2: table w/ numbers
-const tableTicker = createTicker(100);
 const tableRouteDetector = createMapper<RegExp, boolean>(
   (pattern) => pattern === ROUTE_TABLE);
-const tableSource = createMapper<any, Diff<Any>>(() => {
-  return generateTableData(30, 30);
-});
-const midPath = new Array(10).join("childNodes.0:div.");
-const tableView = createSimpleTableView(`${ROOT_PATH}.childNodes.1:div.${midPath}childNodes.0:table`);
-connect(tableRouteDetector.o.d_val, tableTicker.i.st_active);
-connect(tableTicker.o.ev_tick, tableSource.i.d_val);
-connect(tableSource.o.d_val, tableView.i.vm_diff);
-connect(tableView.o.v_diff, viewBuffer.i.d_diff);
+const tablePageView = createAnimatedTablePageView(`${ROOT_PATH}.childNodes.1:div`);
+connect(tableRouteDetector.o.d_val, tablePageView.i.st_active);
+connect(tablePageView.o.v_diff, viewBuffer.i.d_diff);
 
 // setting up routing table
 const router = createRouter([
@@ -84,4 +71,4 @@ const router = createRouter([
 connect(hash2Path.o.d_val, router.i.d_route);
 connect(router.o[`r_${ROUTE_CUSTOM_TEXT}`], textView.i.ev_smp);
 connect(router.o.d_pattern, tableRouteDetector.i.d_val);
-connect(router.o[`r_${ROUTE_TABLE}`], tableView.i.ev_smp);
+connect(router.o[`r_${ROUTE_TABLE}`], tablePageView.i.ev_smp);
