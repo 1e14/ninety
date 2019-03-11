@@ -46,7 +46,7 @@ export function createSimpleTableView(
             del[`childNodes.${row}:tr.childNodes.${column}:td.innerText`] = null;
             break;
           case "color":
-            set[`childNodes.${row}:tr.childNodes.${column}:td.style.color`] = null;
+            del[`childNodes.${row}:tr.childNodes.${column}:td.style.color`] = null;
             break;
         }
       }
