@@ -1,4 +1,4 @@
-import {getRootPath, prefixDiffPaths} from "./path";
+import {getPathComponent, getRootPath, prefixDiffPaths} from "./path";
 
 describe("prependPaths()", () => {
   it("should prepend paths in diff", () => {
@@ -53,5 +53,14 @@ describe("getRootPath()", () => {
         "baz": null
       })).toBe("");
     });
+  });
+});
+
+describe("getPathComponent()", () => {
+  it("should return specified component", () => {
+    expect(getPathComponent("foo.bar.baz.quux", 0)).toBe("foo");
+    expect(getPathComponent("foo.bar.baz.quux", 1)).toBe("bar");
+    expect(getPathComponent("foo.bar.baz.quux", 2)).toBe("baz");
+    expect(getPathComponent("foo.bar.baz.quux", 3)).toBe("quux");
   });
 });
