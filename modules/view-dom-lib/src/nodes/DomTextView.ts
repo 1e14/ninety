@@ -1,6 +1,6 @@
 import {ViewIn, ViewOut} from "gravel-view";
 import {createDomPropertyView} from "gravel-view-dom";
-import {Any, Node} from "river-core";
+import {Node} from "river-core";
 
 export type In = ViewIn;
 
