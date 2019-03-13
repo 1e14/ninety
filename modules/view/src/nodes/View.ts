@@ -1,4 +1,4 @@
-import {compoundDiff, Diff, prefixDiffPaths} from "gravel-core";
+import {applyDiff, Diff, prefixDiffPaths} from "gravel-core";
 import {Any, createNode, Node} from "river-core";
 
 export type In = {
@@ -19,12 +19,12 @@ export function createView(
   cb: (vm: Diff<Any>) => Diff<Any>
 ): View {
   return createNode<In, Out>(["ev_smp", "v_diff"], (outputs) => {
-    const content = {set: {}, del: {}};
+    const content = {};
     return {
       ev_smp: (value, tag) => {
         outputs.v_diff({
           del: {[path]: null},
-          set: content.set
+          set: content
         }, tag);
         outputs.ev_smp(value, tag);
       },
@@ -35,7 +35,7 @@ export function createView(
 
       vm_diff: (value, tag) => {
         const view = prefixDiffPaths(cb(value), path);
-        const changed = compoundDiff(view, content);
+        const changed = applyDiff(view, content);
         if (changed) {
           outputs.v_diff(view, tag);
         }
