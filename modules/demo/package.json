@@ -19,7 +19,6 @@
     "url": "git@github.com:protoboard/gravel.git"
   },
   "dependencies": {
-    "gravel-model": "^0.1.0",
     "gravel-routing": "^0.1.0",
     "gravel-core": "^0.1.0",
     "gravel-view": "^0.1.0",
