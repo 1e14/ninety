@@ -18,14 +18,14 @@ export function createDomAttributeView(
     const set: Any = {};
     for (path in vmSet) {
       if (path.endsWith(tail)) {
-        set[replacePathTail(path, tail, "attributes." + attribute)] = vmSet[path];
+        set[replacePathTail(path, "attributes." + attribute)] = vmSet[path];
       }
     }
     const vmDel = vm.del;
     const del: Any = {};
     for (path in vmDel) {
       if (path.endsWith(tail)) {
-        del[replacePathTail(path, tail, "attributes." + attribute)] = null;
+        del[replacePathTail(path, "attributes." + attribute)] = null;
       }
     }
     return {set, del};

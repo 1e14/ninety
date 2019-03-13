@@ -72,7 +72,7 @@ describe("getPathComponent()", () => {
 
 describe("replacePathTail()", () => {
   it("should replace end of path", () => {
-    expect(replacePathTail("foo.bar.baz.quux", "quux", "a"))
+    expect(replacePathTail("foo.bar.baz.quux", "a"))
     .toBe("foo.bar.baz.a");
   });
 });

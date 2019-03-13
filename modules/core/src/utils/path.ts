@@ -78,9 +78,8 @@ export function getPathComponent(path: string, index: number): string {
 /**
  * Replaces the matching end of the path with the specified string.
  * @param path
- * @param from
  * @param to
  */
-export function replacePathTail(path: string, from: string, to: string): string {
-  return path.substring(0, path.lastIndexOf(from)) + to;
+export function replacePathTail(path: string, to: string): string {
+  return path.substring(0, path.lastIndexOf(PATH_DELIMITER) + 1) + to;
 }

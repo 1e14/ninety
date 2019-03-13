@@ -19,14 +19,14 @@ export function createDomClassView(
     const set: Any = {};
     for (path in vmSet) {
       if (path.endsWith(tail)) {
-        set[replacePathTail(path, tail, "classList." + cssClass)] = vmSet[path];
+        set[replacePathTail(path, "classList." + cssClass)] = vmSet[path];
       }
     }
     const vmDel = vm.del;
     const del: Any = {};
     for (path in vmDel) {
       if (path.endsWith(tail)) {
-        del[replacePathTail(path, tail, "classList." + cssClass)] = null;
+        del[replacePathTail(path, "classList." + cssClass)] = null;
       }
     }
     return {set, del};

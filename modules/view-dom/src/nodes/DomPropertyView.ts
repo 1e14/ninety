@@ -19,14 +19,14 @@ export function createDomPropertyView(
     const set: Any = {};
     for (path in vmSet) {
       if (path.endsWith(tail)) {
-        set[replacePathTail(path, tail, property)] = vmSet[path];
+        set[replacePathTail(path, property)] = vmSet[path];
       }
     }
     const vmDel = vm.del;
     const del: Any = {};
     for (path in vmDel) {
       if (path.endsWith(tail)) {
-        del[replacePathTail(path, tail, property)] = null;
+        del[replacePathTail(path, property)] = null;
       }
     }
     return {set, del};
