@@ -1,3 +1,4 @@
+import {replacePathTail} from "gravel-core";
 import {createView, ViewIn, ViewOut} from "gravel-view";
 import {Any, Node} from "river-core";
 
@@ -26,14 +27,14 @@ export function createDomTextView(
     const set: Any = {};
     for (path in vmSet) {
       if (path.endsWith("content")) {
-        set[path.replace(/content$/, "innerText")] = vmSet[path];
+        set[replacePathTail(path, "content", "innerText")] = vmSet[path];
       }
     }
     const vmDel = vm.del;
     const del: Any = {};
     for (path in vmDel) {
       if (path.endsWith("content")) {
-        del[path.replace(/content$/, "innerText")] = null;
+        del[replacePathTail(path, "content", "innerText")] = null;
       }
     }
     return {set, del};
