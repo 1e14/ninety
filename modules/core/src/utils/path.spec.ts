@@ -2,6 +2,7 @@ import {
   getPathComponent,
   getRootPath,
   prefixDiffPaths,
+  replacePathComponent,
   replacePathTail
 } from "./path";
 
@@ -67,6 +68,19 @@ describe("getPathComponent()", () => {
     expect(getPathComponent("foo.bar.baz.quux", 1)).toBe("bar");
     expect(getPathComponent("foo.bar.baz.quux", 2)).toBe("baz");
     expect(getPathComponent("foo.bar.baz.quux", 3)).toBe("quux");
+  });
+});
+
+describe("replacePathComponent()", () => {
+  it("should replace specified component", () => {
+    expect(replacePathComponent("foo.bar.baz.quux", 0, "a"))
+    .toBe("a.bar.baz.quux");
+    expect(replacePathComponent("foo.bar.baz.quux", 1, "a"))
+    .toBe("foo.a.baz.quux");
+    expect(replacePathComponent("foo.bar.baz.quux", 2, "a"))
+    .toBe("foo.bar.a.quux");
+    expect(replacePathComponent("foo.bar.baz.quux", 3, "a"))
+    .toBe("foo.bar.baz.a");
   });
 });
 

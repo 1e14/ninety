@@ -70,9 +70,30 @@ export function getPathComponent(path: string, index: number): string {
     end = path.indexOf(PATH_DELIMITER, start);
   }
   if (end === -1) {
-    end = path.length;
+    return path.substring(start);
+  } else {
+    return path.substring(start, end);
   }
-  return path.substring(start, end);
+}
+
+/**
+ * Replaces the specified path component with the specified string.
+ * @param path
+ * @param index
+ * @param to
+ */
+export function replacePathComponent(path: string, index: number, to: string) {
+  let start = 0;
+  let end = path.indexOf(PATH_DELIMITER, start);
+  while (index--) {
+    start = end + 1;
+    end = path.indexOf(PATH_DELIMITER, start);
+  }
+  if (end === -1) {
+    return path.slice(0, start) + to;
+  } else {
+    return path.slice(0, start) + to + path.slice(end);
+  }
 }
 
 /**
