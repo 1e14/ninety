@@ -1,11 +1,6 @@
-import {replacePathTail} from "gravel-core";
-import {createView, ViewIn, ViewOut} from "gravel-view";
+import {ViewIn, ViewOut} from "gravel-view";
+import {createDomPropertyView} from "gravel-view-dom";
 import {Any, Node} from "river-core";
-
-// TODO: Move to TextVm
-export type TextVmProps = {
-  content: string
-};
 
 export type In = ViewIn;
 
@@ -20,21 +15,8 @@ export type DomTextView = Node<In, Out>;
 export function createDomTextView(
   path: string
 ): DomTextView {
-  return createView(path, (vm) => {
-    const vmSet = vm.set;
-    const set: Any = {};
-    for (path in vmSet) {
-      if (path.endsWith("content")) {
-        set[replacePathTail(path, "content", "innerText")] = vmSet[path];
-      }
-    }
-    const vmDel = vm.del;
-    const del: Any = {};
-    for (path in vmDel) {
-      if (path.endsWith("content")) {
-        del[replacePathTail(path, "content", "innerText")] = null;
-      }
-    }
-    return {set, del};
-  });
+  return createDomPropertyView(
+    path,
+    "content",
+    "innerText");
 }

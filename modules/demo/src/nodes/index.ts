@@ -5,6 +5,6 @@ export {
   HelloWorldPageView, createHelloWorldPageView
 }from "./HelloWorldPageView";
 export {
-  SimpleTableView, createSimpleTableView, TableVmProps
+  SimpleTableView, createSimpleTableView
 }from "./SimpleTableView";
 export {Ticker, createTicker} from "./Ticker";

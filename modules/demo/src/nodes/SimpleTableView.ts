@@ -1,8 +1,6 @@
 import {createView, ViewIn, ViewOut} from "gravel-view";
 import {Any, Node} from "river-core";
 
-export type TableVmProps = Any;
-
 export type In = ViewIn;
 
 // TODO: Add error port
