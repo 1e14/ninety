@@ -3,9 +3,7 @@ import {createView, View} from "./View";
 
 describe("createView()", () => {
   describe("on input (ev_smp)", () => {
-    let node: View<{
-      content: string
-    }>;
+    let node: View;
 
     beforeEach(() => {
       node = createView("foo", (vm) => ({
@@ -43,7 +41,7 @@ describe("createView()", () => {
   });
 
   describe("on input (v_diff)", () => {
-    let node: View<{}>;
+    let node: View;
 
     beforeEach(() => {
       node = createView("foo", () => null);
@@ -68,7 +66,7 @@ describe("createView()", () => {
   });
 
   describe("on input (vm_diff)", () => {
-    let node: View<{ content: string }>;
+    let node: View;
 
     beforeEach(() => {
       node = createView("foo", (vm) => ({

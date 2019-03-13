@@ -3,7 +3,7 @@ import {createView, ViewIn, ViewOut} from "gravel-view";
 import {Any, Node} from "river-core";
 import {DomAttributeView} from "./DomAttributeView";
 
-export type In = ViewIn<Any>;
+export type In = ViewIn;
 
 export type Out = ViewOut;
 

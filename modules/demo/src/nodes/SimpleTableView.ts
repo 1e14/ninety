@@ -3,7 +3,7 @@ import {Any, Node} from "river-core";
 
 export type TableVmProps = Any;
 
-export type In = ViewIn<TableVmProps>;
+export type In = ViewIn;
 
 // TODO: Add error port
 export type Out = ViewOut;
@@ -15,7 +15,7 @@ const RE_VM_PATH = /^(\d+)\.(\d+)\.(.*)$/;
 export function createSimpleTableView(
   path: string = ""
 ) {
-  return createView<TableVmProps>(path, (vm) => {
+  return createView(path, (vm) => {
     const vmSet = vm.set;
     const vmDel = vm.del;
     const set = {};

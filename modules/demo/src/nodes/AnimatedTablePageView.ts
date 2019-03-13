@@ -7,7 +7,7 @@ import {generateTableData} from "../utils";
 import {createSimpleTableView} from "./SimpleTableView";
 import {createTicker} from "./Ticker";
 
-export type In = ViewIn<{}> & {
+export type In = ViewIn & {
   st_active: boolean;
 };
 
@@ -51,7 +51,7 @@ export function createAnimatedTablePageView(path: string = ""): AnimatedTablePag
   const tablePath = new Array(10).join("childNodes.0:div.");
   const tableView = createSimpleTableView(
     `childNodes.1:div.${tablePath}childNodes.0:table`);
-  const view = createView<{}>(path, () => ({del: {}, set: {}}));
+  const view = createView(path, () => ({del: {}, set: {}}));
 
   connect(tableTicker.o.ev_tick, tableSource.i.d_val);
   connect(tableSource.o.d_val, tableView.i.vm_diff);

@@ -7,7 +7,7 @@ export type TextVmProps = {
   content: string
 };
 
-export type In = ViewIn<Any>;
+export type In = ViewIn;
 
 export type Out = ViewOut;
 
@@ -20,7 +20,7 @@ export type DomTextView = Node<In, Out>;
 export function createDomTextView(
   path: string
 ): DomTextView {
-  return createView<Any>(path, (vm) => {
+  return createView(path, (vm) => {
     const vmSet = vm.set;
     const set: Any = {};
     for (path in vmSet) {

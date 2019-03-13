@@ -3,7 +3,7 @@ import {createDomTextView} from "gravel-view-dom-lib";
 import {connect, Node} from "river-core";
 import {createMapper} from "river-stdlib";
 
-export type HelloWorldPageView = Node<ViewIn<{}>, ViewOut>;
+export type HelloWorldPageView = Node<ViewIn, ViewOut>;
 
 export function createHelloWorldPageView(path: string = ""): HelloWorldPageView {
   const textSource = createMapper(() => ({
@@ -13,7 +13,7 @@ export function createHelloWorldPageView(path: string = ""): HelloWorldPageView 
     }
   }));
   const textView = createDomTextView("childNodes.0:span");
-  const view = createView<{}>(path, () => ({del: {}, set: {}}));
+  const view = createView(path, () => ({del: {}, set: {}}));
 
   connect(textView.o.ev_smp, textSource.i.d_val);
   connect(textSource.o.d_val, textView.i.vm_diff);
