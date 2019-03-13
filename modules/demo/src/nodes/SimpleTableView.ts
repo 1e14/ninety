@@ -13,8 +13,7 @@ export type SimpleTableView = Node<In, Out>;
 const RE_VM_PATH = /^(\d+)\.(\d+)\.(.*)$/;
 
 export function createSimpleTableView(
-  path: string = "",
-  initialVm?: TableVmProps
+  path: string = ""
 ) {
   return createView<TableVmProps>(path, (vm) => {
     const vmSet = vm.set;
@@ -52,5 +51,5 @@ export function createSimpleTableView(
       }
     }
     return {set, del};
-  }, initialVm);
+  });
 }

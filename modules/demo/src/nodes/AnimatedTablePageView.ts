@@ -18,20 +18,32 @@ export function createAnimatedTablePageView(path: string = ""): AnimatedTablePag
   const tableSource = createMapper<any, Diff<Any>>(() => {
     return generateTableData(30, 30);
   });
-  const textStartView = createDomTextView(
-    "childNodes.0:div.childNodes.0:button",
-    {
+  const textStartSource = createMapper(() => ({
+    del: {},
+    set: {
       content: "Start"
-    });
+    }
+  }));
+  const textStartView = createDomTextView(
+    "childNodes.0:div.childNodes.0:button");
   const clickStartView = createDomEventView(
     "childNodes.0:div.childNodes.0:button",
     "onclick");
   const clickStartMapper = createMapper(() => true);
-  const textStopView = createDomTextView(
-    "childNodes.0:div.childNodes.1:button",
-    {
+  const textStopSource = createMapper(() => ({
+    del: {},
+    set: {
       content: "Stop"
-    });
+    }
+  }));
+  const textStopView = createDomTextView(
+    "childNodes.0:div.childNodes.1:button");
+
+  connect(textStartSource.o.d_val, textStartView.i.vm_diff);
+  connect(textStopSource.o.d_val, textStopView.i.vm_diff);
+  connect(textStartView.o.ev_smp, textStartSource.i.d_val);
+  connect(textStopView.o.ev_smp, textStopSource.i.d_val);
+
   const clickStopView = createDomEventView(
     "childNodes.0:div.childNodes.1:button",
     "onclick");

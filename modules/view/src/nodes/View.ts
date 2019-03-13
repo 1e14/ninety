@@ -16,13 +16,10 @@ export type View<T> = Node<In<T>, Out>;
 
 export function createView<T>(
   path: string,
-  cb: (vm: Diff<T>) => Diff<Any>,
-  initialVm?: Partial<T>
+  cb: (vm: Diff<T>) => Diff<Any>
 ): View<T> {
   return createNode<In<T>, Out>(["ev_smp", "v_diff"], (outputs) => {
-    const content = initialVm ?
-      prefixDiffPaths(cb({set: initialVm, del: {}}), path) :
-      {set: {}, del: {}};
+    const content = {set: {}, del: {}};
     return {
       ev_smp: (value, tag) => {
         outputs.v_diff({

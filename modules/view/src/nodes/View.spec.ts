@@ -11,8 +11,12 @@ describe("createView()", () => {
       node = createView("foo", (vm) => ({
         del: {},
         set: {innerText: vm.set.content}
-      }), {
-        content: "bar"
+      }));
+      node.i.vm_diff({
+        del: {},
+        set: {
+          content: "bar"
+        }
       });
     });
 

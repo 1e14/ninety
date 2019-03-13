@@ -31,14 +31,26 @@ const ROOT_PATH = "body";
 // menu
 const MENU_PATH = `${ROOT_PATH}.childNodes.0:ul`;
 const LINK_PATH = "childNodes.0:a";
-const link1 = createDomLinkView(`${MENU_PATH}.childNodes.0:li.${LINK_PATH}`, {
-  content: "Hello World",
-  url: "#hello-world"
-});
-const link2 = createDomLinkView(`${MENU_PATH}.childNodes.1:li.${LINK_PATH}`, {
-  content: "Animated table",
-  url: "#animated-table"
-});
+const link1Source = createMapper(() => ({
+  del: {},
+  set: {
+    content: "Hello World",
+    url: "#hello-world"
+  }
+}));
+const link1 = createDomLinkView(`${MENU_PATH}.childNodes.0:li.${LINK_PATH}`);
+const link2Source = createMapper(() => ({
+  del: {},
+  set: {
+    content: "Animated table",
+    url: "#animated-table"
+  }
+}));
+const link2 = createDomLinkView(`${MENU_PATH}.childNodes.1:li.${LINK_PATH}`);
+connect(link1.o.ev_smp, link1Source.i.d_val);
+connect(link2.o.ev_smp, link2Source.i.d_val);
+connect(link1Source.o.d_val, link1.i.vm_diff);
+connect(link2Source.o.d_val, link2.i.vm_diff);
 connect(link1.o.v_diff, viewBuffer.i.d_diff);
 connect(link2.o.v_diff, viewBuffer.i.d_diff);
 connect(domReadyNotifier.o.ev_ready, link1.i.ev_smp);

@@ -14,8 +14,7 @@ export type Out = ViewOut;
 export type DomLinkView = Node<In, Out>;
 
 export function createDomLinkView(
-  path: string,
-  initialVm?: Partial<LinkVmProps>
+  path: string
 ): DomLinkView {
   return createView<LinkVmProps>(path, (vm) => {
     const vmSet = vm.set;
@@ -35,5 +34,5 @@ export function createDomLinkView(
       del.innerText = vmDel.content;
     }
     return {set, del};
-  }, initialVm);
+  });
 }

@@ -16,11 +16,9 @@ export type DomTextView = Node<In, Out>;
 /**
  * TODO: Change 'content' to 'text'.
  * @param path
- * @param initialVm
  */
 export function createDomTextView(
-  path: string,
-  initialVm?: Partial<Any>
+  path: string
 ): DomTextView {
   return createView<Any>(path, (vm) => {
     const vmSet = vm.set;
@@ -38,5 +36,5 @@ export function createDomTextView(
       }
     }
     return {set, del};
-  }, initialVm);
+  });
 }

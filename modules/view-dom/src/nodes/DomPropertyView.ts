@@ -12,8 +12,7 @@ export type DomPropertyView = Node<In, Out>;
 export function createDomPropertyView(
   path: string,
   tail: string,
-  property: string,
-  initialVm?: Any
+  property: string
 ): DomAttributeView {
   return createView(path, (vm) => {
     const vmSet = vm.set;
@@ -31,5 +30,5 @@ export function createDomPropertyView(
       }
     }
     return {set, del};
-  }, initialVm);
+  });
 }
