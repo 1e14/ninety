@@ -1,6 +1,70 @@
 import {Any} from "river-core";
 import {Diff} from "../types";
-import {compoundDiff} from "./diff";
+import {applyDiff, compoundDiff} from "./diff";
+
+describe("applyDiff()", () => {
+  describe("when source is empty", () => {
+    let hash: Partial<{ foo: number, bar: boolean }>;
+
+    beforeEach(() => {
+      hash = {foo: 5};
+    });
+
+    it("should not change target", () => {
+      applyDiff(<Diff<Any>>{}, hash);
+      expect(hash).toEqual({foo: 5});
+    });
+
+    it("should return false", () => {
+      const result = applyDiff(<Diff<Any>>{}, hash);
+      expect(result).toBe(false);
+    });
+  });
+
+  describe("when source doesn't change", () => {
+    let hash: Partial<{ foo: number, bar: boolean }>;
+
+    beforeEach(() => {
+      hash = {foo: 5};
+    });
+
+    it("should not change target", () => {
+      applyDiff({set: {foo: 5}, del: {bar: null}}, hash);
+      expect(hash).toEqual({foo: 5});
+    });
+
+    it("should return false", () => {
+      const result = applyDiff({set: {foo: 5}, del: {bar: null}}, hash);
+      expect(result).toBe(false);
+    });
+  });
+
+  describe("on set", () => {
+    let hash: Partial<{ foo: number, bar: boolean }>;
+
+    beforeEach(() => {
+      hash = {};
+    });
+
+    it("should add property to 'set'", () => {
+      applyDiff({del: {}, set: {foo: 5}}, hash);
+      expect(hash).toEqual({foo: 5});
+    });
+  });
+
+  describe("on delete", () => {
+    let hash: Partial<{ foo: number, bar: boolean }>;
+
+    beforeEach(() => {
+      hash = {foo: 5};
+    });
+
+    it("should remove property from 'set'", () => {
+      applyDiff({del: {foo: null}, set: {}}, hash);
+      expect(hash).toEqual({});
+    });
+  });
+});
 
 describe("compoundDiff()", () => {
   describe("when source is empty", () => {

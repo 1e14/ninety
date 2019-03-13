@@ -1,6 +1,34 @@
 import {Diff} from "../types";
 
 /**
+ * Applies diff to hash.
+ * @param diff
+ * @param target
+ */
+export function applyDiff<T>(diff: Diff<T>, target: Partial<T>): boolean {
+  let changed = false;
+
+  // applying deletes
+  for (const path in diff.del) {
+    if (path in target) {
+      delete target[path];
+      changed = true;
+    }
+  }
+
+  // applying sets
+  const sourceSet = diff.set;
+  for (const path in sourceSet) {
+    if (target[path] !== sourceSet[path]) {
+      target[path] = sourceSet[path];
+      changed = true;
+    }
+  }
+
+  return changed;
+}
+
+/**
  * Applies source diff to target diff.
  * @param source
  * @param target
