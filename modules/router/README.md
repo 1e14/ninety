@@ -1,4 +1,4 @@
-Gravel-Routing
+gravel-router
 ==============
 
 Routing for Gravel.

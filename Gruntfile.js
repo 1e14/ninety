@@ -6,7 +6,7 @@ module.exports = function (grunt) {
 
   const modules = [
     "core",
-    "routing",
+    "router",
     "view",
     "view-dom",
     "view-dom-lib",

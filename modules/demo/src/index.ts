@@ -1,7 +1,7 @@
 // tslint:disable:no-console
 
 import {createDiffBuffer} from "gravel-core";
-import {createRouter} from "gravel-routing";
+import {createRouter} from "gravel-router";
 import {createDomDiffApplier} from "gravel-view-dom";
 import {createDomLinkView} from "gravel-view-dom-lib";
 import {createDomReadyNotifier, createLocationHash} from "river-browser";
