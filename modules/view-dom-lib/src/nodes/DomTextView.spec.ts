@@ -15,11 +15,11 @@ describe("createDomTextView()", () => {
         connect(node.o.v_diff, spy);
         node.i.vm_diff({
           del: {},
-          set: {content: "Hello"}
+          set: {"bar.content": "Hello"}
         }, "1");
         expect(spy).toHaveBeenCalledWith({
           del: {},
-          set: {"foo.innerText": "Hello"}
+          set: {"foo.bar.innerText": "Hello"}
         }, "1");
       });
     });
@@ -29,11 +29,11 @@ describe("createDomTextView()", () => {
         const spy = jasmine.createSpy();
         connect(node.o.v_diff, spy);
         node.i.vm_diff({
-          del: {content: null},
+          del: {"bar.content": null},
           set: {}
         }, "1");
         expect(spy).toHaveBeenCalledWith({
-          del: {"foo.innerText": null},
+          del: {"foo.bar.innerText": null},
           set: {}
         }, "1");
       });
