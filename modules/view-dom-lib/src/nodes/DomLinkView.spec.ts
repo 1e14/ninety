@@ -32,6 +32,16 @@ describe("createDomLinkView()", () => {
     });
 
     describe("on del", () => {
+      beforeEach(() => {
+        node.i.vm_diff({
+          del: {},
+          set: {
+            "bar.content": "Hello",
+            "bar.url": "http://"
+          }
+        }, "1");
+      });
+
       it("should emit mapped vm on 'v_diff'", () => {
         const spy = jasmine.createSpy();
         connect(node.o.v_diff, spy);
@@ -41,15 +51,15 @@ describe("createDomLinkView()", () => {
             "bar.url": null
           },
           set: {}
-        }, "1");
+        }, "2");
         expect(spy).toHaveBeenCalledWith({
           del: {"foo.bar.innerText": null},
           set: {}
-        }, "1");
+        }, "2");
         expect(spy).toHaveBeenCalledWith({
           del: {"foo.bar.href": null},
           set: {}
-        }, "1");
+        }, "2");
       });
     });
   });
