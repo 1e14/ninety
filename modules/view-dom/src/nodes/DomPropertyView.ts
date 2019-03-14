@@ -1,7 +1,6 @@
 import {replacePathTail} from "gravel-core";
 import {createView, ViewIn, ViewOut} from "gravel-view";
 import {Any, Node} from "river-core";
-import {DomAttributeView} from "./DomAttributeView";
 
 export type In = ViewIn;
 
@@ -13,7 +12,7 @@ export function createDomPropertyView(
   path: string,
   tail: string,
   property: string
-): DomAttributeView {
+): DomPropertyView {
   return createView(path, (vm) => {
     const vmSet = vm.set;
     const set: Any = {};
