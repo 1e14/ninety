@@ -4,7 +4,7 @@ import {Any, createNode, Node} from "river-core";
 export type PathMapperCallback = (path: string) => string;
 
 export type In = {
-  v_diff: Diff<Any>;
+  vm_diff: Diff<Any>;
 };
 
 export type Out = {
@@ -21,7 +21,7 @@ export function createLeafView(
   depth: number = 0
 ): LeafView {
   return createNode<In, Out>(["v_diff"], (outputs) => ({
-    v_diff: (value, tag) => {
+    vm_diff: (value, tag) => {
       const result = {set: {}, del: {}};
       for (const abs in value.set) {
         const abs2 = replacePathTail2(abs, depth, cb);

@@ -12,7 +12,7 @@ describe("createLeafView()", () => {
     it("should emit processed diff on 'v_diff'", () => {
       const spy = jasmine.createSpy();
       connect(node.o.v_diff, spy);
-      node.i.v_diff({
+      node.i.vm_diff({
         del: {
           "page.table.1-3.text": null
         },
