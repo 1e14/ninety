@@ -15,7 +15,7 @@ export type LeafView = Node<In, Out>;
 
 // TODO: Sampling?
 export function createLeafView(
-  cb?: PathMapperCallback,
+  cb: PathMapperCallback,
   depth: number = 0
 ): LeafView {
   return createNode<In, Out>(["v_diff"], (outputs) => ({

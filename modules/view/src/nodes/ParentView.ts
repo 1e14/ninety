@@ -15,7 +15,7 @@ export type ParentView = Node<In, Out>;
 
 // TODO: Sampling?
 export function createParentView(
-  cb?: PathMapperCallback,
+  cb: PathMapperCallback,
   depth: number = 0
 ): ParentView {
   return createNode<In, Out>(["v_diff"], (outputs) => ({
