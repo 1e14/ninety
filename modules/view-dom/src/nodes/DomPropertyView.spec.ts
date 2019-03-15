@@ -9,7 +9,7 @@ describe("createDomPropertyView()", () => {
       node = createDomPropertyView("foo", "bar", "baz");
     });
 
-    it("should emit on 'd_diff'", () => {
+    it("should emit on 'v_diff'", () => {
       const spy = jasmine.createSpy();
       connect(node.o.v_diff, spy);
       node.i.vm_diff({
