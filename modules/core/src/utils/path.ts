@@ -77,19 +77,20 @@ export function getPathComponent(path: string, index: number): string {
 }
 
 /**
- * Replaces the specified path component with the specified string.
+ * Replaces the specified path component with the result of the specified
+ * callback.
  * @param path
- * @param index
+ * @param at
  * @param cb
  */
 export function replacePathComponent(
   path: string,
-  index: number,
+  at: number,
   cb: (comp: string) => string
 ) {
   let start = 0;
   let end = path.indexOf(PATH_DELIMITER, start);
-  while (index--) {
+  while (at--) {
     start = end + 1;
     end = path.indexOf(PATH_DELIMITER, start);
   }
@@ -97,6 +98,32 @@ export function replacePathComponent(
     return path.slice(0, start) + cb(path.slice(start));
   } else {
     return path.slice(0, start) + cb(path.slice(start, end)) + path.slice(end);
+  }
+}
+
+/**
+ * Replaces the specified path component and the rest of the path with the
+ * result of the specified callback.
+ * @param path
+ * @param from
+ * @param cb
+ * TODO: Rename to replacePathTail once other replacePathTail is removed.
+ */
+export function replacePathTail2(
+  path: string,
+  from: number,
+  cb: (comp: string) => string
+): string {
+  let start = 0;
+  let end = path.indexOf(PATH_DELIMITER, start);
+  while (from--) {
+    start = end + 1;
+    end = path.indexOf(PATH_DELIMITER, start);
+  }
+  if (end === -1) {
+    return path.slice(0, start) + cb(path.slice(start));
+  } else {
+    return path.slice(0, start) + cb(path.slice(start, end));
   }
 }
 
