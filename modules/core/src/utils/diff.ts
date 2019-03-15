@@ -1,4 +1,27 @@
+import {Any} from "river-core";
 import {Diff} from "../types";
+
+/**
+ * Selects key-value pairs from the specified target that are present in the
+ * specified filter.
+ * @param target
+ * @param filter
+ */
+export function filterLookup(target: Any, filter: Any): Any | null {
+  const result = {};
+  let empty = true;
+  for (const path in target) {
+    if (path in filter) {
+      result[path] = target[path];
+      empty = false;
+    }
+  }
+  if (empty) {
+    return null;
+  } else {
+    return result;
+  }
+}
 
 /**
  * Applies diff to hash.

@@ -1,6 +1,33 @@
 import {Any} from "river-core";
 import {Diff} from "../types";
-import {applyDiff, compoundDiff} from "./diff";
+import {applyDiff, compoundDiff, filterLookup} from "./diff";
+
+describe("filterLookup()", () => {
+  it("should return filtered lookup", () => {
+    expect(filterLookup({
+      bar: 2,
+      baz: 3,
+      foo: 1
+    }, {
+      baz: null,
+      foo: null
+    })).toEqual({
+      baz: 3,
+      foo: 1
+    });
+  });
+
+  describe("for disjunct lookups", () => {
+    it("should return null", () => {
+      expect(filterLookup({
+        bar: 2
+      }, {
+        baz: null,
+        foo: null
+      })).toBeNull();
+    });
+  });
+});
 
 describe("applyDiff()", () => {
   describe("when source is empty", () => {
