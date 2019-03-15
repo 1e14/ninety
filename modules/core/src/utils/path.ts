@@ -80,9 +80,13 @@ export function getPathComponent(path: string, index: number): string {
  * Replaces the specified path component with the specified string.
  * @param path
  * @param index
- * @param to
+ * @param cb
  */
-export function replacePathComponent(path: string, index: number, to: string) {
+export function replacePathComponent(
+  path: string,
+  index: number,
+  cb: (comp: string) => string
+) {
   let start = 0;
   let end = path.indexOf(PATH_DELIMITER, start);
   while (index--) {
@@ -90,9 +94,9 @@ export function replacePathComponent(path: string, index: number, to: string) {
     end = path.indexOf(PATH_DELIMITER, start);
   }
   if (end === -1) {
-    return path.slice(0, start) + to;
+    return path.slice(0, start) + cb(path.slice(start));
   } else {
-    return path.slice(0, start) + to + path.slice(end);
+    return path.slice(0, start) + cb(path.slice(start, end)) + path.slice(end);
   }
 }
 
