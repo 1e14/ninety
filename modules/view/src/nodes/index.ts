@@ -1,2 +1,7 @@
 export {View, createView, In as ViewIn, Out as ViewOut} from "./View";
-export {View2, createView2, In as View2In, Out as View2Out} from "./View2";
+export {
+  ParentView, createParentView, In as ParentViewIn, Out as ParentViewOut
+}from "./ParentView";
+export {
+  LeafView, createLeafView, In as LeafViewIn, Out as LeafViewOut
+}from "./LeafView";
