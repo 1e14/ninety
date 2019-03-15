@@ -14,6 +14,8 @@ export type Out = {
 export type LeafView = Node<In, Out>;
 
 // TODO: Sampling?
+// TODO: Is a callback necessary? Are there any other use cases than string?
+//  (Perhaps when the property to be written is not known beforehand.)
 export function createLeafView(
   cb: PathMapperCallback,
   depth: number = 0
