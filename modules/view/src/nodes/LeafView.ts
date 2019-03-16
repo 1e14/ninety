@@ -40,8 +40,7 @@ export function createLeafView(
           // preparing matching path-value pairs for view
           const set = {};
           for (const abs in matches) {
-            const abs2 = replacePathTail2(abs, cb);
-            set[abs2] = matches[abs];
+            set[replacePathTail2(abs, cb)] = matches[abs];
           }
           outputs.d_view({set, del: {}}, tag);
         }
@@ -51,12 +50,10 @@ export function createLeafView(
         const vmSet = value.set;
         const vmDel = value.del;
         for (const abs in vmSet) {
-          const abs2 = replacePathTail2(abs, cb);
-          set[abs2] = vmSet[abs];
+          set[replacePathTail2(abs, cb)] = vmSet[abs];
         }
         for (const abs in vmDel) {
-          const abs2 = replacePathTail2(abs, cb);
-          del[abs2] = null;
+          del[replacePathTail2(abs, cb)] = null;
         }
         const changed = applyDiff(value, cache);
         if (changed) {

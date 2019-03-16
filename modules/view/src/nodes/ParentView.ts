@@ -30,15 +30,14 @@ export function createParentView(
       if ("get" in value) {
         // view is about to re-render
         // sending delete diff for entire subtree
-        for (const abs in value.get) {
+        const del = {};
+        const vmGet = value.get;
+        for (const abs in vmGet) {
           if (countPathComponents(abs) === depth + 1) {
             // applying current view's path component
             // and sending up to parent(s)
-            const abs2 = replacePathTail2(abs, cb);
-            outputs.d_view({
-              del: {[abs2]: null},
-              set: {}
-            }, tag);
+            del[replacePathTail2(abs, cb)] = null;
+            outputs.d_view({set: {}, del}, tag);
             // the only matching path processed - finishing
             break;
           }
@@ -52,16 +51,17 @@ export function createParentView(
     },
 
     d_view: (value, tag) => {
-      const result = {set: {}, del: {}};
-      for (const abs in value.set) {
-        const abs2 = replacePathComponent(abs, depth, cb);
-        result.set[abs2] = value.set[abs];
+      const set = {};
+      const del = {};
+      const viewSet = value.set;
+      const viewDel = value.del;
+      for (const abs in viewSet) {
+        set[replacePathComponent(abs, depth, cb)] = viewSet[abs];
       }
-      for (const abs in value.del) {
-        const abs2 = replacePathComponent(abs, depth, cb);
-        result.del[abs2] = null;
+      for (const abs in viewDel) {
+        del[replacePathComponent(abs, depth, cb)] = null;
       }
-      outputs.d_view(result, tag);
+      outputs.d_view({set, del}, tag);
     }
   }));
 }
