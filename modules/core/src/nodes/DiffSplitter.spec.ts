@@ -3,13 +3,12 @@ import {createDiffSplitter, DiffSplitter} from "./DiffSplitter";
 
 describe("createDiffSplitter()", () => {
   type Ports = "d_name" | "d_photo";
-  type Paths = "foo" | "bar" | "baz";
 
   describe("on input (d_diff)", () => {
-    let node: DiffSplitter<Ports, Paths>;
+    let node: DiffSplitter<Ports>;
 
     beforeEach(() => {
-      node = createDiffSplitter<Ports, Paths>({
+      node = createDiffSplitter<Ports>({
         d_name: ["foo", "baz"],
         d_photo: ["bar", "baz"]
       }, 2);

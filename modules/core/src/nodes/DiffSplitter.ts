@@ -2,14 +2,14 @@ import {Any, createNode, Node} from "river-core";
 import {Diff} from "../types";
 import {getPathComponent} from "../utils";
 
-export type Paths<C extends string> = Array<C>;
+export type Paths = Array<string>;
 
-export type PathsByPort<P extends string, C extends string> = {
-  [K in P]: Paths<C>;
+export type PathsByPort<P extends string> = {
+  [K in P]: Paths;
 };
 
-export type PortsByPath<P extends string, C extends string> = {
-  [K in C]: Array<P>
+export type PortsByPath<P extends string> = {
+  [K: string]: Array<P>
 };
 
 export type DiffsByPort<P extends string> = {
@@ -26,12 +26,12 @@ export type Out<P extends string> = DiffsByPort<P>;
  * Splits diffs by the values of a specified component in the diffs' paths.
  * Used for directing diffs to child components.
  */
-export type DiffSplitter<P extends string, C extends string> = Node<In, Out<P>>;
+export type DiffSplitter<P extends string> = Node<In, Out<P>>;
 
-export function createDiffSplitter<P extends string, C extends string>(
-  pathsByPort: PathsByPort<P, C>,
+export function createDiffSplitter<P extends string>(
+  pathsByPort: PathsByPort<P>,
   depth: number
-): DiffSplitter<P, C> {
+): DiffSplitter<P> {
   return createNode<In, Out<P>>
   (<Array<P>>Object.keys(pathsByPort), (outputs) => {
     const portsByPath = invertPathsByPort(pathsByPort);
@@ -70,10 +70,10 @@ export function createDiffSplitter<P extends string, C extends string>(
   });
 }
 
-function invertPathsByPort<P extends string, C extends string>(
-  bundles: PathsByPort<P, C>
-): PortsByPath<P, C> {
-  const result = <PortsByPath<P, C>>{};
+function invertPathsByPort<P extends string>(
+  bundles: PathsByPort<P>
+): PortsByPath<P> {
+  const result = <PortsByPath<P>>{};
   for (const port in bundles) {
     const bundle = bundles[port];
     for (const path of bundle) {
