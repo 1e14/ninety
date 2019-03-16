@@ -36,29 +36,32 @@ export function createLeafView(
         // TODO: Investigate performance impact of filterFlameByPrefix()
 
         // finding matching path-value pairs in cache
-        const filtered = filterFlameByPrefix(cache, value.get);
-        if (filtered) {
+        const matches = filterFlameByPrefix(cache, value.get);
+        if (matches) {
           // preparing matching path-value pairs for view
           const set = {};
-          for (const abs in filtered) {
+          for (const abs in matches) {
             const abs2 = replacePathTail2(abs, depth, cb);
-            set[abs2] = filtered[abs];
+            set[abs2] = matches[abs];
           }
           outputs.d_view({set, del: {}}, tag);
         }
       } else {
-        const result = {set: {}, del: {}};
-        for (const abs in value.set) {
+        const set = {};
+        const del = {};
+        const vmSet = value.set;
+        const vmDel = value.del;
+        for (const abs in vmSet) {
           const abs2 = replacePathTail2(abs, depth, cb);
-          result.set[abs2] = value.set[abs];
+          set[abs2] = vmSet[abs];
         }
-        for (const abs in value.del) {
+        for (const abs in vmDel) {
           const abs2 = replacePathTail2(abs, depth, cb);
-          result.del[abs2] = null;
+          del[abs2] = null;
         }
         const changed = applyDiff(value, cache);
         if (changed) {
-          outputs.d_view(result, tag);
+          outputs.d_view({set, del}, tag);
         }
       }
     }
