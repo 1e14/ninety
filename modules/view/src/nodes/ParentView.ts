@@ -34,7 +34,7 @@ export function createParentView(
           if (countPathComponents(abs) === depth + 1) {
             // applying current view's path component
             // and sending up to parent(s)
-            const abs2 = replacePathTail2(abs, depth, cb);
+            const abs2 = replacePathTail2(abs, cb);
             outputs.d_view({
               del: {[abs2]: null},
               set: {}

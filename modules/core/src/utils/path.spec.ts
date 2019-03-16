@@ -102,16 +102,16 @@ describe("replacePathComponent()", () => {
 describe("replacePathTail2()", () => {
   it("should replace specified component", () => {
     expect(replacePathTail2(
-      "foo.bar.baz.quux", 0, (comp) => comp.toUpperCase()))
+      "foo", (comp) => comp.toUpperCase()))
     .toBe("FOO");
     expect(replacePathTail2(
-      "foo.bar.baz.quux", 1, (comp) => comp.toUpperCase()))
+      "foo.bar", (comp) => comp.toUpperCase()))
     .toBe("foo.BAR");
     expect(replacePathTail2(
-      "foo.bar.baz.quux", 2, (comp) => comp.toUpperCase()))
+      "foo.bar.baz", (comp) => comp.toUpperCase()))
     .toBe("foo.bar.BAZ");
     expect(replacePathTail2(
-      "foo.bar.baz.quux", 3, (comp) => comp.toUpperCase()))
+      "foo.bar.baz.quux", (comp) => comp.toUpperCase()))
     .toBe("foo.bar.baz.QUUX");
   });
 });
