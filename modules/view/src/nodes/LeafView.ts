@@ -7,8 +7,7 @@ import {
   replacePathTail2
 } from "gravel-core";
 import {createNode, Node} from "river-core";
-
-export type PathMapperCallback = (path: string) => string;
+import {PathMapperCallback} from "../types";
 
 export type In = {
   d_vm: FlameDiff | FlameGet;
