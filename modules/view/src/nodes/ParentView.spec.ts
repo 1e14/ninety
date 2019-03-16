@@ -2,7 +2,7 @@ import {connect} from "river-core";
 import {createParentView, ParentView} from "./ParentView";
 
 describe("createParentView()", () => {
-  describe("on input (v_diff)", () => {
+  describe("on input (d_vm)", () => {
     let node: ParentView;
 
     beforeEach(() => {
@@ -13,15 +13,48 @@ describe("createParentView()", () => {
       }, 2);
     });
 
-    it("should emit processed diff on 'v_diff'", () => {
+    it("should forward to 'd_vm'", () => {
       const spy = jasmine.createSpy();
-      connect(node.o.v_diff, spy);
-      node.i.v_diff({
+      connect(node.o.d_vm, spy);
+      node.i.d_vm({
         del: {
           "page.table.1-3.text": null
         },
         set: {
           "page.table.2-4.text": "Foo"
+        }
+      }, "1");
+      expect(spy).toHaveBeenCalledWith({
+        del: {
+          "page.table.1-3.text": null
+        },
+        set: {
+          "page.table.2-4.text": "Foo"
+        }
+      }, "1");
+    });
+  });
+
+  describe("on input (d_view)", () => {
+    let node: ParentView;
+
+    beforeEach(() => {
+      const RE = /(\d+),(\d+)/;
+      node = createParentView((component) => {
+        const hits = RE.exec(component);
+        return `childNodes,${hits[1]}:tr,childNodes,${hits[2]}:td`;
+      }, 2);
+    });
+
+    it("should emit processed diff on 'd_view'", () => {
+      const spy = jasmine.createSpy();
+      connect(node.o.d_view, spy);
+      node.i.d_view({
+        del: {
+          "page.table.1,3.text": null
+        },
+        set: {
+          "page.table.2,4.text": "Foo"
         }
       }, "1");
       expect(spy).toHaveBeenCalledWith({

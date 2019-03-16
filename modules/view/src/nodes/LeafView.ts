@@ -1,15 +1,22 @@
-import {applyDiff, Diff, filterLookup, replacePathTail2} from "gravel-core";
-import {Any, createNode, Node} from "river-core";
+import {
+  applyDiff,
+  filterFlame,
+  Flame,
+  FlameDiff,
+  FlameGet,
+  replacePathTail2
+} from "gravel-core";
+import {createNode, Node} from "river-core";
 
 export type PathMapperCallback = (path: string) => string;
 
 export type In = {
-  ev_smp: Any;
-  vm_diff: Diff<Any>;
+  d_vm: FlameDiff | FlameGet;
 };
 
 export type Out = {
-  v_diff: Diff<Any>;
+  d_view: FlameDiff;
+  d_vm: FlameDiff;
 };
 
 export type LeafView = Node<In, Out>;
@@ -18,23 +25,15 @@ export type LeafView = Node<In, Out>;
 //  (Perhaps when the property to be written is not known beforehand.)
 export function createLeafView(
   cb: PathMapperCallback,
-  depth: number = 0
+  depth: number
 ): LeafView {
-  const cache: Any = {};
-  return createNode<In, Out>(["v_diff"], (outputs) => ({
-    ev_smp: (value, tag) => {
-      const filtered = filterLookup(cache, value);
-      if (filtered) {
-        outputs.v_diff({
-          del: {},
-          set: filtered
-        }, tag);
-      }
-    },
-
-    vm_diff: (value, tag) => {
-      const changed = applyDiff(value, cache);
-      if (changed) {
+  const cache: Flame = {};
+  return createNode<In, Out>(["d_view", "d_vm"], (outputs) => ({
+    d_vm: (value, tag) => {
+      if ("get" in value) {
+        // TODO: Handle invalidated state
+        outputs.d_vm({set: filterFlame(cache, value.get), del: {}}, tag);
+      } else {
         const result = {set: {}, del: {}};
         for (const abs in value.set) {
           const abs2 = replacePathTail2(abs, depth, cb);
@@ -44,7 +43,10 @@ export function createLeafView(
           const abs2 = replacePathTail2(abs, depth, cb);
           result.del[abs2] = null;
         }
-        outputs.v_diff(result, tag);
+        const changed = applyDiff(value, cache);
+        if (changed) {
+          outputs.d_view(result, tag);
+        }
       }
     }
   }));

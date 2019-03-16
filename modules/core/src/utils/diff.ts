@@ -1,5 +1,5 @@
 import {Any} from "river-core";
-import {Diff} from "../types";
+import {Diff, Flame, FlameDiff} from "../types";
 
 /**
  * Selects key-value pairs from the specified target that are present in the
@@ -7,7 +7,7 @@ import {Diff} from "../types";
  * @param target
  * @param filter
  */
-export function filterLookup(target: Any, filter: Any): Any | null {
+export function filterFlame(target: Any, filter: Any): Any | null {
   const result = {};
   let empty = true;
   for (const path in target) {
@@ -28,7 +28,7 @@ export function filterLookup(target: Any, filter: Any): Any | null {
  * @param diff
  * @param target
  */
-export function applyDiff<T>(diff: Diff<T>, target: Partial<T>): boolean {
+export function applyDiff(diff: FlameDiff, target: Flame): boolean {
   let changed = false;
 
   // applying deletes

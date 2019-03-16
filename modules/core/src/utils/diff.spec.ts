@@ -1,10 +1,10 @@
 import {Any} from "river-core";
 import {Diff} from "../types";
-import {applyDiff, compoundDiff, filterLookup} from "./diff";
+import {applyDiff, compoundDiff, filterFlame} from "./diff";
 
-describe("filterLookup()", () => {
+describe("filterFlame()", () => {
   it("should return filtered lookup", () => {
-    expect(filterLookup({
+    expect(filterFlame({
       bar: 2,
       baz: 3,
       foo: 1
@@ -19,7 +19,7 @@ describe("filterLookup()", () => {
 
   describe("for disjunct lookups", () => {
     it("should return null", () => {
-      expect(filterLookup({
+      expect(filterFlame({
         bar: 2
       }, {
         baz: null,

@@ -1,25 +1,31 @@
-import {Diff, replacePathComponent} from "gravel-core";
-import {Any, createNode, Node} from "river-core";
+import {FlameDiff, FlameGet, replacePathComponent} from "gravel-core";
+import {createNode, Node} from "river-core";
 
 export type PathMapperCallback = (path: string) => string;
 
 export type In = {
-  v_diff: Diff<Any>;
+  d_view: FlameDiff;
+  d_vm: FlameDiff | FlameGet;
 };
 
 export type Out = {
-  v_diff: Diff<Any>;
+  d_view: FlameDiff;
+  d_vm: FlameDiff | FlameGet;
 };
 
 export type ParentView = Node<In, Out>;
 
-// TODO: Sampling?
 export function createParentView(
   cb: PathMapperCallback,
   depth: number = 0
 ): ParentView {
-  return createNode<In, Out>(["v_diff"], (outputs) => ({
-    v_diff: (value, tag) => {
+  return createNode<In, Out>(["d_view", "d_vm"], (outputs) => ({
+    d_vm: (value, tag) => {
+      // TODO: Handle invalidated state
+      outputs.d_vm(value, tag);
+    },
+
+    d_view: (value, tag) => {
       const result = {set: {}, del: {}};
       for (const abs in value.set) {
         const abs2 = replacePathComponent(abs, depth, cb);
@@ -29,7 +35,7 @@ export function createParentView(
         const abs2 = replacePathComponent(abs, depth, cb);
         result.del[abs2] = null;
       }
-      outputs.v_diff(result, tag);
+      outputs.d_view(result, tag);
     }
   }));
 }
