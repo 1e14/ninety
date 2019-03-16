@@ -6,7 +6,7 @@ describe("createDomTextView2()", () => {
     let node: DomTextView2;
 
     beforeEach(() => {
-      node = createDomTextView2( 3);
+      node = createDomTextView2();
     });
 
     describe("on set", () => {

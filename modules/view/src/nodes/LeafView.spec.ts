@@ -6,7 +6,7 @@ describe("createLeafView()", () => {
     let node: LeafView;
 
     beforeEach(() => {
-      node = createLeafView(() => "style,color", 3);
+      node = createLeafView(() => "style,color");
     });
 
     describe("on 'get'", () => {

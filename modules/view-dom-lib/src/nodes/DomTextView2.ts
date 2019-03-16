@@ -8,13 +8,6 @@ export type Out = LeafViewOut;
 
 export type DomTextView2 = Node<In, Out>;
 
-/**
- * @param depth
- */
-export function createDomTextView2(
-  depth: number
-): DomTextView2 {
-  return createDomPropertyView2(
-    "innerText",
-    depth);
+export function createDomTextView2(): DomTextView2 {
+  return createDomPropertyView2("innerText");
 }

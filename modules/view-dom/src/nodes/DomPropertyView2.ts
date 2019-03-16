@@ -8,8 +8,7 @@ export type Out = LeafViewOut;
 export type DomPropertyView2 = Node<In, Out>;
 
 export function createDomPropertyView2(
-  property: string,
-  depth: number
+  property: string
 ): DomPropertyView2 {
-  return createLeafView(() => property, depth);
+  return createLeafView(() => property);
 }
