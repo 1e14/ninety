@@ -9,7 +9,7 @@ describe("createLeafView()", () => {
       node = createLeafView(() => "style,color", 2);
     });
 
-    describe("when 'get' is present", () => {
+    describe("on 'get'", () => {
       beforeEach(() => {
         node.i.d_vm({
           del: {},
@@ -24,12 +24,10 @@ describe("createLeafView()", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_vm, spy);
         node.i.d_vm({
-          del: {},
           get: {
-            "page.table.1,3.text": "Bar",
-            "page.table.3,2.text": "Baz"
-          },
-          set: {}
+            "page.table.1,3.text": null,
+            "page.table.3,2.text": null
+          }
         }, "1");
         expect(spy).toHaveBeenCalledWith({
           del: {},
@@ -39,23 +37,49 @@ describe("createLeafView()", () => {
         }, "1");
       });
 
+      describe("on prefix path", () => {
+        beforeEach(() => {
+          node.i.d_vm({
+            del: {},
+            set: {
+              "page.other.text": "Quux"
+            }
+          }, "1");
+        });
+
+        it("should emit all matching paths on 'd_vm'", () => {
+          const spy = jasmine.createSpy();
+          connect(node.o.d_vm, spy);
+          node.i.d_vm({
+            get: {
+              "page.table": null
+            }
+          }, "1");
+          expect(spy).toHaveBeenCalledWith({
+            del: {},
+            set: {
+              "page.table.1,3.text": "Bar",
+              "page.table.2,4.text": "Foo"
+            }
+          }, "1");
+        });
+      });
+
       describe("on empty results", () => {
         it("should not emit on 'd_vm'", () => {
           const spy = jasmine.createSpy();
           connect(node.o.d_vm, spy);
           node.i.d_vm({
-            del: {},
             get: {
-              "page.table.3,2.text": "Baz"
-            },
-            set: {}
+              "page.table.3,2.text": null
+            }
           }, "1");
           expect(spy).not.toHaveBeenCalled();
         });
       });
     });
 
-    describe("when 'set' and 'del' are present", () => {
+    describe("on 'set' & 'del'", () => {
       it("should emit processed diff on 'd_view'", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_view, spy);

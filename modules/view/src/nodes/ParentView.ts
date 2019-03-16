@@ -39,17 +39,16 @@ export function createParentView(
               del: {[abs2]: null},
               set: {}
             }, tag);
-            // TODO: Fetch entire subtree
             // the only matching path processed - finishing
             break;
           }
         }
-      } else {
-        // TODO: Handle invalidated state
-        // passing VM on towards children
-        // (must be split up before children get its contents)
-        outputs.d_vm(value, tag);
       }
+
+      // TODO: Handle invalidated state
+      // passing VM on towards children
+      // (must be split up before children get its contents)
+      outputs.d_vm(value, tag);
     },
 
     d_view: (value, tag) => {

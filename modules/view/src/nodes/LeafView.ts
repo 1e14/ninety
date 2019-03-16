@@ -1,6 +1,6 @@
 import {
   applyDiff,
-  filterFlame,
+  filterFlameByPrefix,
   Flame,
   FlameDiff,
   FlameGet,
@@ -32,8 +32,10 @@ export function createLeafView(
     d_vm: (value, tag) => {
       if ("get" in value) {
         // TODO: Handle invalidated state
-        const filtered = filterFlame(cache, value.get);
+        // TODO: Investigate performance impact of filterFlameByPrefix()
+        const filtered = filterFlameByPrefix(cache, value.get);
         if (filtered) {
+          // TODO: Call i.d_view() instead
           outputs.d_vm({set: filtered, del: {}}, tag);
         }
       } else {

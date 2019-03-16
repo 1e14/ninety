@@ -1,5 +1,5 @@
-import {Flame} from "./Flame";
+import {NullFlame} from "./NullFlame";
 
 export type FlameGet = {
-  get: Flame;
+  get: NullFlame;
 };

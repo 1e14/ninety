@@ -1,9 +1,14 @@
 import {Any} from "river-core";
 import {Diff} from "../types";
-import {applyDiff, compoundDiff, filterFlame} from "./diff";
+import {
+  applyDiff,
+  compoundDiff,
+  filterFlame,
+  filterFlameByPrefix
+} from "./diff";
 
 describe("filterFlame()", () => {
-  it("should return filtered lookup", () => {
+  it("should return filtered flame", () => {
     expect(filterFlame({
       bar: 2,
       baz: 3,
@@ -17,13 +22,40 @@ describe("filterFlame()", () => {
     });
   });
 
-  describe("for disjunct lookups", () => {
+  describe("on no hits", () => {
     it("should return null", () => {
       expect(filterFlame({
         bar: 2
       }, {
         baz: null,
         foo: null
+      })).toBeNull();
+    });
+  });
+});
+
+describe("filterFlameByPrefix()", () => {
+  it("should return filtered flame", () => {
+    expect(filterFlameByPrefix({
+      bar: 2,
+      baz: 3,
+      foo: 1
+    }, {
+      ba: null
+    })).toEqual({
+      bar: 2,
+      baz: 3
+    });
+  });
+
+  describe("on no hits", () => {
+    it("should return null", () => {
+      expect(filterFlameByPrefix({
+        bar: 2,
+        baz: 3,
+        foo: 1
+      }, {
+        quux: null
       })).toBeNull();
     });
   });

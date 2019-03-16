@@ -4,3 +4,4 @@ export {Diff} from "./Diff";
 export {FlameDiff} from "./FlameDiff";
 export {FlameGet} from "./FlameGet";
 export {Flame} from "./Flame";
+export {NullFlame} from "./NullFlame";

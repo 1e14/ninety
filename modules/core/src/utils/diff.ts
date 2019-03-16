@@ -1,5 +1,4 @@
-import {Any} from "river-core";
-import {Diff, Flame, FlameDiff} from "../types";
+import {Diff, Flame, FlameDiff, NullFlame} from "../types";
 
 /**
  * Selects key-value pairs from the specified target that are present in the
@@ -7,13 +6,31 @@ import {Diff, Flame, FlameDiff} from "../types";
  * @param target
  * @param filter
  */
-export function filterFlame(target: Any, filter: Any): Any | null {
-  const result = {};
+export function filterFlame(target: Flame, filter: Flame): Flame | null {
+  const result = <Flame>{};
   let empty = true;
   for (const path in target) {
     if (path in filter) {
       result[path] = target[path];
       empty = false;
+    }
+  }
+  if (empty) {
+    return null;
+  } else {
+    return result;
+  }
+}
+
+export function filterFlameByPrefix(target: Flame, filter: NullFlame): Flame {
+  const result = <Flame>{};
+  let empty = true;
+  for (const path in target) {
+    for (const prefix in filter) {
+      if (path.startsWith(prefix)) {
+        result[path] = target[path];
+        empty = false;
+      }
     }
   }
   if (empty) {
