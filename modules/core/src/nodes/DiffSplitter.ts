@@ -25,9 +25,15 @@ export type Out<P extends string> = DiffsByPort<P>;
 /**
  * Splits diffs by the values of a specified component in the diffs' paths.
  * Used for directing diffs to child components.
+ * @deprecated Use FlameSplitter
  */
 export type DiffSplitter<P extends string> = Node<In, Out<P>>;
 
+/**
+ * @deprecated Use createFlameSplitter
+ * @param pathsByPort
+ * @param depth
+ */
 export function createDiffSplitter<P extends string>(
   pathsByPort: PathsByPort<P>,
   depth: number

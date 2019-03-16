@@ -6,10 +6,14 @@ export type In = ViewIn;
 
 export type Out = ViewOut;
 
+/**
+ * @deprecated Use DomTextView2
+ */
 export type DomTextView = Node<In, Out>;
 
 /**
  * TODO: Change 'content' to 'text'.
+ * @deprecated Use createDomTextView2
  * @param path
  */
 export function createDomTextView(

@@ -13,8 +13,16 @@ export type Out = {
   v_diff: Diff<Any>;
 };
 
+/**
+ * @deprecated Use LeafView or ParentView
+ */
 export type View = Node<In, Out>;
 
+/**
+ * @deprecated Use createLeafView or createParentView
+ * @param path
+ * @param cb
+ */
 export function createView(
   path: string,
   cb: (vm: Diff<Any>) => Diff<Any>

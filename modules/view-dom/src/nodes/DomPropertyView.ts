@@ -6,8 +6,17 @@ export type In = ViewIn;
 
 export type Out = ViewOut;
 
+/**
+ * @deprecated Use DomPropertyView2
+ */
 export type DomPropertyView = Node<In, Out>;
 
+/**
+ * @deprecated Use createDomPropertyView2
+ * @param path
+ * @param tail
+ * @param property
+ */
 export function createDomPropertyView(
   path: string,
   tail: string,

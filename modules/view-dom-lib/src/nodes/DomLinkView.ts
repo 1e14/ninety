@@ -8,8 +8,16 @@ export type In = ViewIn;
 
 export type Out = ViewOut;
 
+/**
+ * @deprecated Use DomLinkView2
+ */
 export type DomLinkView = Node<In, Out>;
 
+/**
+ * @deprecated Use createDomLinkView2
+ * @param path
+ * @param depth
+ */
 export function createDomLinkView(
   path: string,
   depth: number = 0
