@@ -32,7 +32,10 @@ export function createLeafView(
     d_vm: (value, tag) => {
       if ("get" in value) {
         // TODO: Handle invalidated state
-        outputs.d_vm({set: filterFlame(cache, value.get), del: {}}, tag);
+        const filtered = filterFlame(cache, value.get);
+        if (filtered) {
+          outputs.d_vm({set: filtered, del: {}}, tag);
+        }
       } else {
         const result = {set: {}, del: {}};
         for (const abs in value.set) {

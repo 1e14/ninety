@@ -38,6 +38,21 @@ describe("createLeafView()", () => {
           }
         }, "1");
       });
+
+      describe("on empty results", () => {
+        it("should not emit on 'd_vm'", () => {
+          const spy = jasmine.createSpy();
+          connect(node.o.d_vm, spy);
+          node.i.d_vm({
+            del: {},
+            get: {
+              "page.table.3,2.text": "Baz"
+            },
+            set: {}
+          }, "1");
+          expect(spy).not.toHaveBeenCalled();
+        });
+      });
     });
 
     describe("when 'set' and 'del' are present", () => {
