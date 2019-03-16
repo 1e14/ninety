@@ -8,6 +8,9 @@ export type Out = LeafViewOut;
 
 export type DomTextView2 = Node<In, Out>;
 
+/**
+ * TODO: Refactor into parent view.
+ */
 export function createDomTextView2(): DomTextView2 {
   return createDomPropertyView2("innerText");
 }
