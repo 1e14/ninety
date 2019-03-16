@@ -6,7 +6,7 @@ describe("createLeafView()", () => {
     let node: LeafView;
 
     beforeEach(() => {
-      node = createLeafView(() => "style,color", 2);
+      node = createLeafView(() => "style,color", 3);
     });
 
     describe("on 'get'", () => {
@@ -20,24 +20,26 @@ describe("createLeafView()", () => {
         }, "1");
       });
 
-      it("should emit contents on 'd_vm'", () => {
-        const spy = jasmine.createSpy();
-        connect(node.o.d_vm, spy);
-        node.i.d_vm({
-          get: {
-            "page.table.1,3.text": null,
-            "page.table.3,2.text": null
-          }
-        }, "1");
-        expect(spy).toHaveBeenCalledWith({
-          del: {},
-          set: {
-            "page.table.1,3.text": "Bar"
-          }
-        }, "1");
+      describe("on exact match", () => {
+        it("should emit contents on 'd_vm'", () => {
+          const spy = jasmine.createSpy();
+          connect(node.o.d_view, spy);
+          node.i.d_vm({
+            get: {
+              "page.table.1,3.text": null,
+              "page.table.3,2.text": null
+            }
+          }, "1");
+          expect(spy).toHaveBeenCalledWith({
+            del: {},
+            set: {
+              "page.table.1,3.style,color": "Bar"
+            }
+          }, "1");
+        });
       });
 
-      describe("on prefix path", () => {
+      describe("on prefix match", () => {
         beforeEach(() => {
           node.i.d_vm({
             del: {},
@@ -49,7 +51,7 @@ describe("createLeafView()", () => {
 
         it("should emit all matching paths on 'd_vm'", () => {
           const spy = jasmine.createSpy();
-          connect(node.o.d_vm, spy);
+          connect(node.o.d_view, spy);
           node.i.d_vm({
             get: {
               "page.table": null
@@ -58,8 +60,8 @@ describe("createLeafView()", () => {
           expect(spy).toHaveBeenCalledWith({
             del: {},
             set: {
-              "page.table.1,3.text": "Bar",
-              "page.table.2,4.text": "Foo"
+              "page.table.1,3.style,color": "Bar",
+              "page.table.2,4.style,color": "Foo"
             }
           }, "1");
         });
@@ -93,10 +95,10 @@ describe("createLeafView()", () => {
         }, "1");
         expect(spy).toHaveBeenCalledWith({
           del: {
-            "page.table.style,color": null
+            "page.table.1,3.style,color": null
           },
           set: {
-            "page.table.style,color": "Foo"
+            "page.table.2,4.style,color": "Foo"
           }
         }, "1");
       });

@@ -28,15 +28,23 @@ export function createLeafView(
   depth: number
 ): LeafView {
   const cache: Flame = {};
-  return createNode<In, Out>(["d_view", "d_vm"], (outputs) => ({
+  return createNode<In, Out>
+  (["d_view", "d_vm"], (outputs) => ({
     d_vm: (value, tag) => {
       if ("get" in value) {
         // TODO: Handle invalidated state
         // TODO: Investigate performance impact of filterFlameByPrefix()
+
+        // finding matching path-value pairs in cache
         const filtered = filterFlameByPrefix(cache, value.get);
         if (filtered) {
-          // TODO: Call i.d_view() instead
-          outputs.d_vm({set: filtered, del: {}}, tag);
+          // preparing matching path-value pairs for view
+          const set = {};
+          for (const abs in filtered) {
+            const abs2 = replacePathTail2(abs, depth, cb);
+            set[abs2] = filtered[abs];
+          }
+          outputs.d_view({set, del: {}}, tag);
         }
       } else {
         const result = {set: {}, del: {}};
