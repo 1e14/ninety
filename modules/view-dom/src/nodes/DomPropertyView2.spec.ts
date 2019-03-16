@@ -2,7 +2,7 @@ import {connect} from "river-core";
 import {createDomPropertyView2, DomPropertyView2} from "./DomPropertyView2";
 
 describe("createDomPropertyView2()", () => {
-  describe("on input (vm_diff)", () => {
+  describe("on input (d_vm)", () => {
     describe("for leaf views", () => {
       let node: DomPropertyView2;
 
@@ -10,10 +10,10 @@ describe("createDomPropertyView2()", () => {
         node = createDomPropertyView2("innerText", 3);
       });
 
-      it("should emit on 'v_diff'", () => {
+      it("should emit on 'd_view'", () => {
         const spy = jasmine.createSpy();
-        connect(node.o.v_diff, spy);
-        node.i.vm_diff({
+        connect(node.o.d_view, spy);
+        node.i.d_vm({
           del: {
             "page.table.1-3.text": null
           },
@@ -39,10 +39,10 @@ describe("createDomPropertyView2()", () => {
         node = createDomPropertyView2("style.color", 1);
       });
 
-      it("should emit on 'v_diff'", () => {
+      it("should emit on 'd_view'", () => {
         const spy = jasmine.createSpy();
-        connect(node.o.v_diff, spy);
-        node.i.vm_diff({
+        connect(node.o.d_view, spy);
+        node.i.d_vm({
           del: {
             "page.table.1-3.text": null
           },
