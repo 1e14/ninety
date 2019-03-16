@@ -22,7 +22,7 @@ export function createDomLinkView2(
   const urlView = createDomPropertyView2("href");
   const view = createParentView(cb, depth);
   const splitter = createFlameSplitter<"d_text" | "d_url">({
-    d_text: ["content"],
+    d_text: ["text"],
     d_url: ["url"]
   }, depth + 1);
 

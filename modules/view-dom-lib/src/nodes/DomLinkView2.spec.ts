@@ -16,7 +16,7 @@ describe("createDomLinkView2()", () => {
         node.i.d_vm({
           del: {},
           set: {
-            "foo.content": "Hello",
+            "foo.text": "Hello",
             "foo.url": "http://"
           }
         }, "1");
@@ -36,7 +36,7 @@ describe("createDomLinkView2()", () => {
         node.i.d_vm({
           del: {},
           set: {
-            "foo.content": "Hello",
+            "foo.text": "Hello",
             "foo.url": "http://"
           }
         }, "1");
@@ -47,7 +47,7 @@ describe("createDomLinkView2()", () => {
         connect(node.o.d_view, spy);
         node.i.d_vm({
           del: {
-            "foo.content": null,
+            "foo.text": null,
             "foo.url": null
           },
           set: {}

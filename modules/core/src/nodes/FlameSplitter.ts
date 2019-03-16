@@ -34,7 +34,7 @@ export function createFlameSplitter<P extends string>(
 ): FlameSplitter<P> {
   return createNode<In, Out<P>>
   (<Array<P>>Object.keys(pathsByPort), (outputs) => {
-    const portsByPath = invertPathsByPort(pathsByPort);
+    const portsByComponent = invertPathsByComponent(pathsByPort);
     return {
       d_flames: (value, tag) => {
         // flames, split by path component
@@ -45,28 +45,28 @@ export function createFlameSplitter<P extends string>(
           // then looking at each path in the flame
           for (const path in branch) {
             const component = getPathComponent(path, depth);
-            const ports = portsByPath[component];
+            const ports = portsByComponent[component];
             // then going through ports that match the components
             // and distributing path-value pairs to the corresponding port
-            for (const port of ports) {
-              const flames = split[port] = split[port] || {};
-              const flame = flames[name] = flames[name] || {};
-              flame[path] = branch[path];
+            if (ports) {
+              for (const port of ports) {
+                const flames = split[port] = split[port] || {};
+                const flame = flames[name] = flames[name] || {};
+                flame[path] = branch[path];
+              }
             }
           }
         }
         // emitting split flames
         for (const port in split) {
-          if (split[port]) {
-            outputs[port](split[port], tag);
-          }
+          outputs[port](split[port], tag);
         }
       }
     };
   });
 }
 
-function invertPathsByPort<P extends string>(
+function invertPathsByComponent<P extends string>(
   bundles: ComponentsByPort<P>
 ): PortsByComponent<P> {
   const result = <PortsByComponent<P>>{};

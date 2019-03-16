@@ -1,13 +1,12 @@
 // tslint:disable:no-console
 
-import {createDiffBuffer} from "gravel-core";
+import {createDiffBuffer, FlameDiff} from "gravel-core";
 import {createRouter} from "gravel-router";
 import {createDomDiffApplier} from "gravel-view-dom";
-import {createDomLinkView} from "gravel-view-dom-lib";
 import {createDomReadyNotifier, createLocationHash} from "river-browser";
 import {connect} from "river-core";
 import {createMapper, createNoop} from "river-stdlib";
-import {createAnimatedTablePageView, createHelloWorldPageView} from "./nodes";
+import {createMainPageView} from "./nodes";
 
 // setting up bootstrapper
 const domReadyNotifier = createDomReadyNotifier();
@@ -26,64 +25,38 @@ setInterval(ticker.i.d_val, 10);
 connect(viewBuffer.o.d_diff, domDiffApplier.i.d_diff);
 connect(ticker.o.d_val, viewBuffer.i.ev_res);
 
-const ROOT_PATH = "body";
-
-// menu
-const MENU_PATH = `${ROOT_PATH}.childNodes.0:ul`;
-const LINK_PATH = "childNodes.0:a";
-const link1Source = createMapper(() => ({
+// setting up main page
+const mainPageView = createMainPageView();
+const mainPageVm = createMapper<any, FlameDiff>(() => ({
   del: {},
   set: {
-    content: "Hello World",
-    url: "#hello-world"
+    "page.menu.item1.text": "Hello World",
+    "page.menu.item1.url": "#hello-world",
+    "page.menu.item2.text": "Animated table",
+    "page.menu.item2.url": "#animated-table"
   }
 }));
-const link1 = createDomLinkView(`${MENU_PATH}.childNodes.0:li.${LINK_PATH}`);
-const link2Source = createMapper(() => ({
-  del: {},
-  set: {
-    content: "Animated table",
-    url: "#animated-table"
-  }
-}));
-const link2 = createDomLinkView(`${MENU_PATH}.childNodes.1:li.${LINK_PATH}`);
-connect(link1.o.ev_smp, link1Source.i.d_val);
-connect(link2.o.ev_smp, link2Source.i.d_val);
-connect(link1Source.o.d_val, link1.i.vm_diff);
-connect(link2Source.o.d_val, link2.i.vm_diff);
-connect(link1.o.v_diff, viewBuffer.i.d_diff);
-connect(link2.o.v_diff, viewBuffer.i.d_diff);
-connect(domReadyNotifier.o.ev_ready, link1.i.ev_smp);
-connect(domReadyNotifier.o.ev_ready, link2.i.ev_smp);
+connect(mainPageVm.o.d_val, mainPageView.i.d_vm);
+connect(domReadyNotifier.o.ev_ready, mainPageVm.i.d_val);
+connect(mainPageView.o.d_view, viewBuffer.i.d_diff);
 
 // setting up routes
 const ROUTE_HELLO_WORLD = /^hello-world$/;
 const ROUTE_ANIMATED_TABLE = /^animated-table$/;
 const ROUTE_REST = /^.*$/;
 
-// pages
-const PAGE_PATH = `${ROOT_PATH}.childNodes.1:div`;
-
 // "page" 1: "hello world"
 const helloWorldPageVm = createMapper(() => ({
-  get: {page: null}
+  del: {"page.content": null},
+  set: {"page.content.text": "Hello World!"}
 }));
-const helloWorldPageView = createHelloWorldPageView();
-connect(helloWorldPageVm.o.d_val, helloWorldPageView.i.d_vm);
-connect(helloWorldPageView.o.d_view, viewBuffer.i.d_diff);
-helloWorldPageView.i.d_vm({
-  del: {},
-  set: {
-    "page.text": "Hello World!"
-  }
-});
 
-// "page" 2: table w/ numbers
-const tableRouteDetector = createMapper<RegExp, boolean>(
-  (pattern) => pattern === ROUTE_ANIMATED_TABLE);
-const tablePageView = createAnimatedTablePageView(PAGE_PATH);
-connect(tableRouteDetector.o.d_val, tablePageView.i.st_active);
-connect(tablePageView.o.v_diff, viewBuffer.i.d_diff);
+// // "page" 2: table w/ numbers
+// const tableRouteDetector = createMapper<RegExp, boolean>(
+//   (pattern) => pattern === ROUTE_ANIMATED_TABLE);
+// const tablePageView = createAnimatedTablePageView(PAGE_PATH);
+// connect(tableRouteDetector.o.d_val, tablePageView.i.st_active);
+// connect(tablePageView.o.v_diff, viewBuffer.i.d_diff);
 
 // setting up routing table
 const router = createRouter([
@@ -93,5 +66,6 @@ const router = createRouter([
 ]);
 connect(hash2Path.o.d_val, router.i.d_route);
 connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageVm.i.d_val);
-connect(router.o[`r_${ROUTE_ANIMATED_TABLE}`], tablePageView.i.ev_smp);
-connect(router.o.d_pattern, tableRouteDetector.i.d_val);
+
+// connect(router.o[`r_${ROUTE_ANIMATED_TABLE}`], tablePageView.i.ev_smp);
+// connect(router.o.d_pattern, tableRouteDetector.i.d_val);
