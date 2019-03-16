@@ -1,4 +1,10 @@
-import {FlameDiff, FlameGet, replacePathComponent} from "gravel-core";
+import {
+  countPathComponents,
+  FlameDiff,
+  FlameGet,
+  replacePathComponent,
+  replacePathTail2
+} from "gravel-core";
 import {createNode, Node} from "river-core";
 
 export type PathMapperCallback = (path: string) => string;
@@ -21,8 +27,29 @@ export function createParentView(
 ): ParentView {
   return createNode<In, Out>(["d_view", "d_vm"], (outputs) => ({
     d_vm: (value, tag) => {
-      // TODO: Handle invalidated state
-      outputs.d_vm(value, tag);
+      if ("get" in value) {
+        // view is about to re-render
+        // sending delete diff for entire subtree
+        for (const abs in value.get) {
+          if (countPathComponents(abs) === depth + 1) {
+            // applying current view's path component
+            // and sending up to parent(s)
+            const abs2 = replacePathTail2(abs, depth, cb);
+            outputs.d_view({
+              del: {[abs2]: null},
+              set: {}
+            }, tag);
+            // TODO: Fetch entire subtree
+            // the only matching path processed - finishing
+            break;
+          }
+        }
+      } else {
+        // TODO: Handle invalidated state
+        // passing VM on towards children
+        // (must be split up before children get its contents)
+        outputs.d_vm(value, tag);
+      }
     },
 
     d_view: (value, tag) => {
