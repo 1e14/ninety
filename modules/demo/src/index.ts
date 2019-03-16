@@ -65,8 +65,18 @@ const ROUTE_REST = /^.*$/;
 const PAGE_PATH = `${ROOT_PATH}.childNodes.1:div`;
 
 // "page" 1: "hello world"
-const helloWorldPageView = createHelloWorldPageView(PAGE_PATH);
-connect(helloWorldPageView.o.v_diff, viewBuffer.i.d_diff);
+const helloWorldPageVm = createMapper(() => ({
+  get: {page: null}
+}));
+const helloWorldPageView = createHelloWorldPageView();
+connect(helloWorldPageVm.o.d_val, helloWorldPageView.i.d_vm);
+connect(helloWorldPageView.o.d_view, viewBuffer.i.d_diff);
+helloWorldPageView.i.d_vm({
+  del: {},
+  set: {
+    "page.text": "Hello World!"
+  }
+});
 
 // "page" 2: table w/ numbers
 const tableRouteDetector = createMapper<RegExp, boolean>(
@@ -82,6 +92,6 @@ const router = createRouter([
   ROUTE_REST
 ]);
 connect(hash2Path.o.d_val, router.i.d_route);
-connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageView.i.ev_smp);
+connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageVm.i.d_val);
 connect(router.o[`r_${ROUTE_ANIMATED_TABLE}`], tablePageView.i.ev_smp);
 connect(router.o.d_pattern, tableRouteDetector.i.d_val);

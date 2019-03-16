@@ -1,24 +1,16 @@
-import {createView, ViewIn, ViewOut} from "gravel-view";
-import {createDomTextView} from "gravel-view-dom-lib";
+import {createParentView, ParentViewIn, ParentViewOut} from "gravel-view";
+import {createDomTextView2} from "gravel-view-dom-lib";
 import {connect, Node} from "river-core";
-import {createMapper} from "river-stdlib";
 
-export type HelloWorldPageView = Node<ViewIn, ViewOut>;
+export type HelloWorldPageView = Node<ParentViewIn, ParentViewOut>;
 
-export function createHelloWorldPageView(path: string = ""): HelloWorldPageView {
-  const textSource = createMapper(() => ({
-    del: {},
-    set: {
-      content: "Hello World!"
-    }
-  }));
-  const textView = createDomTextView("childNodes.0:span");
-  const view = createView(path, () => ({del: {}, set: {}}));
+export function createHelloWorldPageView(): HelloWorldPageView {
+  const textView = createDomTextView2(1);
+  const view = createParentView(() => "body.childNodes.1:div", 0);
 
-  connect(textView.o.ev_smp, textSource.i.d_val);
-  connect(textSource.o.d_val, textView.i.vm_diff);
-  connect(textView.o.v_diff, view.i.v_diff);
-  connect(view.o.ev_smp, textView.i.ev_smp);
+  connect(textView.o.d_vm, textView.i.d_vm);
+  connect(textView.o.d_view, view.i.d_view);
+  connect(view.o.d_vm, textView.i.d_vm);
 
   return view;
 }
