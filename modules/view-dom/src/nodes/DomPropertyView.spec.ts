@@ -1,12 +1,12 @@
 import {connect} from "river-core";
-import {createDomPropertyView2, DomPropertyView2} from "./DomPropertyView2";
+import {createDomPropertyView, DomPropertyView} from "./DomPropertyView";
 
-describe("createDomPropertyView2()", () => {
+describe("createDomPropertyView()", () => {
   describe("on input (d_vm)", () => {
-    let node: DomPropertyView2;
+    let node: DomPropertyView;
 
     beforeEach(() => {
-      node = createDomPropertyView2("innerText");
+      node = createDomPropertyView("innerText");
     });
 
     it("should emit on 'd_view'", () => {

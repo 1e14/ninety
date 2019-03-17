@@ -5,10 +5,10 @@ export type In = LeafViewIn;
 
 export type Out = LeafViewOut;
 
-export type DomPropertyView2 = Node<In, Out>;
+export type DomPropertyView = Node<In, Out>;
 
-export function createDomPropertyView2(
+export function createDomPropertyView(
   property: string
-): DomPropertyView2 {
+): DomPropertyView {
   return createLeafView(() => property);
 }

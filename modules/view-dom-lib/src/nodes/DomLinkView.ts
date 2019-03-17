@@ -5,7 +5,7 @@ import {
   ParentViewOut,
   PathMapperCallback
 } from "gravel-view";
-import {createDomPropertyView2} from "gravel-view-dom";
+import {createDomPropertyView} from "gravel-view-dom";
 import {connect, Node} from "river-core";
 
 export type In = ParentViewIn;
@@ -18,8 +18,8 @@ export function createDomLinkView(
   cb: PathMapperCallback,
   depth: number = 0
 ): DomLinkView {
-  const textView = createDomPropertyView2("innerText");
-  const urlView = createDomPropertyView2("href");
+  const textView = createDomPropertyView("innerText");
+  const urlView = createDomPropertyView("href");
   const view = createParentView(cb, depth);
   const splitter = createFlameSplitter<"d_text" | "d_url">({
     d_text: ["text"],
