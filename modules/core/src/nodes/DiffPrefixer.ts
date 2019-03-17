@@ -12,6 +12,11 @@ export type Out = {
 
 export type DiffPrefixer = Node<In, Out>;
 
+/**
+ * TODO: Remove? Not used anywhere.
+ * @deprecated Not used anywhere.
+ * @param prefix
+ */
 export function createDiffPrefixer(prefix: string): DiffPrefixer {
   return createNode<In, Out>(["d_diff"], (outputs) => {
     return {
