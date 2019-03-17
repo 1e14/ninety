@@ -30,10 +30,10 @@ const mainPageView = createMainPageView();
 const mainPageVm = createMapper<any, FlameDiff>(() => ({
   del: {},
   set: {
-    "page.menu.item1.text": "Hello World",
+    "page.menu.item1.text": "Hello world",
     "page.menu.item1.url": "#hello-world",
-    "page.menu.item2.text": "Animated table",
-    "page.menu.item2.url": "#animated-table"
+    "page.menu.item2.text": "Stress test (table)",
+    "page.menu.item2.url": "#stress-test-1"
   }
 }));
 connect(mainPageVm.o.d_val, mainPageView.i.d_vm);
@@ -42,7 +42,7 @@ connect(mainPageView.o.d_view, viewBuffer.i.d_diff);
 
 // setting up routes
 const ROUTE_HELLO_WORLD = /^hello-world$/;
-const ROUTE_ANIMATED_TABLE = /^animated-table$/;
+const ROUTE_STRESS_TEST_1 = /^stress-test-1$/;
 const ROUTE_REST = /^.*$/;
 
 // "page" 0: no content
@@ -62,7 +62,7 @@ connect(helloWorldPageVm.o.d_val, mainPageView.i.d_vm);
 // setting up routing table
 const router = createRouter([
   ROUTE_HELLO_WORLD,
-  ROUTE_ANIMATED_TABLE,
+  ROUTE_STRESS_TEST_1,
   ROUTE_REST
 ]);
 connect(hash2Path.o.d_val, router.i.d_route);
