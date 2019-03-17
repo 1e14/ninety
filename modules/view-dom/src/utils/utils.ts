@@ -195,8 +195,8 @@ function applyDomDiffDel(diffDel: DiffDel<Any>): DiffDel<Any> {
     if (node) {
       for (const path in diffDel) {
         const success = delDomProperty(
-          node,
           property,
+          node,
           path.substr(root.length + 1));
         if (!success) {
           bounced[path] = null;
