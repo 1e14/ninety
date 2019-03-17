@@ -55,7 +55,7 @@ connect(emptyPageView.o.d_val, mainPageView.i.d_vm);
 // "page" 1: "hello world"
 const helloWorldPageVm = createMapper(() => ({
   del: {"page.hello": null},
-  set: {"page.hello.text": "Hello World!"}
+  set: {"page.hello.caption.text": "Hello World!"}
 }));
 connect(helloWorldPageVm.o.d_val, mainPageView.i.d_vm);
 

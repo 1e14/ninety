@@ -10,13 +10,13 @@ export function createHelloWorldPageView(
   depth: number = 0
 ): HelloWorldPageView {
   const view = createParentView(() => path, depth);
-  const textView = createDomTextView();
-  const splitter = createFlameSplitter({
-    d_text: ["text"]
+  const textView = createDomTextView(() => "childNodes.0:span", depth + 1);
+  const splitter = createFlameSplitter<"d_caption">({
+    d_caption: ["caption"]
   }, depth + 1);
 
   connect(view.o.d_vm, splitter.i.d_flames);
-  connect(splitter.o.d_text, textView.i.d_vm);
+  connect(splitter.o.d_caption, textView.i.d_vm);
   connect(textView.o.d_view, view.i.d_view);
 
   return view;
