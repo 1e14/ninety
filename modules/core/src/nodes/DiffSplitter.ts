@@ -1,5 +1,5 @@
-import {Any, createNode, Node} from "river-core";
-import {Diff} from "../types";
+import {createNode, Node} from "river-core";
+import {FlameDiff} from "../types";
 import {getPathComponent} from "../utils";
 
 export type Paths = Array<string>;
@@ -13,11 +13,11 @@ export type PortsByPath<P extends string> = {
 };
 
 export type DiffsByPort<P extends string> = {
-  [K in P]: Diff<Any>
+  [K in P]: FlameDiff
 };
 
 export type In = {
-  d_diff: Diff<Any>
+  d_diff: FlameDiff
 };
 
 export type Out<P extends string> = DiffsByPort<P>;

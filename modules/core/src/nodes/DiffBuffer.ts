@@ -1,20 +1,20 @@
 import {createNode, Node} from "river-core";
-import {Diff} from "../types";
+import {FlameDiff} from "../types";
 import {compoundDiff} from "../utils";
 
-export type In<T> = {
-  d_diff: Diff<T>;
+export type In = {
+  d_diff: FlameDiff;
   ev_res: any;
 };
 
-export type Out<T> = {
-  d_diff: Diff<T>;
+export type Out = {
+  d_diff: FlameDiff;
 };
 
-export type DiffBuffer<T> = Node<In<T>, Out<T>>;
+export type DiffBuffer = Node<In, Out>;
 
-export function createDiffBuffer<T>(buffer = <Diff<T>>{}): DiffBuffer<T> {
-  return createNode<In<T>, Out<T>>
+export function createDiffBuffer(buffer = <FlameDiff>{}): DiffBuffer {
+  return createNode<In, Out>
   (["d_diff"], (outputs) => {
     buffer.set = buffer.set || {};
     buffer.del = buffer.del || {};

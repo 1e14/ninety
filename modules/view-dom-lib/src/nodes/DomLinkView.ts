@@ -1,4 +1,4 @@
-import {createDiffSplitter, Diff} from "gravel-core";
+import {createDiffSplitter, FlameDiff} from "gravel-core";
 import {ViewIn, ViewOut} from "gravel-view";
 import {createDomPropertyView} from "gravel-view-dom";
 import {Any, connect, Node} from "river-core";
@@ -31,7 +31,7 @@ export function createDomLinkView(
     d_url: ["url"]
   }, depth);
   const evSmp = createNoop<any>();
-  const vDiff = createNoop<Diff<Any>>();
+  const vDiff = createNoop<FlameDiff>();
 
   connect(splitter.o.d_text, textView.i.vm_diff);
   connect(splitter.o.d_url, urlView.i.vm_diff);

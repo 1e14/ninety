@@ -1,15 +1,6 @@
-import {Diff, prefixDiffPaths} from "gravel-core";
+import {FlameDiff, prefixDiffPaths} from "gravel-core";
 import {createNode, Node} from "river-core";
 import {DomEventType} from "../types";
-
-export type DomEventHandler = (event: Event) => void;
-
-export type DomEventHandlers = {
-  [key in DomEventType]: DomEventHandler
-};
-
-// TODO: Move to EventVm
-export type EventViewDiff = Diff<DomEventHandlers>;
 
 export type In = {
   ev_smp: any;
@@ -17,7 +8,7 @@ export type In = {
 
 export type Out<T extends Event> = {
   d_event: T;
-  v_diff: EventViewDiff
+  v_diff: FlameDiff
 };
 
 export type DomEventView<T extends Event> = Node<In, Out<T>>;

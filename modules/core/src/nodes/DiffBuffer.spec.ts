@@ -3,7 +3,7 @@ import {createDiffBuffer, DiffBuffer} from "./DiffBuffer";
 
 describe("createDiffBuffer()", () => {
   describe("on input (ev_res)", function () {
-    let node: DiffBuffer<{ foo: number, bar: boolean }>;
+    let node: DiffBuffer;
 
     beforeEach(() => {
       node = createDiffBuffer();

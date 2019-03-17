@@ -1,5 +1,4 @@
-import {Diff, DiffDel, DiffSet, getRootPath} from "gravel-core";
-import {Any} from "river-core";
+import {Flame, FlameDiff, getRootPath, NullFlame} from "gravel-core";
 
 /**
  * Adds placeholder comment nodes to the specified parent node up to the
@@ -186,7 +185,7 @@ export function delDomProperty(property: any, node: Node, path: string): boolean
  * TODO: Tests
  * @param diffDel
  */
-function applyDomDiffDel(diffDel: DiffDel<Any>): DiffDel<Any> {
+function applyDomDiffDel(diffDel: NullFlame): NullFlame {
   const bounced = {};
   const root = getRootPath(diffDel);
   let applied = true;
@@ -216,10 +215,9 @@ function applyDomDiffDel(diffDel: DiffDel<Any>): DiffDel<Any> {
 }
 
 /**
- * TODO: Tests
  * @param diffSet
  */
-function applyDomDiffSet(diffSet: DiffSet<Any>): DiffSet<Any> {
+function applyDomDiffSet(diffSet: Flame): Flame {
   const bounced = {};
   const root = getRootPath(diffSet);
   let applied = true;
@@ -257,7 +255,7 @@ function applyDomDiffSet(diffSet: DiffSet<Any>): DiffSet<Any> {
  * Applies the specified view diff to the DOM.
  * @param diff
  */
-export function applyDomDiff(diff: Diff<Any>): Diff<Any> {
+export function applyDomDiff(diff: FlameDiff): FlameDiff {
   const diffDel = diff.del;
   const diffSet = diff.set;
   const bouncedDel = applyDomDiffDel(diffDel);

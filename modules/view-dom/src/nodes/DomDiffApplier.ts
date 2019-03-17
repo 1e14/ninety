@@ -1,13 +1,13 @@
-import {Diff} from "gravel-core";
-import {Any, createNode, Node} from "river-core";
+import {FlameDiff} from "gravel-core";
+import {createNode, Node} from "river-core";
 import {applyDomDiff} from "../utils";
 
 export type In = {
-  d_diff: Diff<Any>;
+  d_diff: FlameDiff;
 };
 
 export type Out = {
-  b_d_diff: Diff<Any>;
+  b_d_diff: FlameDiff;
 };
 
 export type DomDiffApplier = Node<In, Out>;

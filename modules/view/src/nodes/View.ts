@@ -1,16 +1,16 @@
-import {Diff, prefixDiffPaths} from "gravel-core";
+import {FlameDiff, prefixDiffPaths} from "gravel-core";
 import {compoundDiff} from "gravel-core/dist";
 import {Any, createNode, Node} from "river-core";
 
 export type In = {
   ev_smp: any,
-  v_diff: Diff<Any>;
-  vm_diff: Diff<Any>;
+  v_diff: FlameDiff;
+  vm_diff: FlameDiff;
 };
 
 export type Out = {
   ev_smp: any;
-  v_diff: Diff<Any>;
+  v_diff: FlameDiff;
 };
 
 /**
@@ -25,7 +25,7 @@ export type View = Node<In, Out>;
  */
 export function createView(
   path: string,
-  cb: (vm: Diff<Any>) => Diff<Any>
+  cb: (vm: FlameDiff) => FlameDiff
 ): View {
   return createNode<In, Out>(["ev_smp", "v_diff"], (outputs) => {
     const content = {set: {}, del: {}};

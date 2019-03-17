@@ -1,5 +1,4 @@
-import {Any} from "river-core";
-import {Diff} from "../types";
+import {FlameDiff} from "../types";
 import {
   applyDiff,
   compoundDiff,
@@ -70,12 +69,12 @@ describe("applyDiff()", () => {
     });
 
     it("should not change target", () => {
-      applyDiff(<Diff<Any>>{}, hash);
+      applyDiff(<FlameDiff>{}, hash);
       expect(hash).toEqual({foo: 5});
     });
 
     it("should return false", () => {
-      const result = applyDiff(<Diff<Any>>{}, hash);
+      const result = applyDiff(<FlameDiff>{}, hash);
       expect(result).toBe(false);
     });
   });
@@ -127,25 +126,25 @@ describe("applyDiff()", () => {
 
 describe("compoundDiff()", () => {
   describe("when source is empty", () => {
-    let diff: Diff<{ foo: number, bar: boolean }>;
+    let diff: FlameDiff;
 
     beforeEach(() => {
       diff = {set: {foo: 5}, del: {}};
     });
 
     it("should not change target", () => {
-      compoundDiff(<Diff<Any>>{}, diff);
+      compoundDiff(<FlameDiff>{}, diff);
       expect(diff).toEqual({set: {foo: 5}, del: {}});
     });
 
     it("should return false", () => {
-      const result = compoundDiff(<Diff<Any>>{}, diff);
+      const result = compoundDiff(<FlameDiff>{}, diff);
       expect(result).toBe(false);
     });
   });
 
   describe("when source doesn't change", () => {
-    let diff: Diff<{ foo: number, bar: boolean }>;
+    let diff: FlameDiff;
 
     beforeEach(() => {
       diff = {set: {foo: 5}, del: {bar: null}};
@@ -163,7 +162,7 @@ describe("compoundDiff()", () => {
   });
 
   describe("on set", () => {
-    let diff: Diff<{ foo: number, bar: boolean }>;
+    let diff: FlameDiff;
 
     beforeEach(() => {
       diff = {set: {}, del: {foo: null}};
@@ -181,7 +180,7 @@ describe("compoundDiff()", () => {
   });
 
   describe("on delete", () => {
-    let diff: Diff<{ foo: number, bar: boolean }>;
+    let diff: FlameDiff;
 
     beforeEach(() => {
       diff = {set: {foo: 5}, del: {}};

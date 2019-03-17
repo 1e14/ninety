@@ -1,7 +1,7 @@
-import {Diff} from "gravel-core";
+import {FlameDiff} from "gravel-core";
 import {createView, ViewIn, ViewOut} from "gravel-view";
 import {createDomEventView, createDomTextView} from "gravel-view-dom-lib";
-import {Any, connect, Node} from "river-core";
+import {connect, Node} from "river-core";
 import {createMapper} from "river-stdlib";
 import {generateTableData} from "../utils";
 import {createSimpleTableView} from "./SimpleTableView";
@@ -15,7 +15,7 @@ export type AnimatedTablePageView = Node<In, ViewOut>;
 
 export function createAnimatedTablePageView(path: string = ""): AnimatedTablePageView {
   const tableTicker = createTicker(100);
-  const tableSource = createMapper<any, Diff<Any>>(() => {
+  const tableSource = createMapper<any, FlameDiff>(() => {
     return generateTableData(30, 30);
   });
   const textStartSource = createMapper(() => ({

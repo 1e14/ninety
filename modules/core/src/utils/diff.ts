@@ -1,4 +1,4 @@
-import {Diff, Flame, FlameDiff, NullFlame} from "../types";
+import {Flame, FlameDiff, NullFlame} from "../types";
 
 /**
  * Selects key-value pairs from the specified target that are present in the
@@ -73,7 +73,7 @@ export function applyDiff(diff: FlameDiff, target: Flame): boolean {
  * @param source
  * @param target
  */
-export function compoundDiff<T>(source: Diff<T>, target: Diff<T>): boolean {
+export function compoundDiff<T>(source: FlameDiff, target: FlameDiff): boolean {
   const targetSet = target.set;
   const targetDel = target.del;
   let changed = false;

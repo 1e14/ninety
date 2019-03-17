@@ -1,5 +1,5 @@
 import {Any} from "river-core";
-import {Diff} from "../types";
+import {FlameDiff} from "../types";
 
 export const PATH_DELIMITER = ".";
 
@@ -9,8 +9,8 @@ export const PATH_DELIMITER = ".";
  * @param prefix
  */
 export function prefixDiffPaths<T>(
-  diff: Diff<T>, prefix: string
-): Diff<{ [key: string]: T[keyof T] }> {
+  diff: FlameDiff, prefix: string
+): FlameDiff {
   const diffSet = diff.set;
   const diffDel = diff.del;
   const set = {};

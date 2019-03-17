@@ -1,9 +1,8 @@
-import {Diff} from "gravel-core";
-import {Any} from "river-core";
+import {FlameDiff} from "gravel-core";
 
 const COLORS = ["red", "green", "blue", "black", "purple", "teal", "grey"];
 
-export function generateTableData(rows: number, columns: number): Diff<Any> {
+export function generateTableData(rows: number, columns: number): FlameDiff {
   const set = {};
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < columns; j++) {
