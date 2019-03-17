@@ -13,6 +13,11 @@ export type Out<T extends Event> = {
 
 export type DomEventView<T extends Event> = Node<In, Out<T>>;
 
+/**
+ * TODO: Refactor into DomPropertyView
+ * @param prefix
+ * @param type
+ */
 export function createDomEventView<T extends Event>(
   prefix: string,
   type: DomEventType
