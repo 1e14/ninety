@@ -2,7 +2,7 @@ import {createFlameSplitter} from "gravel-core";
 import {createParentView, ParentViewIn, ParentViewOut} from "gravel-view";
 import {createLeafView} from "gravel-view/dist";
 import {connect, Node} from "river-core";
-import {createHelloWorldPageView} from "./HelloWorldPageView";
+import {createHelloWorldPageView} from "./hello-world";
 import {createMainMenuView} from "./MainMenuView";
 
 export type In = ParentViewIn;
