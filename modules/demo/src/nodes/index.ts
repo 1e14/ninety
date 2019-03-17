@@ -1,7 +1,4 @@
 export {
-  AnimatedTablePageView, createAnimatedTablePageView
-} from "./AnimatedTablePageView";
-export {
   HelloWorldPageView, createHelloWorldPageView
 } from "./HelloWorldPageView";
 export {MainMenuView, createMainMenuView} from "./MainMenuView";
