@@ -45,11 +45,19 @@ const ROUTE_HELLO_WORLD = /^hello-world$/;
 const ROUTE_ANIMATED_TABLE = /^animated-table$/;
 const ROUTE_REST = /^.*$/;
 
+// "page" 0: no content
+const noPageVm = createMapper(() => ({
+  del: {"page.content": null},
+  set: {}
+}));
+connect(noPageVm.o.d_val, mainPageView.i.d_vm);
+
 // "page" 1: "hello world"
 const helloWorldPageVm = createMapper(() => ({
   del: {"page.content": null},
   set: {"page.content.text": "Hello World!"}
 }));
+connect(helloWorldPageVm.o.d_val, mainPageView.i.d_vm);
 
 // // "page" 2: table w/ numbers
 // const tableRouteDetector = createMapper<RegExp, boolean>(
@@ -66,6 +74,8 @@ const router = createRouter([
 ]);
 connect(hash2Path.o.d_val, router.i.d_route);
 connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageVm.i.d_val);
+connect(router.o[`r_${ROUTE_REST}`], noPageVm.i.d_val);
+connect(router.o[`r_${ROUTE_REST}`], console.log);
 
 // connect(router.o[`r_${ROUTE_ANIMATED_TABLE}`], tablePageView.i.ev_smp);
 // connect(router.o.d_pattern, tableRouteDetector.i.d_val);
