@@ -1,6 +1,6 @@
 import {createFlameSplitter} from "gravel-core";
 import {createParentView, ParentViewIn, ParentViewOut} from "gravel-view";
-import {createDomTextView2} from "gravel-view-dom-lib";
+import {createDomTextView} from "gravel-view-dom-lib";
 import {connect, Node} from "river-core";
 
 export type HelloWorldPageView = Node<ParentViewIn, ParentViewOut>;
@@ -10,7 +10,7 @@ export function createHelloWorldPageView(
   depth: number = 0
 ): HelloWorldPageView {
   const view = createParentView(() => path, depth);
-  const textView = createDomTextView2();
+  const textView = createDomTextView();
   const splitter = createFlameSplitter({
     d_text: ["text"]
   }, depth + 1);

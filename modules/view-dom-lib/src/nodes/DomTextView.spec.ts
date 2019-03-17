@@ -1,12 +1,12 @@
 import {connect} from "river-core";
-import {createDomTextView2, DomTextView2} from "./DomTextView2";
+import {createDomTextView, DomTextView} from "./DomTextView";
 
-describe("createDomTextView2()", () => {
+describe("createDomTextView()", () => {
   describe("on input (d_vm)", () => {
-    let node: DomTextView2;
+    let node: DomTextView;
 
     beforeEach(() => {
-      node = createDomTextView2();
+      node = createDomTextView();
     });
 
     describe("on set", () => {
