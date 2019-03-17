@@ -1,6 +1,6 @@
 import {createFlameSplitter} from "gravel-core";
 import {createParentView, ParentViewIn, ParentViewOut} from "gravel-view";
-import {createDomLinkView2} from "gravel-view-dom-lib";
+import {createDomLinkView} from "gravel-view-dom-lib";
 import {connect, Node} from "river-core";
 
 export type In = ParentViewIn;
@@ -19,8 +19,8 @@ export function createMainMenuView(
   depth: number = 0
 ): MainMenuView {
   const view = createParentView(() => path, depth);
-  const item1View = createDomLinkView2(() => "childNodes.0:li.childNodes.0:a", depth + 1);
-  const item2View = createDomLinkView2(() => "childNodes.1:li.childNodes.0:a", depth + 1);
+  const item1View = createDomLinkView(() => "childNodes.0:li.childNodes.0:a", depth + 1);
+  const item2View = createDomLinkView(() => "childNodes.1:li.childNodes.0:a", depth + 1);
   const splitter = createFlameSplitter({
     d_item1: ["item1"],
     d_item2: ["item2"]

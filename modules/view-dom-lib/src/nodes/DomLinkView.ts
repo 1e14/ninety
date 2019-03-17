@@ -12,12 +12,12 @@ export type In = ParentViewIn;
 
 export type Out = ParentViewOut;
 
-export type DomLinkView2 = Node<In, Out>;
+export type DomLinkView = Node<In, Out>;
 
-export function createDomLinkView2(
+export function createDomLinkView(
   cb: PathMapperCallback,
   depth: number = 0
-): DomLinkView2 {
+): DomLinkView {
   const textView = createDomPropertyView2("innerText");
   const urlView = createDomPropertyView2("href");
   const view = createParentView(cb, depth);

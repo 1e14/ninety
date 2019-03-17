@@ -1,12 +1,12 @@
 import {connect} from "river-core";
-import {createDomLinkView2, DomLinkView2} from "./DomLinkView2";
+import {createDomLinkView, DomLinkView} from "./DomLinkView";
 
-describe("createDomLinkView2()", () => {
+describe("createDomLinkView()", () => {
   describe("on input (d_vm)", () => {
-    let node: DomLinkView2;
+    let node: DomLinkView;
 
     beforeEach(() => {
-      node = createDomLinkView2(() => "childNodes.0:a", 0);
+      node = createDomLinkView(() => "childNodes.0:a", 0);
     });
 
     describe("on set", () => {
