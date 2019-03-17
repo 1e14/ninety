@@ -1,10 +1,4 @@
-import {
-  applyDiff,
-  filterFlameByPrefix,
-  Flame,
-  FlameDiff,
-  replacePathTail2
-} from "gravel-core";
+import {FlameDiff, replacePathTail2} from "gravel-core";
 import {createNode, Node} from "river-core";
 import {PathMapperCallback} from "../types";
 
