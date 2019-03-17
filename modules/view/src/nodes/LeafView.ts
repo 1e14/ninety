@@ -3,14 +3,13 @@ import {
   filterFlameByPrefix,
   Flame,
   FlameDiff,
-  FlameGet,
   replacePathTail2
 } from "gravel-core";
 import {createNode, Node} from "river-core";
 import {PathMapperCallback} from "../types";
 
 export type In = {
-  d_vm: FlameDiff | FlameGet;
+  d_vm: FlameDiff;
 };
 
 export type Out = {
@@ -25,40 +24,20 @@ export type LeafView = Node<In, Out>;
 export function createLeafView(
   cb: PathMapperCallback
 ): LeafView {
-  const cache: Flame = {};
   return createNode<In, Out>
   (["d_view", "d_vm"], (outputs) => ({
     d_vm: (value, tag) => {
-      if ("get" in value) {
-        // TODO: Handle invalidated state
-        // TODO: Investigate performance impact of filterFlameByPrefix()
-
-        // finding matching path-value pairs in cache
-        const matches = filterFlameByPrefix(cache, value.get);
-        if (matches) {
-          // preparing matching path-value pairs for view
-          const set = {};
-          for (const abs in matches) {
-            set[replacePathTail2(abs, cb)] = matches[abs];
-          }
-          outputs.d_view({set, del: {}}, tag);
-        }
-      } else {
-        const set = {};
-        const del = {};
-        const vmSet = value.set;
-        const vmDel = value.del;
-        for (const abs in vmSet) {
-          set[replacePathTail2(abs, cb)] = vmSet[abs];
-        }
-        for (const abs in vmDel) {
-          del[replacePathTail2(abs, cb)] = null;
-        }
-        const changed = applyDiff(value, cache);
-        if (changed) {
-          outputs.d_view({set, del}, tag);
-        }
+      const set = {};
+      const del = {};
+      const vmSet = value.set;
+      const vmDel = value.del;
+      for (const abs in vmSet) {
+        set[replacePathTail2(abs, cb)] = vmSet[abs];
       }
+      for (const abs in vmDel) {
+        del[replacePathTail2(abs, cb)] = null;
+      }
+      outputs.d_view({set, del}, tag);
     }
   }));
 }

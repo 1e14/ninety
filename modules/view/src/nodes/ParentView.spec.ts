@@ -13,62 +13,25 @@ describe("createParentView()", () => {
       }, 2);
     });
 
-    describe("on 'get'", () => {
-      describe("on matching VM path", () => {
-        it("should emit del on 'd_view'", () => {
-          const spy = jasmine.createSpy();
-          connect(node.o.d_view, spy);
-          node.i.d_vm({
-            get: {
-              "page.table.1,3": null
-            }
-          }, "1");
-          expect(spy).toHaveBeenCalledWith({
-            del: {
-              "page.table.childNodes,1:tr,childNodes,3:td": null
-            },
-            set: {}
-          }, "1");
-        });
-      });
-
-      it("should forward to 'd_vm'", () => {
-        const spy = jasmine.createSpy();
-        connect(node.o.d_vm, spy);
-        node.i.d_vm({
-          get: {
-            "page.table.1,3": null
-          }
-        }, "1");
-        expect(spy).toHaveBeenCalledWith({
-          get: {
-            "page.table.1,3": null
-          }
-        }, "1");
-      });
-    });
-
-    describe("on 'set' & 'del'", () => {
-      it("should forward to 'd_vm'", () => {
-        const spy = jasmine.createSpy();
-        connect(node.o.d_vm, spy);
-        node.i.d_vm({
-          del: {
-            "page.table.1,3.text": null
-          },
-          set: {
-            "page.table.2,4.text": "Foo"
-          }
-        }, "1");
-        expect(spy).toHaveBeenCalledWith({
-          del: {
-            "page.table.1,3.text": null
-          },
-          set: {
-            "page.table.2,4.text": "Foo"
-          }
-        }, "1");
-      });
+    it("should forward to 'd_vm'", () => {
+      const spy = jasmine.createSpy();
+      connect(node.o.d_vm, spy);
+      node.i.d_vm({
+        del: {
+          "page.table.1,3.text": null
+        },
+        set: {
+          "page.table.2,4.text": "Foo"
+        }
+      }, "1");
+      expect(spy).toHaveBeenCalledWith({
+        del: {
+          "page.table.1,3.text": null
+        },
+        set: {
+          "page.table.2,4.text": "Foo"
+        }
+      }, "1");
     });
   });
 
