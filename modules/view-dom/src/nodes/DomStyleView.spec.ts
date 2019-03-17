@@ -2,30 +2,30 @@ import {connect} from "river-core";
 import {createDomStyleView, DomStyleView} from "./DomStyleView";
 
 describe("createDomStyleView()", () => {
-  describe("on input (vm_diff)", () => {
+  describe("on input (d_vm)", () => {
     let node: DomStyleView;
 
     beforeEach(() => {
-      node = createDomStyleView("foo", "bar", "baz");
+      node = createDomStyleView("foo");
     });
 
-    it("should emit on 'd_diff'", () => {
+    it("should emit on 'd_view'", () => {
       const spy = jasmine.createSpy();
-      connect(node.o.v_diff, spy);
-      node.i.vm_diff({
+      connect(node.o.d_view, spy);
+      node.i.d_vm({
         del: {
-          "a.bar": null
+          "bar.baz": null
         },
         set: {
-          "a.bar": 5
+          "bar.baz": "a"
         }
       }, "1");
       expect(spy).toHaveBeenCalledWith({
         del: {
-          "foo.a.style.baz": null
+          "bar.style,foo": null
         },
         set: {
-          "foo.a.style.baz": 5
+          "bar.style,foo": "a"
         }
       }, "1");
     });
