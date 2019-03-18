@@ -1,41 +1,42 @@
-import {FlameDiff, Flames, prefixFlamePaths} from "gravel-core";
+import {Flame, replacePathTail2} from "gravel-core";
+import {LeafViewIn, LeafViewOut} from "gravel-view";
 import {createNode, Node} from "river-core";
 import {DomEventType} from "../types";
 
-export type In = {
-  ev_smp: any;
+export type In = LeafViewIn;
+
+export type Out = LeafViewOut & {
+  d_event: Flame;
 };
 
-export type Out<T extends Event> = {
-  d_event: T;
-  v_diff: Flames
-};
-
-export type DomEventView<T extends Event> = Node<In, Out<T>>;
+// TODO: Re-introduce event type?
+//  (Requires generic Flame)
+export type DomEventView = Node<In, Out>;
 
 /**
- * TODO: Refactor into DomPropertyView
- * @param prefix
+ * On VM, adds / removes a callback which wraps the affected VM path into a
+ * Flame.
  * @param type
  */
 export function createDomEventView<T extends Event>(
-  prefix: string,
   type: DomEventType
-): DomEventView<T> {
-  return createNode<In, Out<T>>
-  (["v_diff", "d_event"], (outputs) => {
-    return {
-      ev_smp: (value, tag) => {
-        outputs.v_diff(prefixFlamePaths({
-          del: {},
-          set: {
-            [type]: (event) => {
-              event.stopImmediatePropagation();
-              outputs.d_event(event, tag);
-            }
-          }
-        }, prefix), tag);
+): DomEventView {
+  return createNode<In, Out>(["d_event", "d_view"], (outputs) => ({
+    d_vm: (value, tag) => {
+      const set = {};
+      const vmSet = value.set;
+      const del = value.del;
+      for (const path in vmSet) {
+        set[replacePathTail2(path, () => type)] = (event) => {
+          event.stopImmediatePropagation();
+          // TODO: Timestamp event tag?
+          outputs.d_event({
+            [path]: event
+          }, tag);
+          return;
+        };
       }
-    };
-  });
+      outputs.d_view({set, del}, tag);
+    }
+  }));
 }

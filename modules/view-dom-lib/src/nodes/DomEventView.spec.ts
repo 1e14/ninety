@@ -16,34 +16,44 @@ afterEach(() => {
 });
 
 describe("createEventView()", () => {
-  describe("on input (ev_smp)", () => {
-    let node: DomEventView<Event>;
+  describe("on input (d_vm)", () => {
+    let node: DomEventView;
 
     beforeEach(() => {
-      node = createDomEventView("foo", "onclick");
+      node = createDomEventView("onclick");
     });
 
-    it("should emit on 'v_diff'", () => {
+    it("should emit on 'd_view'", () => {
       const spy = jasmine.createSpy();
-      connect(node.o.v_diff, spy);
-      node.i.ev_smp(null, "1");
+      connect(node.o.d_view, spy);
+      node.i.d_vm({
+        del: {},
+        set: {
+          "foo.bar.baz": null
+        }
+      }, "1");
       expect(spy).toHaveBeenCalled();
       const args = spy.calls.argsFor(0);
-      expect(typeof args[0].set["foo.onclick"]).toBe("function");
+      expect(typeof args[0].set["foo.bar.onclick"]).toBe("function");
       expect(args[1]).toBe("1");
     });
   });
 
   describe("on click event", () => {
-    let node: DomEventView<Event>;
+    let node: DomEventView;
     let onclick: (event: Event) => void;
 
     beforeEach(() => {
-      node = createDomEventView("foo", "onclick");
-      connect(node.o.v_diff, (diff) => {
-        onclick = diff.set["foo.onclick"];
+      node = createDomEventView("onclick");
+      connect(node.o.d_view, (diff) => {
+        onclick = diff.set["foo.bar.onclick"];
       });
-      node.i.ev_smp(null, "1");
+      node.i.d_vm({
+        del: {},
+        set: {
+          "foo.bar.baz": null
+        }
+      }, "1");
     });
 
     it("should stop event propagation", () => {
@@ -58,7 +68,9 @@ describe("createEventView()", () => {
       connect(node.o.d_event, spy);
       const event = new window.Event("foo");
       onclick(event);
-      expect(spy).toHaveBeenCalledWith(event, "1");
+      expect(spy).toHaveBeenCalledWith({
+        "foo.bar.baz": event
+      }, "1");
     });
   });
 });
