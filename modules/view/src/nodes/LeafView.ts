@@ -8,7 +8,6 @@ export type In = {
 
 export type Out = {
   d_view: FlameDiff;
-  d_vm: FlameDiff;
 };
 
 export type LeafView = Node<In, Out>;
@@ -19,7 +18,7 @@ export function createLeafView(
   cb: PathMapperCallback
 ): LeafView {
   return createNode<In, Out>
-  (["d_view", "d_vm"], (outputs) => ({
+  (["d_view"], (outputs) => ({
     d_vm: (value, tag) => {
       const set = {};
       const del = {};
