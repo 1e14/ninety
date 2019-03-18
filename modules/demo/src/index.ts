@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import {createDiffBuffer, FlameDiff} from "gravel-core";
 import {createRouter} from "gravel-router";
 import {createDomDiffApplier} from "gravel-view-dom";
@@ -74,6 +72,18 @@ const helloWorldPageVm = createMapper(() => ({
 }));
 connect(helloWorldPageVm.o.d_val, mainPageView.i.d_vm);
 
+// "page" 2: stress test with large table
+const stressTest1PageVm = createMapper(() => ({
+  del: {"page.stress1": null},
+  set: {
+    "page.stress1.buttons.0.text": "Start",
+    "page.stress1.buttons.1.text": "Stop",
+    "page.stress1.caption.text":
+      "Fire hose test using a table with 1024 cells"
+  }
+}));
+connect(stressTest1PageVm.o.d_val, mainPageView.i.d_vm);
+
 // setting up routing table
 const router = createRouter([
   ROUTE_HELLO_WORLD,
@@ -82,4 +92,5 @@ const router = createRouter([
 ]);
 connect(hash2Path.o.d_val, router.i.d_route);
 connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageVm.i.d_val);
+connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], stressTest1PageVm.i.d_val);
 connect(router.o[`r_${ROUTE_REST}`], emptyPageView.i.d_val);

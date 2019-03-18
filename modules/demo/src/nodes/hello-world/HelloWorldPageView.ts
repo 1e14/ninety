@@ -3,7 +3,11 @@ import {createParentView, ParentViewIn, ParentViewOut} from "gravel-view";
 import {createDomTextView} from "gravel-view-dom-lib";
 import {connect, Node} from "river-core";
 
-export type HelloWorldPageView = Node<ParentViewIn, ParentViewOut>;
+export type In = ParentViewIn;
+
+export type Out = ParentViewOut;
+
+export type HelloWorldPageView = Node<In, Out>;
 
 export function createHelloWorldPageView(
   path: string,
