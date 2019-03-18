@@ -20,9 +20,24 @@ connect(locationHash.o.d_val, hash2Path.i.d_val);
 // flushes diff buffer to renderer every 10ms
 const ticker = createNoop();
 const viewBuffer = createDiffBuffer();
+// TODO: Move out to a node.
+const pathNormalizer = createMapper<FlameDiff, FlameDiff>((diff) => {
+  const set = {};
+  const del = {};
+  const viewSet = diff.set;
+  const viewDel = diff.del;
+  for (const path in viewSet) {
+    set[path.replace(/,/g, ".")] = viewSet[path];
+  }
+  for (const path in viewDel) {
+    del[path.replace(/,/g, ".")] = null;
+  }
+  return {set, del};
+});
 const domDiffApplier = createDomDiffApplier();
 setInterval(ticker.i.d_val, 10);
-connect(viewBuffer.o.d_diff, domDiffApplier.i.d_diff);
+connect(viewBuffer.o.d_diff, pathNormalizer.i.d_val);
+connect(pathNormalizer.o.d_val, domDiffApplier.i.d_diff);
 connect(ticker.o.d_val, viewBuffer.i.ev_res);
 
 // setting up main page
@@ -30,10 +45,10 @@ const mainPageView = createMainPageView();
 const mainPageVm = createMapper<any, FlameDiff>(() => ({
   del: {},
   set: {
-    "page.menu.item1.text": "Hello world",
-    "page.menu.item1.url": "#hello-world",
-    "page.menu.item2.text": "Stress test (table)",
-    "page.menu.item2.url": "#stress-test-1"
+    "page.menu.0.link.text": "Hello world",
+    "page.menu.0.link.url": "#hello-world",
+    "page.menu.1.link.text": "Stress test (table)",
+    "page.menu.1.link.url": "#stress-test-1"
   }
 }));
 connect(mainPageVm.o.d_val, mainPageView.i.d_vm);
