@@ -5,6 +5,7 @@ export const PATH_DELIMITER = ".";
 
 /**
  * Prepends all paths in the specified diff with the specified prefix.
+ * @deprecated Only used in DomEventView
  * @param flames
  * @param prefix
  */
