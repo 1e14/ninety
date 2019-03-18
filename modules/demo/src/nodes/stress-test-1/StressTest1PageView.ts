@@ -9,6 +9,11 @@ export type Out = ParentViewOut;
 
 export type StressTest1PageView = Node<In, Out>;
 
+/**
+ * TODO: Farm out DomButtonView
+ * @param path
+ * @param depth
+ */
 export function createStressTest1PageView(
   path: string,
   depth: number = 0
