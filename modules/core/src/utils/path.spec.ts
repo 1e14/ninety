@@ -1,7 +1,7 @@
 import {
   getPathComponent,
   getRootPath,
-  prefixDiffPaths,
+  prefixFlamePaths,
   replacePathComponent,
   replacePathTail,
   replacePathTail2
@@ -9,7 +9,7 @@ import {
 
 describe("prependPaths()", () => {
   it("should prepend paths in diff", () => {
-    const result = prefixDiffPaths({
+    const result = prefixFlamePaths({
       del: {
         baz: null,
         foo: null

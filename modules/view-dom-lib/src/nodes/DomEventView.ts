@@ -1,4 +1,4 @@
-import {FlameDiff, prefixDiffPaths} from "gravel-core";
+import {FlameDiff, Flames, prefixFlamePaths} from "gravel-core";
 import {createNode, Node} from "river-core";
 import {DomEventType} from "../types";
 
@@ -8,7 +8,7 @@ export type In = {
 
 export type Out<T extends Event> = {
   d_event: T;
-  v_diff: FlameDiff
+  v_diff: Flames
 };
 
 export type DomEventView<T extends Event> = Node<In, Out<T>>;
@@ -26,7 +26,7 @@ export function createDomEventView<T extends Event>(
   (["v_diff", "d_event"], (outputs) => {
     return {
       ev_smp: (value, tag) => {
-        outputs.v_diff(prefixDiffPaths({
+        outputs.v_diff(prefixFlamePaths({
           del: {},
           set: {
             [type]: (event) => {

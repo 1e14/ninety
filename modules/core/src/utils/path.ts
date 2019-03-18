@@ -1,27 +1,25 @@
 import {Any} from "river-core";
-import {FlameDiff} from "../types";
+import {Flames} from "../types";
 
 export const PATH_DELIMITER = ".";
 
 /**
  * Prepends all paths in the specified diff with the specified prefix.
- * @param diff
+ * @param flames
  * @param prefix
  */
-export function prefixDiffPaths<T>(
-  diff: FlameDiff, prefix: string
-): FlameDiff {
-  const diffSet = diff.set;
-  const diffDel = diff.del;
-  const set = {};
-  const del = {};
-  for (const key in diffSet) {
-    set[prefix + PATH_DELIMITER + key] = diffSet[key];
+export function prefixFlamePaths(
+  flames: Flames, prefix: string
+): Flames {
+  const result = {};
+  for (const name in flames) {
+    const branch = flames[name];
+    const flame = result[name] = result[name] || {};
+    for (const path in branch) {
+      flame[prefix + PATH_DELIMITER + path] = branch[path];
+    }
   }
-  for (const key in diffDel) {
-    del[prefix + PATH_DELIMITER + key] = diffDel[key];
-  }
-  return {set, del};
+  return result;
 }
 
 /**
