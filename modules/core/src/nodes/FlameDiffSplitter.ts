@@ -1,5 +1,5 @@
 import {createNode, Node} from "river-core";
-import {Flames} from "../types";
+import {FlameDiff} from "../types";
 import {getPathComponent} from "../utils";
 
 export type Components = Array<string>;
@@ -13,11 +13,11 @@ export type PortsByComponent<P extends string> = {
 };
 
 export type FlamesByPort<P extends string> = {
-  [K in P]: Flames
+  [K in P]: FlameDiff
 };
 
 export type In = {
-  d_diff: Flames
+  d_diff: FlameDiff
 };
 
 export type Out<P extends string> = FlamesByPort<P>;
@@ -39,21 +39,25 @@ export function createFlameDiffSplitter<P extends string>(
       d_diff: (value, tag) => {
         // flames, split by path component
         const split = <FlamesByPort<P>>{};
-        // first, going through all the flames (branches)
-        for (const name in value) {
-          const branch = value[name];
-          // then looking at each path in the flame
-          for (const path in branch) {
-            const component = getPathComponent(path, depth);
-            const ports = portsByComponent[component];
-            // then going through ports that match the components
-            // and distributing path-value pairs to the corresponding port
-            if (ports) {
-              for (const port of ports) {
-                const flames = split[port] = split[port] || {};
-                const flame = flames[name] = flames[name] || {};
-                flame[path] = branch[path];
-              }
+        const valueSet = value.set;
+        const valueDel = value.del;
+        for (const path in valueSet) {
+          const component = getPathComponent(path, depth);
+          const ports = portsByComponent[component];
+          if (ports) {
+            for (const port of ports) {
+              const diff = split[port] = split[port] || {set: {}, del: {}};
+              diff.set[path] = valueSet[path];
+            }
+          }
+        }
+        for (const path in valueDel) {
+          const component = getPathComponent(path, depth);
+          const ports = portsByComponent[component];
+          if (ports) {
+            for (const port of ports) {
+              const diff = split[port] = split[port] || {set: {}, del: {}};
+              diff.del[path] = null;
             }
           }
         }

@@ -33,6 +33,7 @@ describe("createFlameDiffSplitter()", () => {
       }, "1");
       expect(spy1).not.toHaveBeenCalled();
       expect(spy2).toHaveBeenCalledWith({
+        del: {},
         set: {
           "a.b.baz.c": "quux",
           "a.b.foo.d": 5
