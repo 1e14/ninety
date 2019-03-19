@@ -17,6 +17,11 @@ export type Out = ParentViewOut & {
 
 export type ControlButtonView = Node<In, Out>;
 
+/**
+ * TODO: Move to gravel-view-dom?
+ * @param cb
+ * @param depth
+ */
 export function createControlButtonView(
   cb: PathMapperCallback,
   depth: number = 0
