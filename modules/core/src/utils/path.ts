@@ -1,5 +1,5 @@
 import {Any} from "river-core";
-import {Flames} from "../types";
+import {ComponentsByPort, Flames, PortsByComponent} from "../types";
 
 export const PATH_DELIMITER = ".";
 
@@ -122,4 +122,22 @@ export function replacePathTail2(
  */
 export function replacePathTail(path: string, to: string): string {
   return path.substring(0, path.lastIndexOf(PATH_DELIMITER) + 1) + to;
+}
+
+/**
+ * TODO: Add tests
+ * @param bundles
+ */
+export function invertPathsByComponent<P extends string>(
+  bundles: ComponentsByPort<P>
+): PortsByComponent<P> {
+  const result = <PortsByComponent<P>>{};
+  for (const port in bundles) {
+    const bundle = bundles[port];
+    for (const path of bundle) {
+      const ports = result[path] = result[path] || [];
+      ports.push(port);
+    }
+  }
+  return result;
 }
