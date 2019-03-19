@@ -22,13 +22,15 @@ export function createControlButtonsView(
   depth: number = 0
 ): ControlButtonsView {
   const view = createParentView(cb, depth);
-  const controlButton = createControlButtonView((index) =>
-    "childNodes,0:div,childNodes," + index + ":button", depth + 1);
-  // TODO: Needs better button identification
-  //  replace numeric VM indexes w/ names
+  const indexByName = {
+    start: 0,
+    stop: 1
+  };
+  const controlButton = createControlButtonView((name) =>
+    "childNodes,0:div,childNodes," + indexByName[name] + ":button", depth + 1);
   const splitter = createFlameSplitter({
-    ev_start: ["0"],
-    ev_stop: ["1"]
+    ev_start: ["start"],
+    ev_stop: ["stop"]
   }, depth + 1);
 
   connect(view.o.d_vm, controlButton.i.d_vm);

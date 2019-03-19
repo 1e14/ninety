@@ -76,11 +76,11 @@ connect(helloWorldPageVm.o.d_val, mainPageView.i.d_vm);
 const stressTest1PageVm = createMapper(() => ({
   del: {"page.stress1": null},
   set: {
-    "page.stress1.buttons.0.click": null,
-    "page.stress1.buttons.0.text": "Start",
-    "page.stress1.buttons.1.click": null,
-    "page.stress1.buttons.1.text": "Stop",
-    "page.stress1.caption.text":
+    "page.stress1.buttons.start.click": null,
+    "page.stress1.buttons.start.text": "Start",
+    "page.stress1.buttons.stop.click": null,
+    "page.stress1.buttons.stop.text": "Stop",
+    "page.stress1.desc.text":
       "Fire hose test using a table with 1024 cells"
   }
 }));
