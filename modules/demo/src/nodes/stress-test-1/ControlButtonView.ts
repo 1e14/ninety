@@ -1,4 +1,4 @@
-import {createFlameSplitter, Flame} from "gravel-core";
+import {createFlameDiffSplitter, Flame} from "gravel-core";
 import {
   createParentView,
   ParentViewIn,
@@ -24,12 +24,12 @@ export function createControlButtonView(
   const view = createParentView(cb, depth);
   const buttonText = createDomPropertyView("innerText");
   const buttonClick = createDomEventView("onclick");
-  const splitter = createFlameSplitter({
+  const splitter = createFlameDiffSplitter({
     d_click: ["click"],
     d_text: ["text"]
   }, depth + 1);
 
-  connect(view.o.d_vm, splitter.i.d_flames);
+  connect(view.o.d_vm, splitter.i.d_diff);
   connect(splitter.o.d_text, buttonText.i.d_vm);
   connect(splitter.o.d_click, buttonClick.i.d_vm);
   connect(buttonText.o.d_view, view.i.d_view);

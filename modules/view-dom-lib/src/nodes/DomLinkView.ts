@@ -1,4 +1,4 @@
-import {createFlameSplitter} from "gravel-core";
+import {createFlameDiffSplitter} from "gravel-core";
 import {
   createParentView,
   ParentViewIn,
@@ -21,12 +21,12 @@ export function createDomLinkView(
   const textView = createDomPropertyView("innerText");
   const urlView = createDomPropertyView("href");
   const view = createParentView(cb, depth);
-  const splitter = createFlameSplitter<"d_text" | "d_url">({
+  const splitter = createFlameDiffSplitter<"d_text" | "d_url">({
     d_text: ["text"],
     d_url: ["url"]
   }, depth + 1);
 
-  connect(view.o.d_vm, splitter.i.d_flames);
+  connect(view.o.d_vm, splitter.i.d_diff);
   connect(splitter.o.d_text, textView.i.d_vm);
   connect(splitter.o.d_url, urlView.i.d_vm);
   connect(textView.o.d_view, view.i.d_view);

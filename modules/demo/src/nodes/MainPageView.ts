@@ -1,4 +1,4 @@
-import {createFlameSplitter} from "gravel-core";
+import {createFlameDiffSplitter} from "gravel-core";
 import {createParentView, ParentViewIn, ParentViewOut} from "gravel-view";
 import {createLeafView} from "gravel-view/dist";
 import {connect, Node} from "river-core";
@@ -18,14 +18,14 @@ export function createMainPageView(): MainPageView {
   const emptyPageView = createLeafView(() => "childNodes.1:div");
   const helloWorldPageView = createHelloWorldPageView("childNodes.1:div", 1);
   const stressTest1PageView = createStressTest1PageView("childNodes.1:div", 1);
-  const splitter = createFlameSplitter({
+  const splitter = createFlameDiffSplitter({
     d_content: ["content"],
     d_hello: ["hello"],
     d_menu: ["menu"],
     d_stress1: ["stress1"]
   }, 1);
 
-  connect(view.o.d_vm, splitter.i.d_flames);
+  connect(view.o.d_vm, splitter.i.d_diff);
   connect(splitter.o.d_menu, mainMenuView.i.d_vm);
   connect(splitter.o.d_content, emptyPageView.i.d_vm);
   connect(splitter.o.d_hello, helloWorldPageView.i.d_vm);

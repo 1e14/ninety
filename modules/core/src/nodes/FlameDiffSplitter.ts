@@ -17,7 +17,7 @@ export type FlamesByPort<P extends string> = {
 };
 
 export type In = {
-  d_flames: Flames
+  d_diff: Flames
 };
 
 export type Out<P extends string> = FlamesByPort<P>;
@@ -26,17 +26,17 @@ export type Out<P extends string> = FlamesByPort<P>;
  * Splits diffs by the values of a specified component in the diffs' paths.
  * Used for directing diffs to child components.
  */
-export type FlameSplitter<P extends string> = Node<In, Out<P>>;
+export type FlameDiffSplitter<P extends string> = Node<In, Out<P>>;
 
-export function createFlameSplitter<P extends string>(
+export function createFlameDiffSplitter<P extends string>(
   pathsByPort: ComponentsByPort<P>,
   depth: number
-): FlameSplitter<P> {
+): FlameDiffSplitter<P> {
   return createNode<In, Out<P>>
   (<Array<P>>Object.keys(pathsByPort), (outputs) => {
     const portsByComponent = invertPathsByComponent(pathsByPort);
     return {
-      d_flames: (value, tag) => {
+      d_diff: (value, tag) => {
         // flames, split by path component
         const split = <FlamesByPort<P>>{};
         // first, going through all the flames (branches)

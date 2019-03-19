@@ -1,4 +1,4 @@
-import {createFlameSplitter} from "gravel-core";
+import {createFlameDiffSplitter} from "gravel-core";
 import {createParentView, ParentViewIn, ParentViewOut} from "gravel-view";
 import {connect, Node} from "river-core";
 import {createControlButtonView} from "./ControlButtonView";
@@ -23,11 +23,11 @@ export function createStressTest1PageView(
   const buttonList = createParentView(() => "childNodes,0:div", depth + 1);
   const buttonListItem = createControlButtonView((index) =>
     "childNodes,0:div,childNodes," + index + ":button", depth + 2);
-  const splitter = createFlameSplitter({
+  const splitter = createFlameDiffSplitter({
     d_buttons: ["buttons"]
   }, depth + 1);
 
-  connect(view.o.d_vm, splitter.i.d_flames);
+  connect(view.o.d_vm, splitter.i.d_diff);
   connect(splitter.o.d_buttons, buttonListItem.i.d_vm);
   connect(buttonList.o.d_vm, buttonListItem.i.d_vm);
   connect(buttonListItem.o.d_view, buttonList.i.d_view);

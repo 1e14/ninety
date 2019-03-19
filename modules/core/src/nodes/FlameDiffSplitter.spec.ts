@@ -1,14 +1,14 @@
 import {connect} from "river-core";
-import {createFlameSplitter, FlameSplitter} from "./FlameSplitter";
+import {createFlameDiffSplitter, FlameDiffSplitter} from "./FlameDiffSplitter";
 
-describe("createFlameSplitter()", () => {
+describe("createFlameDiffSplitter()", () => {
   type Ports = "d_name" | "d_photo" | "d_dob";
 
-  describe("on input (d_flames)", () => {
-    let node: FlameSplitter<Ports>;
+  describe("on input (d_diff)", () => {
+    let node: FlameDiffSplitter<Ports>;
 
     beforeEach(() => {
-      node = createFlameSplitter<Ports>({
+      node = createFlameDiffSplitter<Ports>({
         d_dob: ["quux"],
         d_name: ["foo", "baz"],
         d_photo: ["bar", "baz"]
@@ -22,7 +22,7 @@ describe("createFlameSplitter()", () => {
       connect(node.o.d_dob, spy1);
       connect(node.o.d_name, spy2);
       connect(node.o.d_photo, spy3);
-      node.i.d_flames({
+      node.i.d_diff({
         del: {
           "a.b.bar.c": null
         },
