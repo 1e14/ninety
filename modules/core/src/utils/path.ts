@@ -1,27 +1,7 @@
 import {Any} from "river-core";
-import {ComponentsByPort, Flames, PortsByComponent} from "../types";
+import {ComponentsByPort, PortsByComponent} from "../types";
 
 export const PATH_DELIMITER = ".";
-
-/**
- * Prepends all paths in the specified diff with the specified prefix.
- * @deprecated Only used in DomEventView
- * @param flames
- * @param prefix
- */
-export function prefixFlamePaths(
-  flames: Flames, prefix: string
-): Flames {
-  const result = {};
-  for (const name in flames) {
-    const branch = flames[name];
-    const flame = result[name] = result[name] || {};
-    for (const path in branch) {
-      flame[prefix + PATH_DELIMITER + path] = branch[path];
-    }
-  }
-  return result;
-}
 
 /**
  * Extracts root path from the specified path-indexed lookup.

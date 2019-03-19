@@ -2,36 +2,10 @@ import {
   countPathComponents,
   getPathComponent,
   getRootPath,
-  prefixFlamePaths,
   replacePathComponent,
   replacePathTail,
   replacePathTail2
 } from "./path";
-
-describe("prependPaths()", () => {
-  it("should prepend paths in diff", () => {
-    const result = prefixFlamePaths({
-      del: {
-        baz: null,
-        foo: null
-      },
-      set: {
-        baz: 1,
-        foo: "bar"
-      }
-    }, "_");
-    expect(result).toEqual({
-      del: {
-        "_.baz": null,
-        "_.foo": null
-      },
-      set: {
-        "_.baz": 1,
-        "_.foo": "bar"
-      }
-    });
-  });
-});
 
 describe("getRootPath()", () => {
   describe("for empty path set", () => {
