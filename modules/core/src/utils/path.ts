@@ -1,5 +1,4 @@
-import {Any} from "1e14";
-import {ComponentsByPort, PortsByComponent} from "../types";
+import {ComponentsByPort, Flame, PortsByComponent} from "../types";
 
 export const PATH_DELIMITER = ".";
 
@@ -7,7 +6,7 @@ export const PATH_DELIMITER = ".";
  * Extracts root path from the specified path-indexed lookup.
  * @param paths
  */
-export function getRootPath(paths: Any): string {
+export function getRootPath(paths: Flame): string {
   let keys: Array<string>;
   let root: string;
   for (const path in paths) {
