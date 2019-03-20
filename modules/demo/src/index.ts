@@ -81,7 +81,11 @@ const stressTest1PageVm = createMapper(() => ({
     "page.stress1.buttons.stop.click": null,
     "page.stress1.buttons.stop.text": "Stop",
     "page.stress1.desc.text":
-      "Fire hose test using a table with 1024 cells"
+      "Fire hose test using a table with 1024 cells",
+    "page.stress1.table.0,0.content.text": "foo",
+    "page.stress1.table.0,1.content.text": "bar",
+    "page.stress1.table.1,0.content.text": "baz",
+    "page.stress1.table.1,1.content.text": "quux"
   }
 }));
 connect(stressTest1PageVm.o.d_val, mainPageView.i.d_vm);
