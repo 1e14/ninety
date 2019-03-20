@@ -106,15 +106,6 @@ export function replacePathTail2(
 }
 
 /**
- * Replaces the matching end of the path with the specified string.
- * @param path
- * @param to
- */
-export function replacePathTail(path: string, to: string): string {
-  return path.substring(0, path.lastIndexOf(PATH_DELIMITER) + 1) + to;
-}
-
-/**
  * TODO: Add tests
  * @param bundles
  */
