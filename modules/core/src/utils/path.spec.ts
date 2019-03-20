@@ -3,7 +3,7 @@ import {
   getPathComponent,
   getRootPath,
   replacePathComponent,
-  replacePathTail2
+  replacePathTail
 } from "./path";
 
 describe("getRootPath()", () => {
@@ -72,18 +72,18 @@ describe("replacePathComponent()", () => {
   });
 });
 
-describe("replacePathTail2()", () => {
+describe("replacePathTail()", () => {
   it("should replace specified component", () => {
-    expect(replacePathTail2(
+    expect(replacePathTail(
       "foo", (comp) => comp.toUpperCase()))
     .toBe("FOO");
-    expect(replacePathTail2(
+    expect(replacePathTail(
       "foo.bar", (comp) => comp.toUpperCase()))
     .toBe("foo.BAR");
-    expect(replacePathTail2(
+    expect(replacePathTail(
       "foo.bar.baz", (comp) => comp.toUpperCase()))
     .toBe("foo.bar.BAZ");
-    expect(replacePathTail2(
+    expect(replacePathTail(
       "foo.bar.baz.quux", (comp) => comp.toUpperCase()))
     .toBe("foo.bar.baz.QUUX");
   });

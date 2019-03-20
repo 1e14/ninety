@@ -1,4 +1,4 @@
-import {Flame, replacePathTail2} from "gravel-core";
+import {Flame, replacePathTail} from "gravel-core";
 import {LeafViewIn, LeafViewOut} from "gravel-view";
 import {createNode, Node} from "river-core";
 import {DomEventType} from "../types";
@@ -27,7 +27,7 @@ export function createDomEventView<T extends Event>(
       const vmSet = value.set;
       const del = value.del;
       for (const path in vmSet) {
-        set[replacePathTail2(path, () => type)] = (event) => {
+        set[replacePathTail(path, () => type)] = (event) => {
           event.stopImmediatePropagation();
           // TODO: Timestamp event tag?
           outputs.d_event({

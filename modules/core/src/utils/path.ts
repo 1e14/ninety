@@ -97,7 +97,7 @@ export function replacePathComponent(
  * @param cb
  * TODO: Rename to replacePathTail once other replacePathTail is removed.
  */
-export function replacePathTail2(
+export function replacePathTail(
   path: string,
   cb: (comp: string) => string
 ): string {

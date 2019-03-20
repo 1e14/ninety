@@ -1,4 +1,4 @@
-import {FlameDiff, replacePathTail2} from "gravel-core";
+import {FlameDiff, replacePathTail} from "gravel-core";
 import {createNode, Node} from "river-core";
 import {PathMapperCallback} from "../types";
 
@@ -25,10 +25,10 @@ export function createLeafView(
       const vmSet = value.set;
       const vmDel = value.del;
       for (const abs in vmSet) {
-        set[replacePathTail2(abs, cb)] = vmSet[abs];
+        set[replacePathTail(abs, cb)] = vmSet[abs];
       }
       for (const abs in vmDel) {
-        del[replacePathTail2(abs, cb)] = null;
+        del[replacePathTail(abs, cb)] = null;
       }
       outputs.d_view({set, del}, tag);
     }
