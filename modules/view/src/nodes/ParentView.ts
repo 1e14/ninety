@@ -10,17 +10,37 @@ import {createNode, Node} from "river-core";
 export type PathMapperCallback = (path: string) => string;
 
 export type In = {
+  /** View diff processed by children */
   d_view: FlameDiff;
+
+  /** View-model diff passed down by parent */
   d_vm: FlameDiff;
 };
 
 export type Out = {
+  /** View diff processed by current node */
   d_view: FlameDiff;
+
+  /** View-model diff to be passed down to children */
   d_vm: FlameDiff;
 };
 
+/**
+ * Processes the view of a non-leaf component in the component tree.
+ * Child views of a ParentView must connect to its output 'd_vm' and input
+ * 'd_view' ports in order to work.
+ * Passes received view-model on to children without change. (Distribution
+ * phase)
+ * Processes view received from children and passes it on to prent.
+ * (Bubbling phase)
+ */
 export type ParentView = Node<In, Out>;
 
+/**
+ * Creates a ParentView node.
+ * @param cb Maps view-model path component to view path component.
+ * @param depth Specifies location in the component tree.
+ */
 export function createParentView(
   cb: PathMapperCallback,
   depth: number = 0
