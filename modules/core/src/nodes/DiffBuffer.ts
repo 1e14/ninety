@@ -14,27 +14,25 @@ export type Out = {
 export type DiffBuffer = Node<In, Out>;
 
 export function createDiffBuffer(buffer = <FlameDiff>{}): DiffBuffer {
+  buffer.set = buffer.set || {};
+  buffer.del = buffer.del || {};
+  let changed = false;
+
   return createNode<In, Out>
-  (["d_diff"], (outputs) => {
-    buffer.set = buffer.set || {};
-    buffer.del = buffer.del || {};
-    let changed = false;
+  (["d_diff"], (outputs) => ({
+    d_diff: (value) => {
+      changed = compoundDiff(value, buffer) || changed;
+    },
 
-    return {
-      d_diff: (value) => {
-        changed = compoundDiff(value, buffer) || changed;
-      },
-
-      ev_res: (value, tag) => {
-        if (changed === true) {
-          outputs.d_diff(buffer, tag);
-          buffer = {
-            del: {},
-            set: {}
-          };
-          changed = false;
-        }
+    ev_res: (value, tag) => {
+      if (changed === true) {
+        outputs.d_diff(buffer, tag);
+        buffer = {
+          del: {},
+          set: {}
+        };
+        changed = false;
       }
-    };
-  });
+    }
+  }));
 }

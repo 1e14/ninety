@@ -13,18 +13,16 @@ export type Out = {
 export type Ticker = Node<In, Out>;
 
 export function createTicker(ms: number, active: boolean = false): Ticker {
-  return createNode<In, Out>(["ev_tick"], (outputs) => {
-    let timer: Timer;
-    return {
-      st_active: (value) => {
-        if (!active && value) {
-          timer = setInterval(outputs.ev_tick, ms);
-          active = true;
-        } else if (active && !value) {
-          clearInterval(timer);
-          active = false;
-        }
+  let timer: Timer;
+  return createNode<In, Out>(["ev_tick"], (outputs) => ({
+    st_active: (value) => {
+      if (!active && value) {
+        timer = setInterval(outputs.ev_tick, ms);
+        active = true;
+      } else if (active && !value) {
+        clearInterval(timer);
+        active = false;
       }
-    };
-  });
+    }
+  }));
 }

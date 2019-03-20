@@ -19,18 +19,16 @@ export function createDomDiffApplier(): DomDiffApplier {
     return instance;
   }
 
-  instance = createNode<In, Out>(["b_d_diff"], (outputs) => {
-    return {
-      d_diff: (value, tag) => {
-        requestAnimationFrame(() => {
-          const bounced = applyDomDiff(value);
-          if (bounced !== undefined) {
-            outputs.b_d_diff(bounced, tag);
-          }
-        });
-      }
-    };
-  });
+  instance = createNode<In, Out>(["b_d_diff"], (outputs) => ({
+    d_diff: (value, tag) => {
+      requestAnimationFrame(() => {
+        const bounced = applyDomDiff(value);
+        if (bounced !== undefined) {
+          outputs.b_d_diff(bounced, tag);
+        }
+      });
+    }
+  }));
 
   return instance;
 }
