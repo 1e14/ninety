@@ -1,8 +1,8 @@
+import {connect} from "1e14";
 import {createDiffBuffer, FlameDiff} from "gravel-core";
 import {createRouter} from "gravel-router";
 import {createDomDiffApplier} from "gravel-view-dom";
 import {createDomReadyNotifier, createLocationHash} from "river-browser";
-import {connect} from "river-core";
 import {createMapper, createNoop} from "river-stdlib";
 import {createMainPageView} from "./nodes";
 

@@ -1,3 +1,4 @@
+import {createNode, Node} from "1e14";
 import {
   countPathComponents,
   Flame,
@@ -5,7 +6,6 @@ import {
   replacePathComponent,
   replacePathTail
 } from "gravel-core";
-import {createNode, Node} from "river-core";
 
 export type PathMapperCallback = (path: string) => string;
 

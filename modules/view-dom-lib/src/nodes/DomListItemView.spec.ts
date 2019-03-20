@@ -1,4 +1,4 @@
-import {connect} from "river-core";
+import {connect} from "1e14";
 import {createDomListItemView, DomListItemView} from "./DomListItemView";
 
 describe("createDomListItemView()", () => {

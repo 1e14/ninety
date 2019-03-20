@@ -1,3 +1,4 @@
+import {connect, Node} from "1e14";
 import {createFlameDiffSplitter, Flame} from "gravel-core";
 import {
   createParentView,
@@ -7,7 +8,6 @@ import {
 } from "gravel-view";
 import {createDomPropertyView} from "gravel-view-dom";
 import {createDomEventView} from "gravel-view-dom-lib";
-import {connect, Node} from "river-core";
 
 export type In = ParentViewIn;
 

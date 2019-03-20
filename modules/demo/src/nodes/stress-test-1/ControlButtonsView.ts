@@ -1,3 +1,4 @@
+import {connect, Node} from "1e14";
 import {createFlameSplitter, Flame} from "gravel-core";
 import {
   createParentView,
@@ -5,7 +6,6 @@ import {
   ParentViewOut,
   PathMapperCallback
 } from "gravel-view";
-import {connect, Node} from "river-core";
 import {createControlButtonView} from "./ControlButtonView";
 
 export type In = ParentViewIn;

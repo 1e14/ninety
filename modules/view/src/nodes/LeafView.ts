@@ -1,5 +1,5 @@
+import {createNode, Node} from "1e14";
 import {FlameDiff, replacePathTail} from "gravel-core";
-import {createNode, Node} from "river-core";
 import {PathMapperCallback} from "../types";
 
 export type In = {

@@ -1,4 +1,4 @@
-import {Any} from "river-core";
+import {Any} from "1e14";
 import {ComponentsByPort, PortsByComponent} from "../types";
 
 export const PATH_DELIMITER = ".";

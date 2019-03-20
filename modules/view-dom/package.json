@@ -20,6 +20,6 @@
   "dependencies": {
     "gravel-core": "^0.1.0",
     "gravel-view": "^0.1.0",
-    "river-core": "^0.1.0"
+    "1e14": "^0.1.0"
   }
 }

@@ -1,5 +1,5 @@
+import {Node} from "1e14";
 import {createLeafView, LeafViewIn, LeafViewOut} from "gravel-view";
-import {Node} from "river-core";
 
 export type In = LeafViewIn;
 

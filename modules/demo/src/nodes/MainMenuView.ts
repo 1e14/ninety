@@ -1,6 +1,6 @@
+import {connect, Node} from "1e14";
 import {createParentView, ParentViewIn, ParentViewOut} from "gravel-view";
 import {createDomLinkView, createDomListItemView} from "gravel-view-dom-lib";
-import {connect, Node} from "river-core";
 
 export type In = ParentViewIn;
 

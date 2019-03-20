@@ -1,5 +1,5 @@
+import {createNode, Node} from "1e14";
 import {FlameDiff} from "gravel-core";
-import {createNode, Node} from "river-core";
 import {applyDomDiff} from "../utils";
 
 export type In = {
