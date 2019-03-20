@@ -1,4 +1,10 @@
-import {FlameDiff, replacePathComponent} from "gravel-core";
+import {
+  countPathComponents,
+  Flame,
+  FlameDiff,
+  replacePathComponent,
+  replacePathTail
+} from "gravel-core";
 import {createNode, Node} from "river-core";
 
 export type PathMapperCallback = (path: string) => string;
@@ -25,6 +31,18 @@ export function createParentView(
       // passing VM on towards children
       // (must be split up before children get its contents)
       outputs.d_vm(value, tag);
+
+      // bouncing subtree delete paths
+      let del: Flame;
+      for (const path in value.del) {
+        if (countPathComponents(path) === depth + 1) {
+          del = del || {};
+          del[replacePathTail(path, cb)] = null;
+        }
+      }
+      if (del) {
+        outputs.d_view({set: {}, del}, tag);
+      }
     },
 
     d_view: (value, tag) => {
@@ -32,11 +50,11 @@ export function createParentView(
       const del = {};
       const viewSet = value.set;
       const viewDel = value.del;
-      for (const abs in viewSet) {
-        set[replacePathComponent(abs, depth, cb)] = viewSet[abs];
+      for (const path in viewSet) {
+        set[replacePathComponent(path, depth, cb)] = viewSet[path];
       }
-      for (const abs in viewDel) {
-        del[replacePathComponent(abs, depth, cb)] = null;
+      for (const path in viewDel) {
+        del[replacePathComponent(path, depth, cb)] = null;
       }
       outputs.d_view({set, del}, tag);
     }

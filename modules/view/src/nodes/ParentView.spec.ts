@@ -33,6 +33,25 @@ describe("createParentView()", () => {
         }
       }, "1");
     });
+
+    describe("on subtree delete", function () {
+      it("should emit subtree path on 'd_view'", () => {
+        const spy = jasmine.createSpy();
+        connect(node.o.d_view, spy);
+        node.i.d_vm({
+          del: {
+            "page.table.1,3": null
+          },
+          set: {}
+        }, "1");
+        expect(spy).toHaveBeenCalledWith({
+          del: {
+            "page.table.childNodes,1:tr,childNodes,3:td": null
+          },
+          set: {}
+        }, "1");
+      });
+    });
   });
 
   describe("on input (d_view)", () => {
