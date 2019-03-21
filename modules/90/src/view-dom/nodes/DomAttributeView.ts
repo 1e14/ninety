@@ -1,5 +1,5 @@
 import {Node} from "1e14";
-import {createLeafView, LeafViewIn, LeafViewOut} from "gravel-view";
+import {createLeafView, LeafViewIn, LeafViewOut} from "../../view";
 
 export type In = LeafViewIn;
 

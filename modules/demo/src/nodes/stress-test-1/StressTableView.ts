@@ -1,11 +1,11 @@
 import {connect, Node} from "1e14";
-import {createFlameDiffSplitter} from "gravel-core";
 import {
+  createFlameDiffSplitter,
   createParentView,
   ParentViewIn,
   ParentViewOut,
   PathMapperCallback
-} from "gravel-view";
+} from "90";
 import {createDomTableCellView, createDomTextView} from "gravel-view-dom-lib";
 
 export type In = ParentViewIn;

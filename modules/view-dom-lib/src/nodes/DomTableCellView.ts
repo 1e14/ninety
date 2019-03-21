@@ -1,5 +1,5 @@
 import {Node} from "1e14";
-import {createParentView, ParentViewIn, ParentViewOut} from "gravel-view";
+import {createParentView, ParentViewIn, ParentViewOut} from "90";
 
 export type In = ParentViewIn;
 

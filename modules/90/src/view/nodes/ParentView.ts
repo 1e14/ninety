@@ -5,7 +5,7 @@ import {
   FlameDiff,
   replacePathComponent,
   replacePathTail
-} from "gravel-core";
+} from "../../flame";
 
 export type PathMapperCallback = (path: string) => string;
 

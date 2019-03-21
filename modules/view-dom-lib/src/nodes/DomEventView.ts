@@ -1,6 +1,5 @@
 import {createNode, Node} from "1e14";
-import {Flame, replacePathTail} from "gravel-core";
-import {LeafViewIn, LeafViewOut} from "gravel-view";
+import {Flame, LeafViewIn, LeafViewOut, replacePathTail} from "90";
 import {DomEventType} from "../types";
 
 export type In = LeafViewIn;

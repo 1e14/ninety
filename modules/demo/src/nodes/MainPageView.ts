@@ -1,7 +1,11 @@
 import {connect, Node} from "1e14";
-import {createFlameDiffSplitter} from "gravel-core";
-import {createParentView, ParentViewIn, ParentViewOut} from "gravel-view";
-import {createLeafView} from "gravel-view/dist";
+import {
+  createFlameDiffSplitter,
+  createLeafView,
+  createParentView,
+  ParentViewIn,
+  ParentViewOut
+} from "90";
 import {createHelloWorldPageView} from "./hello-world";
 import {createMainMenuView} from "./MainMenuView";
 import {createStressTest1PageView} from "./stress-test-1";

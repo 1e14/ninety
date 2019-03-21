@@ -1,6 +1,10 @@
 import {connect, Node} from "1e14";
-import {createFlameDiffSplitter} from "gravel-core";
-import {createParentView, ParentViewIn, ParentViewOut} from "gravel-view";
+import {
+  createFlameDiffSplitter,
+  createParentView,
+  ParentViewIn,
+  ParentViewOut
+} from "90";
 import {createDomTextView} from "gravel-view-dom-lib";
 
 export type In = ParentViewIn;

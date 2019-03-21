@@ -1,4 +1,4 @@
-import {FlameDiff} from "gravel-core";
+import {FlameDiff} from "90";
 
 const COLORS = ["red", "green", "blue", "black", "purple", "teal", "grey"];
 

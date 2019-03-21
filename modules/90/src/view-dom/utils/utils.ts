@@ -1,4 +1,4 @@
-import {Flame, FlameDiff, getRootPath, NullFlame} from "gravel-core";
+import {Flame, FlameDiff, getRootPath, NullFlame} from "../../flame";
 
 /**
  * Adds placeholder comment nodes to the specified parent node up to the

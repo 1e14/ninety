@@ -1,7 +1,7 @@
 {
-  "name": "gravel-core",
+  "name": "90",
   "version": "0.1.0",
-  "description": "",
+  "description": "Web application framework",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [

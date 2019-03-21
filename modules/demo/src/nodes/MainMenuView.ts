@@ -1,5 +1,5 @@
 import {connect, Node} from "1e14";
-import {createParentView, ParentViewIn, ParentViewOut} from "gravel-view";
+import {createParentView, ParentViewIn, ParentViewOut} from "90";
 import {createDomLinkView, createDomListItemView} from "gravel-view-dom-lib";
 
 export type In = ParentViewIn;
