@@ -1,9 +1,12 @@
-import {connect} from "1e14";
+import {connect, createNoop} from "1e14";
+import {createMapper} from "1e14-fp";
 import {createDiffBuffer, FlameDiff} from "gravel-core";
 import {createRouter} from "gravel-router";
-import {createDomDiffApplier} from "gravel-view-dom";
-import {createDomReadyNotifier, createLocationHash} from "river-browser";
-import {createMapper, createNoop} from "river-stdlib";
+import {
+  createDomDiffApplier,
+  createDomReadyNotifier,
+  createLocationHash
+} from "gravel-view-dom";
 import {createMainPageView} from "./nodes";
 
 // setting up bootstrapper
