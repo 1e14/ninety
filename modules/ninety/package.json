@@ -10,7 +10,18 @@
     "package.json",
     "README.md"
   ],
-  "keywords": [],
+  "keywords": [
+    "computational-graphs",
+    "dataflow-programming",
+    "flow-based-programming",
+    "framework-javascript",
+    "front-end-framework",
+    "function-graph",
+    "mvvm-architecture",
+    "reactiive-programming",
+    "stream-processing",
+    "webapp-framework"
+  ],
   "author": "Dan Stocker <dan@kwaia.com>",
   "license": "MIT",
   "repository": {
