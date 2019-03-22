@@ -13,4 +13,4 @@ Wiki
 ----
 
 For documentation, check the
-[**ninety** wiki](https://github.com/1e14/1e14/wiki)
+[**ninety** wiki](https://github.com/1e14/ninety/wiki)
