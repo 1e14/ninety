@@ -18,7 +18,7 @@
     "url": "git@github.com:protoboard/gravel.git"
   },
   "dependencies": {
-    "90": "^0.1.0",
-    "1e14": "^0.1.0"
+    "1e14": "^0.1.0",
+    "ninety": "^0.1.0"
   }
 }

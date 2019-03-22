@@ -7,7 +7,7 @@ import {
   createLocationHash,
   createRouter,
   FlameDiff
-} from "90";
+} from "ninety";
 import {createMainPageView} from "./nodes";
 
 // setting up bootstrapper

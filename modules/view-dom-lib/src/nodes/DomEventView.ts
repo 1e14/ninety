@@ -1,5 +1,5 @@
 import {createNode, Node} from "1e14";
-import {Flame, LeafViewIn, LeafViewOut, replacePathTail} from "90";
+import {Flame, LeafViewIn, LeafViewOut, replacePathTail} from "ninety";
 import {DomEventType} from "../types";
 
 export type In = LeafViewIn;

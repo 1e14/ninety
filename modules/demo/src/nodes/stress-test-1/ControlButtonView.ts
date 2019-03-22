@@ -1,4 +1,5 @@
 import {connect, Node} from "1e14";
+import {createDomEventView} from "gravel-view-dom-lib";
 import {
   createDomPropertyView,
   createFlameDiffSplitter,
@@ -7,8 +8,7 @@ import {
   ParentViewIn,
   ParentViewOut,
   PathMapperCallback
-} from "90";
-import {createDomEventView} from "gravel-view-dom-lib";
+} from "ninety";
 
 export type In = ParentViewIn;
 

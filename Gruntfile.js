@@ -5,7 +5,7 @@ module.exports = function (grunt) {
   "use strict";
 
   const modules = [
-    "90",
+    "ninety",
     "view-dom-lib",
     "demo"
   ];
@@ -83,7 +83,7 @@ module.exports = function (grunt) {
 
       const pkg = grunt.file.readJSON(`modules/${module}/package.json`);
       const deps = Object.keys(pkg.dependencies || {})
-      .filter((name) => /^(?:1e14|90|gravel).*$/.test(name));
+      .filter((name) => /^(?:1e14|ninety|gravel).*$/.test(name));
       config[`link-${module}-deps`] = {
         cwd: `modules/${module}`,
         cmd: deps

@@ -1,5 +1,5 @@
 {
-  "name": "90-dev",
+  "name": "ninety-dev",
   "version": "0.1.0",
   "description": "",
   "author": "Dan Stocker <dan@kwaia.com>",
@@ -7,7 +7,7 @@
   "provate": true,
   "repository": {
     "type": "git",
-    "url": "git@github.com:protoboard/gravel.git"
+    "url": "git@github.com:1e14/ninety.git"
   },
   "devDependencies": {
     "@types/grunt": "^0.4.24",

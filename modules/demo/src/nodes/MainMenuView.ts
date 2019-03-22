@@ -1,6 +1,6 @@
 import {connect, Node} from "1e14";
-import {createParentView, ParentViewIn, ParentViewOut} from "90";
 import {createDomLinkView, createDomListItemView} from "gravel-view-dom-lib";
+import {createParentView, ParentViewIn, ParentViewOut} from "ninety";
 
 export type In = ParentViewIn;
 

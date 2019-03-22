@@ -1,5 +1,5 @@
 import {Node} from "1e14";
-import {createParentView, ParentViewIn, ParentViewOut} from "90";
+import {createParentView, ParentViewIn, ParentViewOut} from "ninety";
 
 export type In = ParentViewIn;
 

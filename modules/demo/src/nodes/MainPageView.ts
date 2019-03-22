@@ -5,7 +5,7 @@ import {
   createParentView,
   ParentViewIn,
   ParentViewOut
-} from "90";
+} from "ninety";
 import {createHelloWorldPageView} from "./hello-world";
 import {createMainMenuView} from "./MainMenuView";
 import {createStressTest1PageView} from "./stress-test-1";

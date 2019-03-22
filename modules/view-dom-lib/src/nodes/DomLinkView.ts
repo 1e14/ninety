@@ -6,7 +6,7 @@ import {
   ParentViewIn,
   ParentViewOut,
   PathMapperCallback
-} from "90";
+} from "ninety";
 
 export type In = ParentViewIn;
 

@@ -16,12 +16,12 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git@github.com:protoboard/gravel.git"
+    "url": "git@github.com:1e14/ninety.git"
   },
   "dependencies": {
-    "90": "^0.1.0",
     "1e14": "^0.1.0",
     "1e14-fp": "^0.1.0",
-    "gravel-view-dom-lib": "^0.1.0"
+    "gravel-view-dom-lib": "^0.1.0",
+    "ninety": "^0.1.0"
   }
 }

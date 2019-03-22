@@ -1,11 +1,11 @@
 import {connect, Node} from "1e14";
+import {createDomTextView} from "gravel-view-dom-lib";
 import {
   createFlameDiffSplitter,
   createParentView,
   ParentViewIn,
   ParentViewOut
-} from "90";
-import {createDomTextView} from "gravel-view-dom-lib";
+} from "ninety";
 
 export type In = ParentViewIn;
 

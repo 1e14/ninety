@@ -6,7 +6,7 @@ import {
   ParentViewIn,
   ParentViewOut,
   PathMapperCallback
-} from "90";
+} from "ninety";
 import {createControlButtonView} from "./ControlButtonView";
 
 export type In = ParentViewIn;
