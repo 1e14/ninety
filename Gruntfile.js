@@ -81,14 +81,16 @@ module.exports = function (grunt) {
         cmd: `${resolve("node_modules/.bin/jasmine")} dist/**/*.spec.js`
       };
 
-      const pkg = grunt.file.readJSON(`modules/${module}/package.json`);
-      const deps = Object.keys(pkg.dependencies || {})
-      .filter((name) => /^(?:1e14|ninety|gravel).*$/.test(name));
       config[`link-${module}-deps`] = {
         cwd: `modules/${module}`,
-        cmd: deps
-        .map((dep) => `npm ln ${dep}`)
-        .join(" && ") || "echo noop"
+        cmd: () => {
+          const pkg = grunt.file.readJSON(`modules/${module}/package.json`);
+          const deps = Object.keys(pkg.dependencies || {})
+          .filter((name) => /^(?:1e14|ninety|gravel).*$/.test(name));
+          return deps
+          .map((dep) => `npm ln ${dep}`)
+          .join(" && ") || "echo noop";
+        }
       };
       config[`link-${module}-self`] = {
         cwd: `modules/${module}`,
@@ -98,6 +100,24 @@ module.exports = function (grunt) {
       config[`unlink-${module}`] = {
         cwd: `modules/${module}`,
         cmd: "npm unlink"
+      };
+
+      config[`version-${module}`] = {
+        cwd: `modules/${module}`,
+        cmd: `npm version ${grunt.option("type") || "patch"}`
+      };
+      config[`tag-${module}`] = {
+        cmd: () => {
+          const pkg = grunt.file.readJSON(`modules/${module}/package.json`);
+          return `git tag -f ${module}-${pkg.version}`;
+        }
+      };
+      config[`commit-${module}`] = {
+        cmd: `git add --all && git commit -m "Bumps version of ${module}"`
+      };
+      config[`publish-${module}`] = {
+        cwd: `modules/${module}`,
+        cmd: "npm publish"
       };
 
       return config;
@@ -112,6 +132,16 @@ module.exports = function (grunt) {
       config[`test-${module}`] = {
         options: {
           message: `Tests for "${module}" passed.`
+        }
+      };
+      config[`bump-${module}`] = {
+        options: {
+          message: `Version for "${module}" bumped.`
+        }
+      };
+      config[`publish-${module}`] = {
+        options: {
+          message: `"${module}" published.`
         }
       };
       return config;
@@ -149,6 +179,13 @@ module.exports = function (grunt) {
       `clean:${module}-dist`,
       `tslint:${module}`, `exec:ts-${module}`,
       `test-${module}`, `notify:build-${module}`
+    ]);
+    grunt.registerTask(`bump-${module}`, [
+      `exec:version-${module}`, `exec:commit-${module}`, `exec:tag-${module}`,
+      `notify:bump-${module}`
+    ]);
+    grunt.registerTask(`publish-${module}`, [
+      `exec:publish-${module}`, `notify:publish-${module}`
     ]);
   });
   grunt.registerTask("clean-dist", modules
