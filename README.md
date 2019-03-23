@@ -3,6 +3,8 @@ Ninety
 
 **Ninety** is a web application framework, built as a function graph.
 
+**WORK IN PROGRESS**
+
 Getting started
 ---------------
 
@@ -12,5 +14,4 @@ Getting started
 Wiki
 ----
 
-For documentation, check the
-[**ninety** wiki](https://github.com/1e14/ninety/wiki)
+For documentation, check the [**ninety** wiki](https://github.com/1e14/ninety/wiki)
