@@ -1,4 +1,4 @@
-import {connect, createNoop} from "1e14";
+import {connect} from "1e14";
 import {createMapper} from "1e14-fp";
 import {createTicker} from "1e14-time";
 import {
@@ -22,7 +22,7 @@ connect(locationHash.o.d_val, hash2Path.i.d_val);
 
 // setting up rendering engine
 // flushes diff buffer to renderer every 10ms
-const ticker = createNoop();
+const ticker = createTicker(10, true);
 const viewBuffer = createDiffBuffer();
 // TODO: Move out to a node.
 const pathNormalizer = createMapper<FlameDiff, FlameDiff>((diff) => {
@@ -39,10 +39,9 @@ const pathNormalizer = createMapper<FlameDiff, FlameDiff>((diff) => {
   return {set, del};
 });
 const domDiffApplier = createDomDiffApplier();
-setInterval(ticker.i.d_val, 10);
 connect(viewBuffer.o.d_diff, pathNormalizer.i.d_val);
 connect(pathNormalizer.o.d_val, domDiffApplier.i.d_diff);
-connect(ticker.o.d_val, viewBuffer.i.ev_res);
+connect(ticker.o.ev_tick, viewBuffer.i.ev_res);
 
 // setting up main page
 const mainPageView = createMainPageView();
