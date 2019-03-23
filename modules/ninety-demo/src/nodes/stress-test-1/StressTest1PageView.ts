@@ -1,11 +1,11 @@
 import {connect, Node} from "1e14";
-import {createDomTextView} from "gravel-view-dom-lib";
 import {
   createFlameDiffSplitter,
   createParentView,
   ParentViewIn,
   ParentViewOut
 } from "ninety";
+import {createDomTextView} from "ninety-dom-ui";
 import {createControlButtonsView} from "./ControlButtonsView";
 import {createStressTableView} from "./StressTableView";
 

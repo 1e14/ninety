@@ -1,5 +1,4 @@
 import {connect, Node} from "1e14";
-import {createDomEventView} from "gravel-view-dom-lib";
 import {
   createDomPropertyView,
   createFlameDiffSplitter,
@@ -9,6 +8,7 @@ import {
   ParentViewOut,
   PathMapperCallback
 } from "ninety";
+import {createDomEventView} from "ninety-dom-ui";
 
 export type In = ParentViewIn;
 
@@ -19,7 +19,7 @@ export type Out = ParentViewOut & {
 export type ControlButtonView = Node<In, Out>;
 
 /**
- * TODO: Move to gravel-view-dom?
+ * TODO: Move to ninety-dom-ui?
  * @param cb
  * @param depth
  */

@@ -1,5 +1,5 @@
 {
-  "name": "gravel-demo",
+  "name": "ninety-Dom-Ui",
   "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
@@ -13,15 +13,12 @@
   "keywords": [],
   "author": "Dan Stocker <dan@kwaia.com>",
   "license": "MIT",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "git@github.com:1e14/ninety.git"
   },
   "dependencies": {
     "1e14": "^0.1.0",
-    "1e14-fp": "^0.1.0",
-    "gravel-view-dom-lib": "^0.1.0",
     "ninety": "^0.1.0"
   }
 }

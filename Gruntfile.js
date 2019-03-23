@@ -6,8 +6,8 @@ module.exports = function (grunt) {
 
   const modules = [
     "ninety",
-    "view-dom-lib",
-    "demo"
+    "ninety-dom-ui",
+    "ninety-demo"
   ];
 
   grunt.initConfig({
@@ -22,9 +22,9 @@ module.exports = function (grunt) {
     }),
 
     copy: {
-      demo: {
-        src: ["modules/demo/src/index.html"],
-        dest: "modules/demo/dist/",
+      "ninety-demo": {
+        src: ["modules/ninety-demo/src/index.html"],
+        dest: "modules/ninety-demo/dist/",
         expand: true,
         flatten: true
       }
@@ -51,11 +51,11 @@ module.exports = function (grunt) {
     }, {}),
 
     webpack: {
-      demo: {
-        entry: `./modules/demo/src/index.ts`,
+      "ninety-demo": {
+        entry: `./modules/ninety-demo/src/index.ts`,
         output: {
           filename: "bundle.js",
-          path: `${__dirname}/modules/demo/dist`
+          path: `${__dirname}/modules/ninety-demo/dist`
         },
         mode: "production",
         devtool: "source-map",
@@ -86,7 +86,7 @@ module.exports = function (grunt) {
         cmd: () => {
           const pkg = grunt.file.readJSON(`modules/${module}/package.json`);
           const deps = Object.keys(pkg.dependencies || {})
-          .filter((name) => /^(?:1e14|ninety|gravel).*$/.test(name));
+          .filter((name) => /^(?:1e14|ninety).*$/.test(name));
           return deps
           .map((dep) => `npm ln ${dep}`)
           .join(" && ") || "echo noop";
@@ -206,7 +206,7 @@ module.exports = function (grunt) {
   grunt.registerTask("build-quick", ["clean-dist", "ts", "notify:build"]);
   grunt.registerTask("build", [
     "clean-dist", "tslint", "ts", "test", "notify:build"]);
-  grunt.registerTask("bundle", ["copy:demo", "webpack:demo"]);
+  grunt.registerTask("bundle", ["copy:ninety-demo", "webpack:ninety-demo"]);
   grunt.registerTask("postinstall", modules
   .map((module) => `postinstall-${module}`));
   grunt.registerTask("default", ["build-quick", "watch"]);

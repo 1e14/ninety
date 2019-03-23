@@ -1,7 +1,7 @@
 Changelog
 =========
 
-All notable changes to **gravel-view-dom-lib** will be documented in this 
+All notable changes to **ninety-Dom-Ui** will be documented in this 
 file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
