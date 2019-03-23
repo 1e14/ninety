@@ -1,5 +1,6 @@
 import {connect, createNoop} from "1e14";
 import {createMapper} from "1e14-fp";
+import {createTicker} from "1e14-time";
 import {
   createDiffBuffer,
   createDomDiffApplier,
@@ -9,6 +10,7 @@ import {
   FlameDiff
 } from "ninety";
 import {createMainPageView} from "./nodes";
+import {generateTableData} from "./utils";
 
 // setting up bootstrapper
 const domReadyNotifier = createDomReadyNotifier();
@@ -85,13 +87,14 @@ const stressTest1PageVm = createMapper(() => ({
     "page.stress1.buttons.stop.click": null,
     "page.stress1.buttons.stop.text": "Stop",
     "page.stress1.desc.text":
-      "Fire hose test using a table with 1024 cells",
-    "page.stress1.table.0,0.content.text": "foo",
-    "page.stress1.table.0,1.content.text": "bar",
-    "page.stress1.table.1,0.content.text": "baz",
-    "page.stress1.table.1,1.content.text": "quux"
+      "Fire hose test using a table with 1024 cells"
   }
 }));
+const tableTicker = createTicker(100, true);
+const tableDataGenerator = createMapper<any, FlameDiff>(
+  () => generateTableData("page.stress1.table", 32, 32));
+connect(tableTicker.o.ev_tick, tableDataGenerator.i.d_val);
+connect(tableDataGenerator.o.d_val, mainPageView.i.d_vm);
 connect(stressTest1PageVm.o.d_val, mainPageView.i.d_vm);
 
 // setting up routing table
