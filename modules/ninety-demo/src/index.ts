@@ -95,6 +95,9 @@ const tableDataGenerator = createMapper<any, FlameDiff>(
 connect(tableTicker.o.ev_tick, tableDataGenerator.i.d_val);
 connect(tableDataGenerator.o.d_val, mainPageView.i.d_vm);
 connect(stressTest1PageVm.o.d_val, mainPageView.i.d_vm);
+const tableRouteDetector = createMapper<RegExp, boolean>(
+  (pattern) => pattern === ROUTE_STRESS_TEST_1);
+connect(tableRouteDetector.o.d_val, tableTicker.i.st_ticking);
 
 // setting up routing table
 const router = createRouter([
@@ -105,4 +108,6 @@ const router = createRouter([
 connect(hash2Path.o.d_val, router.i.d_route);
 connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageVm.i.d_val);
 connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], stressTest1PageVm.i.d_val);
+connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], tableDataGenerator.i.d_val);
+connect(router.o.d_pattern, tableRouteDetector.i.d_val);
 connect(router.o[`r_${ROUTE_REST}`], emptyPageView.i.d_val);
