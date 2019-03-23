@@ -86,7 +86,7 @@ const stressTest1PageVm = createMapper(() => ({
     "page.stress1.buttons.stop.click": null,
     "page.stress1.buttons.stop.text": "Stop",
     "page.stress1.desc.text":
-      "Fire hose test using a table with 1024 cells"
+      "Firehose test using a table with 1024 cells"
   }
 }));
 const tableTicker = createTicker(100, true);

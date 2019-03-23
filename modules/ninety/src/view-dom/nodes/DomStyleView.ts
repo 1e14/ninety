@@ -8,7 +8,7 @@ export type Out = LeafViewOut;
 export type DomStyleView = Node<In, Out>;
 
 export function createDomStyleView(
-  cssClass: string
+  style: string
 ): DomStyleView {
-  return createLeafView(() => "style," + cssClass);
+  return createLeafView(() => "style," + style);
 }
