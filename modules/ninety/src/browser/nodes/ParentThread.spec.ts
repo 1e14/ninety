@@ -20,7 +20,7 @@ describe("createParentThread()", () => {
   describe("on created", () => {
     it("should set onmessage", () => {
       createParentThread();
-      expect(typeof worker.onmessage).not.toBe("function");
+      expect(typeof worker.onmessage).toBe("function");
     });
   });
 
