@@ -50,11 +50,30 @@ module.exports = function (grunt) {
       return config;
     }, {}),
 
+    // TODO: Fix source maps
     webpack: {
-      "ninety-demo": {
-        entry: `./modules/ninety-demo/src/index.ts`,
+      "ninety-demo-renderer": {
+        entry: `./modules/ninety-demo/src/renderer.ts`,
         output: {
-          filename: "bundle.js",
+          filename: "renderer.js",
+          path: `${__dirname}/modules/ninety-demo/dist`
+        },
+        mode: "production",
+        devtool: "source-map",
+        module: {
+          rules: [
+            {test: /\.ts$/, use: "ts-loader"},
+            {test: /\.js$/, use: "source-map-loader", enforce: "pre"}
+          ]
+        },
+        resolve: {
+          extensions: [".ts", ".js"]
+        }
+      },
+      "ninety-demo-worker": {
+        entry: `./modules/ninety-demo/src/worker.ts`,
+        output: {
+          filename: "worker.js",
           path: `${__dirname}/modules/ninety-demo/dist`
         },
         mode: "production",
@@ -206,7 +225,7 @@ module.exports = function (grunt) {
   grunt.registerTask("build-quick", ["clean-dist", "ts", "notify:build"]);
   grunt.registerTask("build", [
     "clean-dist", "tslint", "ts", "test", "notify:build"]);
-  grunt.registerTask("bundle", ["copy:ninety-demo", "webpack:ninety-demo"]);
+  grunt.registerTask("bundle", ["copy:ninety-demo", "webpack"]);
   grunt.registerTask("postinstall", modules
   .map((module) => `postinstall-${module}`));
   grunt.registerTask("default", ["build-quick", "watch"]);

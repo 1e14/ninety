@@ -1,47 +1,17 @@
 import {connect} from "1e14";
 import {createMapper} from "1e14-fp";
+import {createDemuxer, createMuxer} from "1e14-mux";
 import {createTicker} from "1e14-time";
-import {
-  createDiffBuffer,
-  createDomDiffApplier,
-  createDomReadyNotifier,
-  createLocationHash,
-  createRouter,
-  FlameDiff
-} from "ninety";
+import {createParentThread, createRouter, FlameDiff} from "ninety";
 import {createMainPageView} from "./nodes";
 import {generateTableData} from "./utils";
 
-// setting up bootstrapper
-const domReadyNotifier = createDomReadyNotifier();
-
-// setting up hash-based routing
-const locationHash = createLocationHash();
-const hash2Path = createMapper<string, string>((hash) => hash.substr(1));
-connect(locationHash.o.d_val, hash2Path.i.d_val);
-
-// setting up rendering engine
-// flushes diff buffer to renderer every 10ms
-const ticker = createTicker(10, true);
-const viewBuffer = createDiffBuffer();
-// TODO: Move out to a node.
-const pathNormalizer = createMapper<FlameDiff, FlameDiff>((diff) => {
-  const set = {};
-  const del = {};
-  const viewSet = diff.set;
-  const viewDel = diff.del;
-  for (const path in viewSet) {
-    set[path.replace(/,/g, ".")] = viewSet[path];
-  }
-  for (const path in viewDel) {
-    del[path.replace(/,/g, ".")] = null;
-  }
-  return {set, del};
-});
-const domDiffApplier = createDomDiffApplier();
-connect(viewBuffer.o.d_diff, pathNormalizer.i.d_val);
-connect(pathNormalizer.o.d_val, domDiffApplier.i.d_diff);
-connect(ticker.o.ev_tick, viewBuffer.i.ev_res);
+// setting up thread communication
+const parentThread = createParentThread();
+const parentMuxer = createMuxer(["d_view"]);
+const parentDemuxer = createDemuxer(["ev_dom_ready", "d_hash_path"]);
+connect(parentThread.o.d_msg, parentDemuxer.i.d_mux);
+connect(parentMuxer.o.d_mux, parentThread.i.d_msg);
 
 // setting up main page
 const mainPageView = createMainPageView();
@@ -55,8 +25,8 @@ const mainPageVm = createMapper<any, FlameDiff>(() => ({
   }
 }));
 connect(mainPageVm.o.d_val, mainPageView.i.d_vm);
-connect(domReadyNotifier.o.ev_ready, mainPageVm.i.d_val);
-connect(mainPageView.o.d_view, viewBuffer.i.d_diff);
+connect(parentDemuxer.o.ev_dom_ready, mainPageVm.i.d_val);
+connect(mainPageView.o.d_view, parentMuxer.i.d_view);
 
 // setting up routes
 const ROUTE_HELLO_WORLD = /^hello-world$/;
@@ -105,7 +75,7 @@ const router = createRouter([
   ROUTE_STRESS_TEST_1,
   ROUTE_REST
 ]);
-connect(hash2Path.o.d_val, router.i.d_route);
+connect(parentDemuxer.o.d_hash_path, router.i.d_route);
 connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageVm.i.d_val);
 connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], stressTest1PageVm.i.d_val);
 connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], tableDataGenerator.i.d_val);
