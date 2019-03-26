@@ -10,22 +10,17 @@ export type Out<O> = {
 
 export type ParentThread<I, O> = Node<In<I>, Out<O>>;
 
-let instance: ParentThread<any, any>;
-
 export function createParentThread<I, O>() {
-  if (!instance) {
-    instance = createNode<In<I>, Out<O>>
-    (["d_msg"], (outputs) => {
-      onmessage = ({data: {value, tag}}) => {
-        outputs.d_msg(value, tag);
-      };
+  return createNode<In<I>, Out<O>>
+  (["d_msg"], (outputs) => {
+    onmessage = ({data: {value, tag}}) => {
+      outputs.d_msg(value, tag);
+    };
 
-      return {
-        d_msg: (value, tag) => {
-          postMessage({value, tag}, null);
-        }
-      };
-    });
-  }
-  return instance;
+    return {
+      d_msg: (value, tag) => {
+        postMessage({value, tag}, null);
+      }
+    };
+  });
 }
