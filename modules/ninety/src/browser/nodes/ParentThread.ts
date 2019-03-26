@@ -1,5 +1,12 @@
 import {createNode, Node} from "1e14";
 
+/**
+ * TypeScript thinks the second argument of postMessage is mandatory.
+ * Safari crashes on null as second parameter, so we're casting postMessage
+ * to this similar function type.
+ */
+type PostMessageFunction = (message: any) => void;
+
 export type In<I> = {
   d_msg: I
 };
@@ -19,7 +26,7 @@ export function createParentThread<I, O>() {
 
     return {
       d_msg: (value, tag) => {
-        postMessage({value, tag}, null);
+        (<PostMessageFunction>postMessage)({value, tag});
       }
     };
   });

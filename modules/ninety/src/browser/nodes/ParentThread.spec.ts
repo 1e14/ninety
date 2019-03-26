@@ -31,7 +31,7 @@ describe("createParentThread()", () => {
     it("should message to parent", () => {
       const spy = spyOn(worker, "postMessage");
       node.i.d_msg(5, "1");
-      expect(spy).toHaveBeenCalledWith({value: 5, tag: "1"}, null);
+      expect(spy).toHaveBeenCalledWith({value: 5, tag: "1"});
     });
   });
 
