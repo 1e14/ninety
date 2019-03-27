@@ -2,23 +2,25 @@ import {connect} from "1e14";
 import {createParentThread, ParentThread} from "./ParentThread";
 
 describe("createParentThread()", () => {
-  const worker = <any>global;
+  const self = <any>global;
+  let onMessage: (event: MessageEvent) => null;
 
   beforeEach(() => {
-    worker.onmessage = null;
-    worker.postMessage = () => null;
+    self.self = {
+      addEventListener: (event, cb) => {
+        switch (event) {
+          case "message":
+            onMessage = cb;
+            break;
+        }
+      }
+    };
+    self.postMessage = () => null;
   });
 
   afterEach(() => {
-    delete worker.onmessage;
-    delete worker.postMessage;
-  });
-
-  describe("on created", () => {
-    it("should set onmessage", () => {
-      createParentThread();
-      expect(typeof worker.onmessage).toBe("function");
-    });
+    delete self.self;
+    delete self.postMessage;
   });
 
   describe("on input (d_msg)", () => {
@@ -29,7 +31,7 @@ describe("createParentThread()", () => {
     });
 
     it("should message to parent", () => {
-      const spy = spyOn(worker, "postMessage");
+      const spy = spyOn(self, "postMessage");
       node.i.d_msg(5, "1");
       expect(spy).toHaveBeenCalledWith({value: 5, tag: "1"});
     });
@@ -45,7 +47,7 @@ describe("createParentThread()", () => {
     it("should emit on 'd_msg'", () => {
       const spy = jasmine.createSpy();
       connect(node.o.d_msg, spy);
-      worker.onmessage(<MessageEvent>{data: {value: 5, tag: "1"}});
+      onMessage(<MessageEvent>{data: {value: 5, tag: "1"}});
       expect(spy).toHaveBeenCalledWith(5, "1");
     });
   });

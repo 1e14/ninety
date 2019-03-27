@@ -20,9 +20,9 @@ export type ParentThread<I, O> = Node<In<I>, Out<O>>;
 export function createParentThread<I, O>() {
   return createNode<In<I>, Out<O>>
   (["d_msg"], (outputs) => {
-    onmessage = ({data: {value, tag}}) => {
+    self.addEventListener("message", ({data: {value, tag}}) => {
       outputs.d_msg(value, tag);
-    };
+    });
 
     return {
       d_msg: (value, tag) => {
