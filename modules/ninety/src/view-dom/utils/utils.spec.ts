@@ -1,5 +1,4 @@
-import {setDomProperty} from "./setDomProperty";
-import {applyDomDiff, delDomProperty} from "./utils";
+import {applyDomDiff} from "./utils";
 
 const window = <any>global;
 
@@ -90,89 +89,6 @@ afterEach(() => {
   delete window.Node;
   delete window.NodeList;
   delete window.document;
-});
-
-describe("delDomProperty()", () => {
-  it("should return true", () => {
-    const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    setDomProperty(window.document, window.document, path, true);
-    const result = delDomProperty(window.document, window.document, path);
-    expect(result).toBe(true);
-  });
-
-  describe("for node", () => {
-    beforeEach(() => {
-      const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
-      setDomProperty(window.document, window.document, path, "bar");
-    });
-
-    it("should replace node w/ comment", () => {
-      const path = "body.childNodes.1:div.childNodes.3";
-      delDomProperty(window.document, window.document, path);
-      const node = window.document.body.childNodes[1].childNodes[3];
-      expect(node instanceof window.Comment).toBeTruthy();
-    });
-  });
-
-  describe("for attribute", () => {
-    beforeEach(() => {
-      const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
-      setDomProperty(window.document, window.document, path, "bar");
-    });
-
-    it("should remove attribute", () => {
-      const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
-      delDomProperty(window.document, window.document, path);
-      expect(
-        window.document.body.childNodes[1].childNodes[3].attributes
-        .getNamedItem("foo")
-      ).toBeUndefined();
-    });
-  });
-
-  describe("for CSS class", () => {
-    beforeEach(() => {
-      const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      setDomProperty(window.document, window.document, path, true);
-    });
-
-    it("should remove class", () => {
-      const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      delDomProperty(window.document, window.document, path);
-      expect(
-        window.document.body.childNodes[1].childNodes[3].classList.contains("foo")
-      ).toBeFalsy();
-    });
-  });
-
-  describe("for style", () => {
-    beforeEach(() => {
-      const path = "body.childNodes.1:div.childNodes.3:span.style.foo";
-      setDomProperty(window.document, window.document, path, "bar");
-    });
-
-    it("should remove class", () => {
-      const path = "body.childNodes.1:div.childNodes.3:span.style.foo";
-      delDomProperty(window.document, window.document, path);
-      expect(
-        window.document.body.childNodes[1].childNodes[3].style.foo
-      ).toBe(null);
-    });
-  });
-
-  describe("for event handler", () => {
-    beforeEach(() => {
-      const path = "body.childNodes.1:div.childNodes.3:span.onclick";
-      setDomProperty(window.document, window.document, path, () => null);
-    });
-
-    it("should reset handler property", () => {
-      const path = "body.childNodes.1:div.childNodes.3:span.onclick";
-      delDomProperty(window.document, window.document, path);
-      expect(window.document.body.childNodes[1].childNodes[3].onclick)
-      .toBe(null);
-    });
-  });
 });
 
 describe("applyDomDiff()", () => {
