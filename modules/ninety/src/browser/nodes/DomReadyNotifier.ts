@@ -8,18 +8,12 @@ export type Out = {
 
 export type DomReadyNotifier = Node<In, Out>;
 
-let instance: DomReadyNotifier;
-
 export function createDomReadyNotifier(): DomReadyNotifier {
-  if (!instance) {
-    instance = createNode<In, Out>(["ev_ready"], (outputs) => {
-      document.addEventListener("DOMContentLoaded", () => {
-        outputs.ev_ready(null, "DomReady");
-      });
-
-      return {};
+  return createNode<In, Out>(["ev_ready"], (outputs) => {
+    document.addEventListener("DOMContentLoaded", () => {
+      outputs.ev_ready(null, "DomReady");
     });
-  }
 
-  return instance;
+    return {};
+  });
 }

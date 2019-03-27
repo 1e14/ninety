@@ -13,10 +13,6 @@ afterEach(() => {
 });
 
 describe("createDomDiffApplier()", () => {
-  it("should be singleton", () => {
-    expect(createDomDiffApplier()).toBe(createDomDiffApplier());
-  });
-
   describe("on input (d_diff)", () => {
     let node: DomDiffApplier;
 
