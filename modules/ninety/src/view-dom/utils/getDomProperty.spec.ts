@@ -1,5 +1,5 @@
 import {getDomProperty} from "./getDomProperty";
-import {setDomProperty} from "./utils";
+import {setDomProperty} from "./setDomProperty";
 
 const window = <any>global;
 
