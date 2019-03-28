@@ -1,4 +1,4 @@
-import {applyDomDiff} from "./utils";
+import {applyDomDiff} from "./applyDomDiff";
 
 const window = <any>global;
 
