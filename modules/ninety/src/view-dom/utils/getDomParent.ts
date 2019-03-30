@@ -57,9 +57,9 @@ export function getDomParent(cache: Flame, path: string, from: number = 0): any 
       return undefined;
     }
 
-    const parentPath = root + component + PATH_DELIMITER;
-    if (!cache[parentPath]) {
-      cache[parentPath] = next;
+    const nextPath = root + component + PATH_DELIMITER;
+    if (!cache[nextPath]) {
+      cache[nextPath] = next;
     }
   }
   return next;
