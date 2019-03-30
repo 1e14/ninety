@@ -115,7 +115,7 @@ describe("fetchDomParent()", () => {
     expect(window.document.body.childNodes[1].childNodes[2].data).toBe("");
   });
 
-  it("should return DOM property", () => {
+  it("should return DOM parent", () => {
     const cache = {"": window.document};
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
     const result = fetchDomParent(cache, path);

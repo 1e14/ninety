@@ -20,7 +20,8 @@ function addPlaceholders(node: Node, index: number): void {
 
 /**
  * Retrieves parent DOM property for the specified DOM path, starting at
- * the specified position in the path.
+ * the specified position in the path. Creates all properties along the path
+ * if necessary.
  * @param cache Lookup of DOM properties by path.
  * @param path Path to fetch parent property for.
  * @param from Starting position in path.
