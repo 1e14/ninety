@@ -1,4 +1,5 @@
-export * from "./applyDomDiff";
+export {applyDomDiffSet} from "./applyDomDiffSet";
+export {applyDomDiff} from "./applyDomDiff";
 export {delDomProperty} from "./delDomProperty";
 export {delDomProp} from "./delDomProp";
 export {fetchDomParent} from "./fetchDomParent";
