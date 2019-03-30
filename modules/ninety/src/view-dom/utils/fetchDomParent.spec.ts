@@ -1,7 +1,7 @@
 import {Flame} from "../../flame/types";
-import {getDomParent} from "./getDomParent";
+import {fetchDomParent} from "./fetchDomParent";
 
-describe("getDomParent()", () => {
+describe("fetchDomParent()", () => {
   const window = <any>global;
 
   beforeEach(() => {
@@ -99,7 +99,7 @@ describe("getDomParent()", () => {
   it("should build DOM tree", () => {
     const cache = {"": window.document};
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    getDomParent(cache, path);
+    fetchDomParent(cache, path);
     expect(window.document.body.childNodes[1].tagName).toBe("div");
     expect(window.document.body.childNodes[1].childNodes[3].tagName)
     .toBe("span");
@@ -108,7 +108,7 @@ describe("getDomParent()", () => {
   it("should add placeholders along the way", () => {
     const cache = {"": window.document};
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    getDomParent(cache, path);
+    fetchDomParent(cache, path);
     expect(window.document.body.childNodes[0].data).toBe("");
     expect(window.document.body.childNodes[1].childNodes[0].data).toBe("");
     expect(window.document.body.childNodes[1].childNodes[1].data).toBe("");
@@ -118,14 +118,14 @@ describe("getDomParent()", () => {
   it("should return DOM property", () => {
     const cache = {"": window.document};
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    const result = getDomParent(cache, path);
+    const result = fetchDomParent(cache, path);
     expect(result).toBe(window.document.body.childNodes[1].childNodes[3].classList);
   });
 
   it("should build cache", () => {
     const cache = {"": window.document};
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    getDomParent(cache, path);
+    fetchDomParent(cache, path);
     expect(cache[""].body.childNodes[1].tagName).toBe("div");
     expect(cache[""].body.childNodes[1].childNodes[3].tagName)
     .toBe("span");
@@ -153,12 +153,12 @@ describe("getDomParent()", () => {
     beforeEach(() => {
       cache = {"": window.document};
       const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      getDomParent(cache, path);
+      fetchDomParent(cache, path);
     });
 
     it("should replace comments with nodes", () => {
       const path = "body.childNodes.0:span.innerText";
-      getDomParent(cache, path);
+      fetchDomParent(cache, path);
       expect(window.document.body.childNodes[0].tagName).toBe("span");
     });
   });
@@ -167,13 +167,13 @@ describe("getDomParent()", () => {
     beforeEach(() => {
       const cache = {"": window.document};
       const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      getDomParent(cache, path);
+      fetchDomParent(cache, path);
     });
 
     it("should build cache", () => {//
       const cache = {"": window.document};
       const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      getDomParent(cache, path);
+      fetchDomParent(cache, path);
       expect(cache[""].body.childNodes[1].tagName).toBe("div");
       expect(cache[""].body.childNodes[1].childNodes[3].tagName)
       .toBe("span");

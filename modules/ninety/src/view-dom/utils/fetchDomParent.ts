@@ -25,7 +25,7 @@ function addPlaceholders(node: Node, index: number): void {
  * @param path Path to fetch parent property for.
  * @param from Starting position in path.
  */
-export function getDomParent(cache: Flame, path: string, from: number = 0): any {
+export function fetchDomParent(cache: Flame, path: string, from: number = 0): any {
   let next: any;
   for (
     let to = path.indexOf(PATH_DELIMITER, from);

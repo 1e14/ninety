@@ -1,6 +1,6 @@
 import {Flame} from "../../flame/types";
 import {PATH_DELIMITER} from "../../flame/utils";
-import {getDomParent} from "./getDomParent";
+import {fetchDomParent} from "./fetchDomParent";
 
 /**
  * Sets single property in the DOM.
@@ -15,7 +15,7 @@ export function setDomProp(
   value: any,
   from: number = 0
 ): boolean {
-  const parent = getDomParent(cache, path, from);
+  const parent = fetchDomParent(cache, path, from);
   const key = path.slice(path.lastIndexOf(PATH_DELIMITER) + 1);
   if (parent instanceof Node) {
     parent[key] = value;
