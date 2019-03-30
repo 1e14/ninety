@@ -4,5 +4,6 @@ export {delDomProp} from "./delDomProp";
 export {fetchDomParent} from "./fetchDomParent";
 export {getDomParent} from "./getDomParent";
 export {getDomProperty} from "./getDomProperty";
+export {getDomProp} from "./getDomProp";
 export {setDomProperty} from "./setDomProperty";
 export {setDomProp} from "./setDomProp";
