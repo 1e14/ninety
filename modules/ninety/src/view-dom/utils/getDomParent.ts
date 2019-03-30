@@ -1,6 +1,9 @@
 import {Flame} from "../../flame/types";
 import {PATH_DELIMITER} from "../../flame/utils";
 
+export const DEFAULT_TAG_NAME = "div";
+export const PATH_TAG_DELIMITER = ":";
+
 /**
  * Adds placeholder comment nodes to the specified parent node up to the
  * (but not including) the specified index.
@@ -39,7 +42,8 @@ export function getDomParent(cache: Flame, path: string, from: number = 0): any 
       }
       next = property[component];
     } else if (property instanceof NodeList) {
-      const [index, tag = "div"] = component.split(":");
+      const [index, tag = DEFAULT_TAG_NAME] =
+        component.split(PATH_TAG_DELIMITER);
       next = property[index];
       if (!next) {
         const parentNode = (<any>property).owner;
