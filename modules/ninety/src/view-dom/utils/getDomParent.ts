@@ -1,5 +1,6 @@
 import {Flame} from "../../flame/types";
 import {PATH_DELIMITER} from "../../flame/utils";
+import {ContextualNodeListOf} from "../types";
 
 export const DEFAULT_TAG_NAME = "div";
 export const PATH_TAG_DELIMITER = ":";
@@ -36,9 +37,9 @@ export function getDomParent(cache: Flame, path: string, from: number = 0): any 
     const property = cache[root];
 
     if (property instanceof Node) {
-      const childNodes = <any>property.childNodes;
-      if (!childNodes.owner) {
-        childNodes.owner = property;
+      const childNodes = <ContextualNodeListOf<ChildNode>>property.childNodes;
+      if (!childNodes.context) {
+        childNodes.context = property;
       }
       next = property[component];
     } else if (property instanceof NodeList) {
@@ -46,7 +47,7 @@ export function getDomParent(cache: Flame, path: string, from: number = 0): any 
         component.split(PATH_TAG_DELIMITER);
       next = property[index];
       if (!next) {
-        const parentNode = (<any>property).owner;
+        const parentNode = (<ContextualNodeListOf<ChildNode>>property).context;
         addPlaceholders(parentNode, +index);
         next = document.createElement(tag);
         parentNode.appendChild(next);
