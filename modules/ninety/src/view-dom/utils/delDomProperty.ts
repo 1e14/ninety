@@ -8,7 +8,7 @@ export function delDomProperty(property: any, node: Node, path: string): boolean
   const components = path.split(".");
   let component: string;
 
-  // finding parent node / property
+  // finding parent node/property
   for (
     let i = 0, length = components.length - 1;
     i < length && property !== undefined;

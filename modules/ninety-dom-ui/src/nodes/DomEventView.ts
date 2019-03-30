@@ -13,7 +13,7 @@ export type Out = LeafViewOut & {
 export type DomEventView = Node<In, Out>;
 
 /**
- * On VM, adds / removes a callback which wraps the affected VM path into a
+ * On VM, adds/removes a callback which wraps the affected VM path into a
  * Flame.
  * @param type
  */

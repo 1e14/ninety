@@ -23,7 +23,7 @@ function addPlaceholders(node: Node, index: number): void {
  * the specified position in the path.
  * @param cache Lookup of DOM properties by path.
  * @param path Path to fetch parent property for.
- * @param from
+ * @param from Starting position in path.
  */
 export function getDomParent(cache: Flame, path: string, from: number = 0): any {
   let next: any;
@@ -37,16 +37,19 @@ export function getDomParent(cache: Flame, path: string, from: number = 0): any 
     const property = cache[root];
 
     if (property instanceof Node) {
+      // adding context to node list if necessary
       const childNodes = <ContextualNodeListOf<ChildNode>>property.childNodes;
       if (!childNodes.context) {
         childNodes.context = property;
       }
       next = property[component];
     } else if (property instanceof NodeList) {
-      const [index, tag = DEFAULT_TAG_NAME] =
-        component.split(PATH_TAG_DELIMITER);
+      const [index, tag = DEFAULT_TAG_NAME] = component.split(PATH_TAG_DELIMITER);
       next = property[index];
+      // adding/replacing DOM element when necessary
+      // TODO: add case for node w/ different tag
       if (!next) {
+        // adding node
         const parentNode = (<ContextualNodeListOf<ChildNode>>property).context;
         addPlaceholders(parentNode, +index);
         next = document.createElement(tag);
@@ -59,6 +62,7 @@ export function getDomParent(cache: Flame, path: string, from: number = 0): any 
         parentNode.replaceChild(next, placeholder);
       }
     } else {
+      // we're only concerned with nodes and node lists
       return undefined;
     }
 
