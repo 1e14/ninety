@@ -1,6 +1,26 @@
 import {Flame} from "../../flame/types";
 import {PATH_DELIMITER} from "../../flame/utils";
 
+/**
+ * Adds placeholder comment nodes to the specified parent node up to the
+ * (but not including) the specified index.
+ * @param node DOM node in which to add placeholders
+ * @param index Index up to which to create placeholder nodes.
+ */
+function addPlaceholders(node: Node, index: number): void {
+  for (let i = node.childNodes.length; i < index; i++) {
+    const placeholder = document.createComment("");
+    node.appendChild(placeholder);
+  }
+}
+
+/**
+ * Retrieves parent DOM property for the specified DOM path, starting at
+ * the specified position in the path.
+ * @param cache Lookup of DOM properties by path.
+ * @param path Path to fetch parent property for.
+ * @param from
+ */
 export function getDomParent(cache: Flame, path: string, from: number = 0): any {
   let next: any;
   for (
@@ -12,9 +32,29 @@ export function getDomParent(cache: Flame, path: string, from: number = 0): any 
     const component = path.slice(from, to);
     const property = cache[root];
 
-    next = property[component]; // TODO
-    if (!next) {
-      next = property[component] = {}; // TODO
+    if (property instanceof Node) {
+      const childNodes = <any>property.childNodes;
+      if (!childNodes.owner) {
+        childNodes.owner = property;
+      }
+      next = property[component];
+    } else if (property instanceof NodeList) {
+      const [index, tag = "div"] = component.split(":");
+      next = property[index];
+      if (!next) {
+        const parentNode = (<any>property).owner;
+        addPlaceholders(parentNode, +index);
+        next = document.createElement(tag);
+        parentNode.appendChild(next);
+      } else if (next instanceof Comment || next instanceof Text) {
+        // replacing existing placeholder
+        const placeholder = next;
+        const parentNode = placeholder.parentNode;
+        next = document.createElement(tag);
+        parentNode.replaceChild(next, placeholder);
+      }
+    } else {
+      return undefined;
     }
 
     const parentPath = root + component + PATH_DELIMITER;
