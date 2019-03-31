@@ -1,7 +1,7 @@
-import {applyDomDiffSet} from "./applyDomDiffSet";
-import * as setDomProp from "./setDomProp";
+import {applyDomDiffDel} from "./applyDomDiffDel";
+import * as delDomProp from "./delDomProp";
 
-describe("applyDomDiffSet()", () => {
+describe("applyDomDiffDel()", () => {
   const window = <any>global;
 
   beforeEach(() => {
@@ -96,60 +96,60 @@ describe("applyDomDiffSet()", () => {
     delete window.document;
   });
 
-  it("should invoke setDomProp() with correct 'from'", () => {
+  it("should invoke delDomProp() with correct 'from'", () => {
     const cache = {"": window.document};
     const diffSet = {
-      "body.childNodes.0:tr.childNodes.0:td.classList.foo": true,
-      "body.childNodes.0:tr.childNodes.1:td.classList.foo": true,
-      "body.childNodes.0:tr.childNodes.2:td.classList.foo": true,
-      "body.childNodes.1:tr.childNodes.0:td.classList.foo": true,
-      "body.childNodes.1:tr.childNodes.1:td.classList.foo": true,
-      "body.childNodes.1:tr.childNodes.2:td.classList.foo": true
+      "body.childNodes.0:tr.childNodes.0:td.classList.foo": null,
+      "body.childNodes.0:tr.childNodes.1:td.classList.foo": null,
+      "body.childNodes.0:tr.childNodes.2:td.classList.foo": null,
+      "body.childNodes.1:tr.childNodes.0:td.classList.foo": null,
+      "body.childNodes.1:tr.childNodes.1:td.classList.foo": null,
+      "body.childNodes.1:tr.childNodes.2:td.classList.foo": null
     };
-    const spy = spyOn(setDomProp, "setDomProp").and.returnValue(true);
-    applyDomDiffSet(cache, diffSet);
+    const spy = spyOn(delDomProp, "delDomProp").and.returnValue(true);
+    applyDomDiffDel(cache, diffSet);
     expect(spy.calls.allArgs()).toEqual([
-      [cache, "body.childNodes.0:tr.childNodes.0:td.classList.foo", true, 0],
-      [cache, "body.childNodes.0:tr.childNodes.1:td.classList.foo", true, 32],
-      [cache, "body.childNodes.0:tr.childNodes.2:td.classList.foo", true, 32],
-      [cache, "body.childNodes.1:tr.childNodes.0:td.classList.foo", true, 16],
-      [cache, "body.childNodes.1:tr.childNodes.1:td.classList.foo", true, 32],
-      [cache, "body.childNodes.1:tr.childNodes.2:td.classList.foo", true, 32]
+      [cache, "body.childNodes.0:tr.childNodes.0:td.classList.foo", 0],
+      [cache, "body.childNodes.0:tr.childNodes.1:td.classList.foo", 32],
+      [cache, "body.childNodes.0:tr.childNodes.2:td.classList.foo", 32],
+      [cache, "body.childNodes.1:tr.childNodes.0:td.classList.foo", 16],
+      [cache, "body.childNodes.1:tr.childNodes.1:td.classList.foo", 32],
+      [cache, "body.childNodes.1:tr.childNodes.2:td.classList.foo", 32]
     ]);
   });
 
-  describe("when setDomProp() returns true", () => {
+  describe("when delDomProp() returns true", () => {
     it("should return undefined", () => {
       const cache = {"": window.document};
       const diffSet = {
-        "body.childNodes.0:tr.childNodes.0:td.classList.foo": true,
-        "body.childNodes.0:tr.childNodes.1:td.classList.foo": true,
-        "body.childNodes.0:tr.childNodes.2:td.classList.foo": true,
-        "body.childNodes.1:tr.childNodes.0:td.classList.foo": true,
-        "body.childNodes.1:tr.childNodes.1:td.classList.foo": true,
-        "body.childNodes.1:tr.childNodes.2:td.classList.foo": true
+        "body.childNodes.0:tr.childNodes.0:td.classList.foo": null,
+        "body.childNodes.0:tr.childNodes.1:td.classList.foo": null,
+        "body.childNodes.0:tr.childNodes.2:td.classList.foo": null,
+        "body.childNodes.1:tr.childNodes.0:td.classList.foo": null,
+        "body.childNodes.1:tr.childNodes.1:td.classList.foo": null,
+        "body.childNodes.1:tr.childNodes.2:td.classList.foo": null
       };
-      spyOn(setDomProp, "setDomProp").and.returnValue(true);
-      expect(applyDomDiffSet(cache, diffSet)).toBeUndefined();
+      spyOn(delDomProp, "delDomProp").and.returnValue(true);
+      expect(applyDomDiffDel(cache, diffSet)).toBeUndefined();
     });
   });
 
-  describe("when setDomProp() returns false", () => {
+  describe("when delDomProp() returns false", () => {
     it("should return bounced paths", () => {
       const cache = {"": window.document};
       const diffSet = {
-        "body.childNodes.0:tr.childNodes.0:td.classList.foo": true,
-        "body.childNodes.0:tr.childNodes.1:td.classList.foo": true,
-        "body.childNodes.0:tr.childNodes.2:td.classList.foo": true,
-        "body.childNodes.1:tr.childNodes.0:td.classList.foo": true,
-        "body.childNodes.1:tr.childNodes.1:td.classList.foo": true,
-        "body.childNodes.1:tr.childNodes.2:td.classList.foo": true
+        "body.childNodes.0:tr.childNodes.0:td.classList.foo": null,
+        "body.childNodes.0:tr.childNodes.1:td.classList.foo": null,
+        "body.childNodes.0:tr.childNodes.2:td.classList.foo": null,
+        "body.childNodes.1:tr.childNodes.0:td.classList.foo": null,
+        "body.childNodes.1:tr.childNodes.1:td.classList.foo": null,
+        "body.childNodes.1:tr.childNodes.2:td.classList.foo": null
       };
-      spyOn(setDomProp, "setDomProp").and.callFake((a, path) => {
+      spyOn(delDomProp, "delDomProp").and.callFake((a, path) => {
         return path !== "body.childNodes.0:tr.childNodes.2:td.classList.foo";
       });
-      expect(applyDomDiffSet(cache, diffSet)).toEqual({
-        "body.childNodes.0:tr.childNodes.2:td.classList.foo": true
+      expect(applyDomDiffDel(cache, diffSet)).toEqual({
+        "body.childNodes.0:tr.childNodes.2:td.classList.foo": null
       });
     });
   });
