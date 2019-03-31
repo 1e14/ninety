@@ -1,4 +1,6 @@
+export {applyDomDiffDel2} from "./applyDomDiffDel2";
 export {applyDomDiffDel} from "./applyDomDiffDel";
+export {applyDomDiffSet2} from "./applyDomDiffSet2";
 export {applyDomDiffSet} from "./applyDomDiffSet";
 export {applyDomDiff} from "./applyDomDiff";
 export {delDomProp2} from "./delDomProp2";
