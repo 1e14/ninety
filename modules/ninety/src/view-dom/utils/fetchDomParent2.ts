@@ -1,3 +1,4 @@
+import {countPathComponents, getPathComponent} from "../../flame/utils";
 import {ContextualNodeListOf} from "../types";
 import {DEFAULT_TAG_NAME, PATH_TAG_DELIMITER} from "./fetchDomParent";
 
@@ -16,14 +17,14 @@ function addPlaceholders(node: Node, index: number): void {
 
 export function fetchDomParent2(
   stack: Array<any>,
-  path: Array<string>
+  path: string
 ): any {
   const stackSize = stack.length;
-  const parentDepth = path.length - 1;
+  const parentDepth = countPathComponents(path) - 1;
 
   // digging deeper
   for (let i = stackSize; i < parentDepth; i++) {
-    const component = path[i];
+    const component = getPathComponent(path, i);
     let property = stack[0];
     if (property instanceof Node) {
       // adding context to node list if necessary

@@ -110,7 +110,7 @@ describe("fetchDomParent2()", () => {
   it("should return DOM parent", () => {
     const stack = [window.document.body];
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    const result = fetchDomParent2(stack, path.split("."));
+    const result = fetchDomParent2(stack, path);
     expect(result).toBe(
       window.document.body.childNodes[1].childNodes[3].classList);
   });
@@ -118,7 +118,7 @@ describe("fetchDomParent2()", () => {
   it("should build DOM tree", () => {
     const stack = [window.document.body];
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    fetchDomParent2(stack, path.split("."));
+    fetchDomParent2(stack, path);
     expect(window.document.body.childNodes[1].tagName).toBe("div");
     expect(window.document.body.childNodes[1].childNodes[3].tagName)
     .toBe("span");
@@ -127,7 +127,7 @@ describe("fetchDomParent2()", () => {
   it("should add placeholders along the way", () => {
     const stack = [window.document.body];
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    fetchDomParent2(stack, path.split("."));
+    fetchDomParent2(stack, path);
     expect(window.document.body.childNodes[0].data).toBe("");
     expect(window.document.body.childNodes[1].childNodes[0].data).toBe("");
     expect(window.document.body.childNodes[1].childNodes[1].data).toBe("");
@@ -137,7 +137,7 @@ describe("fetchDomParent2()", () => {
   it("should build stack", () => {
     const stack = [window.document.body];
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    fetchDomParent2(stack, path.split("."));
+    fetchDomParent2(stack, path);
     expect(stack).toEqual([
       window.document.body.childNodes[1].childNodes[3].classList,
       window.document.body.childNodes[1].childNodes[3],
@@ -152,13 +152,13 @@ describe("fetchDomParent2()", () => {
     beforeEach(() => {
       const stack = [window.document.body];
       const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      fetchDomParent2(stack, path.split("."));
+      fetchDomParent2(stack, path);
     });
 
     it("should replace comments with nodes", () => {
       const stack = [window.document.body];
       const path = "body.childNodes.0:span.innerText";
-      fetchDomParent2(stack, path.split("."));
+      fetchDomParent2(stack, path);
       expect(window.document.body.childNodes[0].tagName).toBe("span");
     });
   });
@@ -166,7 +166,7 @@ describe("fetchDomParent2()", () => {
   describe("when stack matches path length", () => {
     it("should return top of stack", () => {
       const stack = [{}, {}, {}];
-      const path = ["foo", "bar", "baz", "quux"];
+      const path = "foo.bar.baz.quux";
       const result = fetchDomParent2(stack, path);
       expect(result).toBe(stack[0]);
     });
@@ -176,13 +176,13 @@ describe("fetchDomParent2()", () => {
     beforeEach(() => {
       const stack = [window.document.body];
       const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      fetchDomParent2(stack, path.split("."));
+      fetchDomParent2(stack, path);
     });
 
     it("should build stack", () => {
       const stack = [window.document.body];
       const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      fetchDomParent2(stack, path.split("."));
+      fetchDomParent2(stack, path);
       expect(stack).toEqual([
         window.document.body.childNodes[1].childNodes[3].classList,
         window.document.body.childNodes[1].childNodes[3],
