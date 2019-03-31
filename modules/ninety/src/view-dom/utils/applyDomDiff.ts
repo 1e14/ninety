@@ -1,6 +1,6 @@
 import {FlameDiff} from "../../flame";
-import {applyDomDiffDel} from "./applyDomDiffDel";
-import {applyDomDiffSet} from "./applyDomDiffSet";
+import {applyDomDiffDel2} from "./applyDomDiffDel2";
+import {applyDomDiffSet2} from "./applyDomDiffSet2";
 
 /**
  * Applies the specified view diff to the DOM.
@@ -9,9 +9,8 @@ import {applyDomDiffSet} from "./applyDomDiffSet";
 export function applyDomDiff(diff: FlameDiff): FlameDiff {
   const diffDel = diff.del;
   const diffSet = diff.set;
-  const cache = {"": window.document};
-  const bouncedDel = applyDomDiffDel(cache, diffDel);
-  const bouncedSet = applyDomDiffSet(cache, diffSet);
+  const bouncedDel = applyDomDiffDel2(diffDel);
+  const bouncedSet = applyDomDiffSet2(diffSet);
   return bouncedDel === undefined && bouncedSet === undefined ?
     undefined :
     {

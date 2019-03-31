@@ -46,9 +46,6 @@ describe("createDomDiffApplier()", () => {
     };
     window.Node = function () {
       this.childNodes = new window.NodeList();
-      this.attributes = new window.NamedNodeMap();
-      this.classList = new window.DOMTokenList();
-      this.style = new window.CSSStyleDeclaration();
       this.parentNode = null;
     };
     window.Node.prototype = {
@@ -69,6 +66,17 @@ describe("createDomDiffApplier()", () => {
     window.NodeList = function () {
       this.length = 0;
     };
+    window.Element = function () {
+      window.Node.call(this);
+      this.attributes = new window.NamedNodeMap();
+      this.classList = new window.DOMTokenList();
+    };
+    window.Element.prototype = Object.create(window.Node.prototype);
+    window.HTMLElement = function () {
+      window.Element.call(this);
+      this.style = new window.CSSStyleDeclaration();
+    };
+    window.HTMLElement.prototype = Object.create(window.Element.prototype);
     window.document = new Node();
     window.document.body = new window.Node();
     window.document.createAttribute = (name) => {
@@ -82,7 +90,7 @@ describe("createDomDiffApplier()", () => {
       return comment;
     };
     window.document.createElement = (tagName) => {
-      const node = new window.Node();
+      const node = new window.HTMLElement();
       node.tagName = tagName;
       return node;
     };
@@ -98,6 +106,8 @@ describe("createDomDiffApplier()", () => {
     delete window.NamedNodeMap;
     delete window.Node;
     delete window.NodeList;
+    delete window.Element;
+    delete window.HTMLElement;
     delete window.document;
     delete window.window;
     delete window.requestAnimationFrame;

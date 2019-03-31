@@ -122,12 +122,12 @@ describe("applyDomDiffSet2()", () => {
     const spy = spyOn(setDomProp2, "setDomProp2").and.returnValue(true);
     applyDomDiffSet2(diffSet);
     expect(spy.calls.allArgs()).toEqual([
-      [[], "body.childNodes.0:tr.childNodes.0:td.classList.foo", true],
-      [[], "body.childNodes.0:tr.childNodes.1:td.classList.foo", true],
-      [[], "body.childNodes.0:tr.childNodes.2:td.classList.foo", true],
-      [[], "body.childNodes.1:tr.childNodes.0:td.classList.foo", true],
-      [[], "body.childNodes.1:tr.childNodes.1:td.classList.foo", true],
-      [[], "body.childNodes.1:tr.childNodes.2:td.classList.foo", true]
+      [[window.document.body], "body.childNodes.0:tr.childNodes.0:td.classList.foo", true],
+      [[window.document.body], "body.childNodes.0:tr.childNodes.1:td.classList.foo", true],
+      [[window.document.body], "body.childNodes.0:tr.childNodes.2:td.classList.foo", true],
+      [[window.document.body], "body.childNodes.1:tr.childNodes.0:td.classList.foo", true],
+      [[window.document.body], "body.childNodes.1:tr.childNodes.1:td.classList.foo", true],
+      [[window.document.body], "body.childNodes.1:tr.childNodes.2:td.classList.foo", true]
     ]);
   });
 

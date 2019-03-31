@@ -122,12 +122,12 @@ describe("applyDomDiffDel2()", () => {
     const spy = spyOn(delDomProp2, "delDomProp2").and.returnValue(true);
     applyDomDiffDel2(diffSet);
     expect(spy.calls.allArgs()).toEqual([
-      [[], "body.childNodes.0:tr.childNodes.0:td.classList.foo"],
-      [[], "body.childNodes.0:tr.childNodes.1:td.classList.foo"],
-      [[], "body.childNodes.0:tr.childNodes.2:td.classList.foo"],
-      [[], "body.childNodes.1:tr.childNodes.0:td.classList.foo"],
-      [[], "body.childNodes.1:tr.childNodes.1:td.classList.foo"],
-      [[], "body.childNodes.1:tr.childNodes.2:td.classList.foo"]
+      [[window.document.body], "body.childNodes.0:tr.childNodes.0:td.classList.foo"],
+      [[window.document.body], "body.childNodes.0:tr.childNodes.1:td.classList.foo"],
+      [[window.document.body], "body.childNodes.0:tr.childNodes.2:td.classList.foo"],
+      [[window.document.body], "body.childNodes.1:tr.childNodes.0:td.classList.foo"],
+      [[window.document.body], "body.childNodes.1:tr.childNodes.1:td.classList.foo"],
+      [[window.document.body], "body.childNodes.1:tr.childNodes.2:td.classList.foo"]
     ]);
   });
 

@@ -6,7 +6,7 @@ export function applyDomDiffDel2(diffDel: Flame): Flame {
   const bounced: Flame = {};
   const stack = [window.document.body];
   let applied = true;
-  let last: string = "";
+  let last: string = "body";
   for (const path in diffDel) {
     const count = countCommonComponents(path, last);
     if (stack.length > count) {

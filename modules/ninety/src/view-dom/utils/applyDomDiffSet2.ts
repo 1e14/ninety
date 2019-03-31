@@ -6,7 +6,7 @@ export function applyDomDiffSet2(diffSet: Flame): Flame {
   const bounced: Flame = {};
   const stack = [window.document.body];
   let applied = true;
-  let last: string = "";
+  let last: string = "body";
   for (const path in diffSet) {
     const count = countCommonComponents(path, last);
     if (stack.length > count) {
