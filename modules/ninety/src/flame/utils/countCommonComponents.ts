@@ -1,11 +1,20 @@
-import {PATH_DELIMITER} from "./path";
+import {countPathComponents, PATH_DELIMITER} from "./path";
 
 export function countCommonComponents(path1: string, path2: string): number {
-  let pos = 0;
-  for (let i = 0; path1[i] === path2[i]; i++) {
-    if (path1[i] === PATH_DELIMITER) {
+  if (path1 === path2) {
+    return countPathComponents(path1);
+  } else {
+    let pos = 0;
+    let i = 0;
+    while (path1[i] === path2[i]) {
+      if (path1[i] === PATH_DELIMITER) {
+        pos++;
+      }
+      i++;
+    }
+    if (i === path1.length || i === path2.length) {
       pos++;
     }
+    return pos;
   }
-  return pos;
 }

@@ -6,5 +6,11 @@ describe("countCommonComponents()", () => {
     .toBe(2);
     expect(countCommonComponents("foo.bar.baz", "foo.bar.baa"))
     .toBe(2);
+    expect(countCommonComponents("foo.bar", "foo.bar"))
+    .toBe(2);
+    expect(countCommonComponents("foo", "foo.bar.baa"))
+    .toBe(1);
+    expect(countCommonComponents("foo.bar.baz", "foo"))
+    .toBe(1);
   });
 });
