@@ -6,7 +6,7 @@ describe("createDomLinkView()", () => {
     let node: DomLinkView;
 
     beforeEach(() => {
-      node = createDomLinkView(() => "childNodes.0:a", 0);
+      node = createDomLinkView(() => "childNodes.0:A", 0);
     });
 
     describe("on set", () => {
@@ -22,11 +22,11 @@ describe("createDomLinkView()", () => {
         }, "1");
         expect(spy).toHaveBeenCalledWith({
           del: {},
-          set: {"childNodes.0:a.innerText": "Hello"}
+          set: {"childNodes.0:A.innerText": "Hello"}
         }, "1");
         expect(spy).toHaveBeenCalledWith({
           del: {},
-          set: {"childNodes.0:a.href": "http://"}
+          set: {"childNodes.0:A.href": "http://"}
         }, "1");
       });
     });
@@ -53,11 +53,11 @@ describe("createDomLinkView()", () => {
           set: {}
         }, "2");
         expect(spy).toHaveBeenCalledWith({
-          del: {"childNodes.0:a.innerText": null},
+          del: {"childNodes.0:A.innerText": null},
           set: {}
         }, "2");
         expect(spy).toHaveBeenCalledWith({
-          del: {"childNodes.0:a.href": null},
+          del: {"childNodes.0:A.href": null},
           set: {}
         }, "2");
       });

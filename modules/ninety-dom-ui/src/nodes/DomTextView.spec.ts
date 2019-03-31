@@ -8,7 +8,7 @@ describe("createDomTextView()", () => {
     beforeEach(() => {
       node = createDomTextView((component) => {
         const hits = /(\d+),(\d+)/.exec(component);
-        return `childNodes,${hits[1]}:tr,childNodes,${hits[2]}:td`;
+        return `childNodes,${hits[1]}:TR,childNodes,${hits[2]}:TD`;
       }, 2);
     });
 
@@ -22,7 +22,7 @@ describe("createDomTextView()", () => {
         }, "1");
         expect(spy).toHaveBeenCalledWith({
           del: {},
-          set: {"page.table.childNodes,2:tr,childNodes,4:td.innerText": "Foo"}
+          set: {"page.table.childNodes,2:TR,childNodes,4:TD.innerText": "Foo"}
         }, "1");
       });
     });
@@ -36,7 +36,7 @@ describe("createDomTextView()", () => {
           set: {}
         }, "2");
         expect(spy).toHaveBeenCalledWith({
-          del: {"page.table.childNodes,2:tr,childNodes,4:td.innerText": null},
+          del: {"page.table.childNodes,2:TR,childNodes,4:TD.innerText": null},
           set: {}
         }, "2");
       });

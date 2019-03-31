@@ -22,10 +22,10 @@ describe("createDomTableCellView()", () => {
       }, "1");
       expect(spy).toHaveBeenCalledWith({
         del: {
-          "foo.childNodes,1:tr,childNodes,3:td.bar": null
+          "foo.childNodes,1:TR,childNodes,3:TD.bar": null
         },
         set: {
-          "foo.childNodes,1:tr,childNodes,3:td.bar": "baz"
+          "foo.childNodes,1:TR,childNodes,3:TD.bar": "baz"
         }
       }, "1");
     });

@@ -23,8 +23,8 @@ export function createStressTest1PageView(
   depth: number = 0
 ): StressTest1PageView {
   const view = createParentView(() => path, depth);
-  const description = createDomTextView(() => "childNodes,1:p", depth + 1);
-  const table = createStressTableView(() => "childNodes,2:table", depth + 1);
+  const description = createDomTextView(() => "childNodes,1:P", depth + 1);
+  const table = createStressTableView(() => "childNodes,2:TABLE", depth + 1);
   const splitter = createFlameDiffSplitter({
     d_desc: ["desc"],
     d_table: ["table"]

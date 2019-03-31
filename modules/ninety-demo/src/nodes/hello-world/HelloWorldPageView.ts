@@ -18,7 +18,7 @@ export function createHelloWorldPageView(
   depth: number = 0
 ): HelloWorldPageView {
   const view = createParentView(() => path, depth);
-  const textView = createDomTextView(() => "childNodes.0:span", depth + 1);
+  const textView = createDomTextView(() => "childNodes.0:SPAN", depth + 1);
   const splitter = createFlameDiffSplitter<"d_caption">({
     d_caption: ["caption"]
   }, depth + 1);

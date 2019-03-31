@@ -18,7 +18,7 @@ export function createMainMenuView(
 ): MainMenuView {
   const view = createParentView(() => path, depth);
   const menuItemView = createDomListItemView(depth + 1);
-  const menuLinkView = createDomLinkView(() => "childNodes,0:a", depth + 2);
+  const menuLinkView = createDomLinkView(() => "childNodes,0:A", depth + 2);
 
   connect(view.o.d_vm, menuItemView.i.d_vm);
   connect(menuItemView.o.d_vm, menuLinkView.i.d_vm);

@@ -17,7 +17,7 @@ export function createStressTableCellView(
   depth: number = 0
 ): StressTableCellView {
   const view = createDomTableCellView(depth);
-  const text = createDomTextView(() => "childNodes,0:span", depth + 1);
+  const text = createDomTextView(() => "childNodes,0:SPAN", depth + 1);
   const color = createDomStyleView("color");
   const callSplitter = createFlameDiffSplitter({
     d_content: ["content"]

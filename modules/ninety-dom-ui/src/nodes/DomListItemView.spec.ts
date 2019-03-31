@@ -22,10 +22,10 @@ describe("createDomListItemView()", () => {
       }, "1");
       expect(spy).toHaveBeenCalledWith({
         del: {
-          "foo.childNodes,1:li.bar": null
+          "foo.childNodes,1:LI.bar": null
         },
         set: {
-          "foo.childNodes,1:li.bar": "baz"
+          "foo.childNodes,1:LI.bar": "baz"
         }
       }, "1");
     });

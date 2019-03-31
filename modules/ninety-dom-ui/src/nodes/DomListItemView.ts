@@ -11,5 +11,5 @@ export function createDomListItemView(
   depth: number = 0
 ): DomListItemView {
   return createParentView((component) =>
-    "childNodes," + component + ":li", depth);
+    "childNodes," + component + ":LI", depth);
 }

@@ -14,6 +14,6 @@ export function createDomTableCellView(
     const pos = component.indexOf(",");
     const row = component.slice(0, pos);
     const column = component.slice(pos + 1);
-    return "childNodes," + row + ":tr,childNodes," + column + ":td";
+    return "childNodes," + row + ":TR,childNodes," + column + ":TD";
   }, depth);
 }
