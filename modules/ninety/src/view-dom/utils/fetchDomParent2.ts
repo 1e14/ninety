@@ -18,10 +18,10 @@ function addPlaceholders(node: Node, index: number): void {
 export function fetchDomParent2(stack: Array<any>, path: string): any {
   const stackSize = stack.length;
   const parentDepth = countPathComponents(path) - 1;
+  let property = stack[stackSize - 1];
 
   for (let i = stackSize; i < parentDepth; i++) {
     const component = getPathComponent(path, i);
-    let property = stack[0];
     if (property instanceof Node) {
       // adding context to node list if necessary
       const childNodes = <ContextualNodeListOf<ChildNode>>property.childNodes;
@@ -53,8 +53,8 @@ export function fetchDomParent2(stack: Array<any>, path: string): any {
       // we're only concerned with nodes and node lists
       return undefined;
     }
-    stack.unshift(property);
+    stack.push(property);
   }
 
-  return stack[0];
+  return property;
 }

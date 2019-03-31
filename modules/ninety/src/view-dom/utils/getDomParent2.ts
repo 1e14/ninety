@@ -10,10 +10,10 @@ import {PATH_TAG_DELIMITER} from "./fetchDomParent";
 export function getDomParent2(stack: Array<any>, path: string): any {
   const stackSize = stack.length;
   const parentDepth = countPathComponents(path) - 1;
+  let property = stack[stackSize - 1];
 
   for (let i = stackSize; i < parentDepth; i++) {
     const component = getPathComponent(path, i);
-    let property = stack[0];
     if (property instanceof Node) {
       property = property[component];
     } else if (property instanceof NodeList) {
@@ -29,8 +29,8 @@ export function getDomParent2(stack: Array<any>, path: string): any {
       // we're only concerned with nodes and node lists
       return undefined;
     }
-    stack.unshift(property);
+    stack.push(property);
   }
 
-  return stack[0];
+  return property;
 }

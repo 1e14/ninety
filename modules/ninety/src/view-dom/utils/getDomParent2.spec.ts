@@ -127,12 +127,12 @@ describe("getDomParent2()", () => {
       const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
       getDomParent2(stack, path);
       expect(stack).toEqual([
-        window.document.body.childNodes[1].childNodes[3].classList,
-        window.document.body.childNodes[1].childNodes[3],
-        window.document.body.childNodes[1].childNodes,
-        window.document.body.childNodes[1],
+        window.document.body,
         window.document.body.childNodes,
-        window.document.body
+        window.document.body.childNodes[1],
+        window.document.body.childNodes[1].childNodes,
+        window.document.body.childNodes[1].childNodes[3],
+        window.document.body.childNodes[1].childNodes[3].classList
       ]);
     });
   });
@@ -165,10 +165,10 @@ describe("getDomParent2()", () => {
       const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
       getDomParent2(stack, path);
       expect(stack).toEqual([
-        window.document.body.childNodes[1].childNodes,
-        window.document.body.childNodes[1],
+        window.document.body,
         window.document.body.childNodes,
-        window.document.body
+        window.document.body.childNodes[1],
+        window.document.body.childNodes[1].childNodes
       ]);
     });
   });

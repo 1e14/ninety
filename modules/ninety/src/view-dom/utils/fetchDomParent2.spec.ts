@@ -139,12 +139,12 @@ describe("fetchDomParent2()", () => {
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
     fetchDomParent2(stack, path);
     expect(stack).toEqual([
-      window.document.body.childNodes[1].childNodes[3].classList,
-      window.document.body.childNodes[1].childNodes[3],
-      window.document.body.childNodes[1].childNodes,
-      window.document.body.childNodes[1],
+      window.document.body,
       window.document.body.childNodes,
-      window.document.body
+      window.document.body.childNodes[1],
+      window.document.body.childNodes[1].childNodes,
+      window.document.body.childNodes[1].childNodes[3],
+      window.document.body.childNodes[1].childNodes[3].classList
     ]);
   });
 
@@ -168,7 +168,7 @@ describe("fetchDomParent2()", () => {
       const stack = [{}, {}, {}];
       const path = "foo.bar.baz.quux";
       const result = fetchDomParent2(stack, path);
-      expect(result).toBe(stack[0]);
+      expect(result).toBe(stack[2]);
     });
   });
 
@@ -184,12 +184,12 @@ describe("fetchDomParent2()", () => {
       const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
       fetchDomParent2(stack, path);
       expect(stack).toEqual([
-        window.document.body.childNodes[1].childNodes[3].classList,
-        window.document.body.childNodes[1].childNodes[3],
-        window.document.body.childNodes[1].childNodes,
-        window.document.body.childNodes[1],
+        window.document.body,
         window.document.body.childNodes,
-        window.document.body
+        window.document.body.childNodes[1],
+        window.document.body.childNodes[1].childNodes,
+        window.document.body.childNodes[1].childNodes[3],
+        window.document.body.childNodes[1].childNodes[3].classList
       ]);
     });
   });
