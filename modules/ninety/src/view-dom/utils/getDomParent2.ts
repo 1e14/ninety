@@ -1,5 +1,5 @@
 import {countPathComponents, getPathComponent} from "../../flame/utils";
-import {PATH_TAG_DELIMITER} from "./fetchDomParent";
+import {PATH_TAG_DELIMITER} from "./fetchDomParent2";
 
 /**
  * Retrieves parent DOM property for the specified DOM path, starting at

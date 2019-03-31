@@ -1,6 +1,8 @@
 import {countPathComponents, getPathComponent} from "../../flame/utils";
 import {ContextualNodeListOf} from "../types";
-import {DEFAULT_TAG_NAME, PATH_TAG_DELIMITER} from "./fetchDomParent";
+
+export const DEFAULT_TAG_NAME = "div";
+export const PATH_TAG_DELIMITER = ":";
 
 /**
  * Adds placeholder comment nodes to the specified parent node up to the
