@@ -6,4 +6,5 @@ export {fetchDomParent2} from "./fetchDomParent2";
 export {fetchDomParent} from "./fetchDomParent";
 export {getDomParent} from "./getDomParent";
 export {getDomProp} from "./getDomProp";
+export {setDomProp2} from "./setDomProp2";
 export {setDomProp} from "./setDomProp";

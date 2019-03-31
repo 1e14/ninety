@@ -15,14 +15,10 @@ function addPlaceholders(node: Node, index: number): void {
   }
 }
 
-export function fetchDomParent2(
-  stack: Array<any>,
-  path: string
-): any {
+export function fetchDomParent2(stack: Array<any>, path: string): any {
   const stackSize = stack.length;
   const parentDepth = countPathComponents(path) - 1;
 
-  // digging deeper
   for (let i = stackSize; i < parentDepth; i++) {
     const component = getPathComponent(path, i);
     let property = stack[0];
