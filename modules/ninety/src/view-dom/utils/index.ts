@@ -4,6 +4,7 @@ export {applyDomDiff} from "./applyDomDiff";
 export {delDomProp} from "./delDomProp";
 export {fetchDomParent2} from "./fetchDomParent2";
 export {fetchDomParent} from "./fetchDomParent";
+export {getDomParent2} from "./getDomParent2";
 export {getDomParent} from "./getDomParent";
 export {getDomProp} from "./getDomProp";
 export {setDomProp2} from "./setDomProp2";
