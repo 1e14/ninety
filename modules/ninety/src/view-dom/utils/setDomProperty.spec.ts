@@ -1,7 +1,6 @@
-import {fetchDomParent2} from "./fetchDomParent2";
-import {getDomParent2} from "./getDomParent2";
+import {setDomProperty} from "./setDomProperty";
 
-describe("getDomParent2()", () => {
+describe("setDomProperty()", () => {
   const window = <any>global;
 
   beforeEach(() => {
@@ -108,68 +107,104 @@ describe("getDomParent2()", () => {
     delete window.document;
   });
 
-  describe("when path exists", () => {
+  it("should return true", () => {
+    const stack = [window.document.body];
+    const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
+    expect(setDomProperty(stack, path, true)).toBe(true);
+  });
+
+  describe("for attribute", () => {
+    let stack;
+
     beforeEach(() => {
-      const stack = [window.document.body];
-      const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      fetchDomParent2(stack, path);
+      stack = [window.document.body];
     });
 
-    it("should return DOM parent", () => {
-      const stack = [window.document.body];
-      const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      const result = getDomParent2(stack, path);
-      expect(result).toBe(window.document.body.childNodes[1].childNodes[3].classList);
+    describe("when attribute does not exist yet", () => {
+      it("should add new attribute", () => {
+        const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
+        setDomProperty(stack, path, "bar");
+        expect(
+          window.document.body.childNodes[1].childNodes[3].attributes
+          .getNamedItem("foo").value
+        ).toBe("bar");
+      });
     });
 
-    it("should build stack", () => {
-      const stack = [window.document.body];
-      const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      getDomParent2(stack, path);
-      expect(stack).toEqual([
-        window.document.body,
-        window.document.body.childNodes,
-        window.document.body.childNodes[1],
-        window.document.body.childNodes[1].childNodes,
-        window.document.body.childNodes[1].childNodes[3],
-        window.document.body.childNodes[1].childNodes[3].classList
-      ]);
+    describe("when attribute already exists", () => {
+      beforeEach(() => {
+        const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
+        setDomProperty(stack, path, "bar");
+      });
+
+      it("should set attribute value", () => {
+        const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
+        setDomProperty(stack, path, "baz");
+        expect(
+          window.document.body.childNodes[1].childNodes[3].attributes
+          .getNamedItem("foo").value
+        ).toBe("baz");
+      });
     });
   });
 
-  describe("when path does not exist", () => {
-    it("should return undefined", () => {
-      const stack = [window.document.body];
+  describe("for CSS class", () => {
+    let stack;
+
+    beforeEach(() => {
+      stack = [window.document.body];
+    });
+
+    it("should add class", () => {
       const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      const result = getDomParent2(stack, path);
-      expect(result).toBeUndefined();
+      setDomProperty(stack, path, true);
+      expect(
+        window.document.body.childNodes[1].childNodes[3].classList.contains("foo")
+      ).toBeTruthy();
     });
   });
 
-  describe("when partial path exists", () => {
+  describe("for style", () => {
+    let stack;
+
     beforeEach(() => {
-      const stack = [window.document.body];
-      const path = "body.childNodes.1:div.classList.foo";
-      fetchDomParent2(stack, path);
+      stack = [window.document.body];
     });
 
-    it("should return undefined", () => {
-      const stack = [window.document.body];
-      const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      const result = getDomParent2(stack, path);
-      expect(result).toBeUndefined();
+    it("should set style property", () => {
+      const path = "body.childNodes.1:div.childNodes.3:span.style.foo";
+      setDomProperty(stack, path, "bar");
+      expect(window.document.body.childNodes[1].childNodes[3].style.foo)
+      .toBe("bar");
+    });
+  });
+
+  describe("for event handler", () => {
+    let stack;
+
+    beforeEach(() => {
+      stack = [window.document.body];
     });
 
-    it("should build partial stack", () => {
-      const stack = [window.document.body];
-      const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      getDomParent2(stack, path);
-      expect(stack).toEqual([
-        window.document.body,
-        window.document.body.childNodes,
-        window.document.body.childNodes[1],
-        window.document.body.childNodes[1].childNodes
-      ]);
+    it("should set handler property", () => {
+      const cb = () => null;
+      const path = "body.childNodes.1:div.childNodes.3:span.onclick";
+      setDomProperty(stack, path, cb);
+      expect(window.document.body.childNodes[1].childNodes[3].onclick)
+      .toBe(cb);
+    });
+  });
+
+  describe("when unsuccessful", () => {
+    let stack;
+
+    beforeEach(() => {
+      stack = [window.document.body];
+    });
+
+    it("should return false", () => {
+      const path = "body.childNodes.1.foo.bar";
+      expect(setDomProperty(stack, path, true)).toBe(false);
     });
   });
 });

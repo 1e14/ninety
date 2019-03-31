@@ -1,22 +1,21 @@
 import {Flame} from "../../flame/types";
 import {countCommonComponents} from "../../flame/utils";
-import {setDomProp2} from "./setDomProp2";
+import {delDomProperty} from "./delDomProperty";
 
-export function applyDomDiffSet2(diffSet: Flame): Flame {
+export function applyDomDiffDel(diffDel: Flame): Flame {
   const bounced: Flame = {};
   const stack = [window.document.body];
   let applied = true;
   let last: string = "body";
-  for (const path in diffSet) {
+  for (const path in diffDel) {
     const count = countCommonComponents(path, last);
     if (stack.length > count) {
       // trimming stack back to common root
       stack.length = count;
     }
-    const value = diffSet[path];
-    const success = setDomProp2(stack, path, value);
+    const success = delDomProperty(stack, path);
     if (!success) {
-      bounced[path] = value;
+      bounced[path] = null;
       applied = false;
     }
     last = path;

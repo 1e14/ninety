@@ -1,7 +1,7 @@
-import {applyDomDiffSet2} from "./applyDomDiffSet2";
-import * as setDomProp2 from "./setDomProp2";
+import {applyDomDiffSet} from "./applyDomDiffSet";
+import * as setDomProp2 from "./setDomProperty";
 
-describe("applyDomDiffSet2()", () => {
+describe("applyDomDiffSet()", () => {
   const window = <any>global;
 
   beforeEach(() => {
@@ -110,7 +110,7 @@ describe("applyDomDiffSet2()", () => {
     delete window.window;
   });
 
-  it("should invoke setDomProp2() with paths & values", () => {
+  it("should invoke setDomProperty() with paths & values", () => {
     const diffSet = {
       "body.childNodes.0:tr.childNodes.0:td.classList.foo": true,
       "body.childNodes.0:tr.childNodes.1:td.classList.foo": true,
@@ -119,8 +119,8 @@ describe("applyDomDiffSet2()", () => {
       "body.childNodes.1:tr.childNodes.1:td.classList.foo": true,
       "body.childNodes.1:tr.childNodes.2:td.classList.foo": true
     };
-    const spy = spyOn(setDomProp2, "setDomProp2").and.returnValue(true);
-    applyDomDiffSet2(diffSet);
+    const spy = spyOn(setDomProp2, "setDomProperty").and.returnValue(true);
+    applyDomDiffSet(diffSet);
     expect(spy.calls.allArgs()).toEqual([
       [[window.document.body], "body.childNodes.0:tr.childNodes.0:td.classList.foo", true],
       [[window.document.body], "body.childNodes.0:tr.childNodes.1:td.classList.foo", true],
@@ -131,7 +131,7 @@ describe("applyDomDiffSet2()", () => {
     ]);
   });
 
-  describe("when setDomProp2() returns true", () => {
+  describe("when setDomProperty() returns true", () => {
     it("should return undefined", () => {
       const diffSet = {
         "body.childNodes.0:tr.childNodes.0:td.classList.foo": true,
@@ -141,12 +141,12 @@ describe("applyDomDiffSet2()", () => {
         "body.childNodes.1:tr.childNodes.1:td.classList.foo": true,
         "body.childNodes.1:tr.childNodes.2:td.classList.foo": true
       };
-      spyOn(setDomProp2, "setDomProp2").and.returnValue(true);
-      expect(applyDomDiffSet2(diffSet)).toBeUndefined();
+      spyOn(setDomProp2, "setDomProperty").and.returnValue(true);
+      expect(applyDomDiffSet(diffSet)).toBeUndefined();
     });
   });
 
-  describe("when setDomProp2() returns false", () => {
+  describe("when setDomProperty() returns false", () => {
     it("should return bounced paths", () => {
       const diffSet = {
         "body.childNodes.0:tr.childNodes.0:td.classList.foo": true,
@@ -156,10 +156,10 @@ describe("applyDomDiffSet2()", () => {
         "body.childNodes.1:tr.childNodes.1:td.classList.foo": true,
         "body.childNodes.1:tr.childNodes.2:td.classList.foo": true
       };
-      spyOn(setDomProp2, "setDomProp2").and.callFake((a, path) => {
+      spyOn(setDomProp2, "setDomProperty").and.callFake((a, path) => {
         return path !== "body.childNodes.0:tr.childNodes.2:td.classList.foo";
       });
-      expect(applyDomDiffSet2(diffSet)).toEqual({
+      expect(applyDomDiffSet(diffSet)).toEqual({
         "body.childNodes.0:tr.childNodes.2:td.classList.foo": true
       });
     });

@@ -1,5 +1,5 @@
 import {countPathComponents, getPathComponent} from "../../flame/utils";
-import {PATH_TAG_DELIMITER} from "./fetchDomParent2";
+import {PATH_TAG_DELIMITER} from "./fetchDomParent";
 
 /**
  * Retrieves parent DOM property for the specified DOM path, starting at
@@ -7,7 +7,7 @@ import {PATH_TAG_DELIMITER} from "./fetchDomParent2";
  * @param stack
  * @param path Path to fetch parent property for.
  */
-export function getDomParent2(stack: Array<any>, path: string): any {
+export function getDomParent(stack: Array<any>, path: string): any {
   const stackSize = stack.length;
   const parentDepth = countPathComponents(path) - 1;
   let property = stack[stackSize - 1];

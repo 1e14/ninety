@@ -1,12 +1,12 @@
 import {PATH_DELIMITER} from "../../flame/utils";
 import {ContextualNodeListOf} from "../types";
-import {getDomParent2} from "./getDomParent2";
+import {getDomParent} from "./getDomParent";
 
-export function delDomProp2(
+export function delDomProperty(
   stack: Array<any>,
   path: string
 ): boolean {
-  const parent = getDomParent2(stack, path);
+  const parent = getDomParent(stack, path);
   const key = path.slice(path.lastIndexOf(PATH_DELIMITER) + 1);
   if (parent instanceof Node) {
     // node property

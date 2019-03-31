@@ -1,6 +1,6 @@
-import {setDomProp2} from "./setDomProp2";
+import {fetchDomParent} from "./fetchDomParent";
 
-describe("setDomProp2()", () => {
+describe("fetchDomParent()", () => {
   const window = <any>global;
 
   beforeEach(() => {
@@ -107,104 +107,90 @@ describe("setDomProp2()", () => {
     delete window.document;
   });
 
-  it("should return true", () => {
+  it("should return DOM parent", () => {
     const stack = [window.document.body];
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    expect(setDomProp2(stack, path, true)).toBe(true);
+    const result = fetchDomParent(stack, path);
+    expect(result).toBe(
+      window.document.body.childNodes[1].childNodes[3].classList);
   });
 
-  describe("for attribute", () => {
-    let stack;
-
-    beforeEach(() => {
-      stack = [window.document.body];
-    });
-
-    describe("when attribute does not exist yet", () => {
-      it("should add new attribute", () => {
-        const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
-        setDomProp2(stack, path, "bar");
-        expect(
-          window.document.body.childNodes[1].childNodes[3].attributes
-          .getNamedItem("foo").value
-        ).toBe("bar");
-      });
-    });
-
-    describe("when attribute already exists", () => {
-      beforeEach(() => {
-        const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
-        setDomProp2(stack, path, "bar");
-      });
-
-      it("should set attribute value", () => {
-        const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
-        setDomProp2(stack, path, "baz");
-        expect(
-          window.document.body.childNodes[1].childNodes[3].attributes
-          .getNamedItem("foo").value
-        ).toBe("baz");
-      });
-    });
+  it("should build DOM tree", () => {
+    const stack = [window.document.body];
+    const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
+    fetchDomParent(stack, path);
+    expect(window.document.body.childNodes[1].tagName).toBe("div");
+    expect(window.document.body.childNodes[1].childNodes[3].tagName)
+    .toBe("span");
   });
 
-  describe("for CSS class", () => {
-    let stack;
+  it("should add placeholders along the way", () => {
+    const stack = [window.document.body];
+    const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
+    fetchDomParent(stack, path);
+    expect(window.document.body.childNodes[0].data).toBe("");
+    expect(window.document.body.childNodes[1].childNodes[0].data).toBe("");
+    expect(window.document.body.childNodes[1].childNodes[1].data).toBe("");
+    expect(window.document.body.childNodes[1].childNodes[2].data).toBe("");
+  });
 
+  it("should build stack", () => {
+    const stack = [window.document.body];
+    const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
+    fetchDomParent(stack, path);
+    expect(stack).toEqual([
+      window.document.body,
+      window.document.body.childNodes,
+      window.document.body.childNodes[1],
+      window.document.body.childNodes[1].childNodes,
+      window.document.body.childNodes[1].childNodes[3],
+      window.document.body.childNodes[1].childNodes[3].classList
+    ]);
+  });
+
+  describe("when comments are in the way", () => {
     beforeEach(() => {
-      stack = [window.document.body];
-    });
-
-    it("should add class", () => {
+      const stack = [window.document.body];
       const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      setDomProp2(stack, path, true);
-      expect(
-        window.document.body.childNodes[1].childNodes[3].classList.contains("foo")
-      ).toBeTruthy();
+      fetchDomParent(stack, path);
+    });
+
+    it("should replace comments with nodes", () => {
+      const stack = [window.document.body];
+      const path = "body.childNodes.0:span.innerText";
+      fetchDomParent(stack, path);
+      expect(window.document.body.childNodes[0].tagName).toBe("span");
     });
   });
 
-  describe("for style", () => {
-    let stack;
-
-    beforeEach(() => {
-      stack = [window.document.body];
-    });
-
-    it("should set style property", () => {
-      const path = "body.childNodes.1:div.childNodes.3:span.style.foo";
-      setDomProp2(stack, path, "bar");
-      expect(window.document.body.childNodes[1].childNodes[3].style.foo)
-      .toBe("bar");
+  describe("when stack matches path length", () => {
+    it("should return top of stack", () => {
+      const stack = [{}, {}, {}];
+      const path = "foo.bar.baz.quux";
+      const result = fetchDomParent(stack, path);
+      expect(result).toBe(stack[2]);
     });
   });
 
-  describe("for event handler", () => {
-    let stack;
-
+  describe("when DOM tree already built", () => {
     beforeEach(() => {
-      stack = [window.document.body];
+      const stack = [window.document.body];
+      const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
+      fetchDomParent(stack, path);
     });
 
-    it("should set handler property", () => {
-      const cb = () => null;
-      const path = "body.childNodes.1:div.childNodes.3:span.onclick";
-      setDomProp2(stack, path, cb);
-      expect(window.document.body.childNodes[1].childNodes[3].onclick)
-      .toBe(cb);
-    });
-  });
-
-  describe("when unsuccessful", () => {
-    let stack;
-
-    beforeEach(() => {
-      stack = [window.document.body];
-    });
-
-    it("should return false", () => {
-      const path = "body.childNodes.1.foo.bar";
-      expect(setDomProp2(stack, path, true)).toBe(false);
+    it("should build stack", () => {
+      const stack = [window.document.body];
+      const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
+      fetchDomParent(stack, path);
+      expect(stack).toEqual([
+        window.document.body,
+        window.document.body.childNodes,
+        window.document.body.childNodes[1],
+        window.document.body.childNodes[1].childNodes,
+        window.document.body.childNodes[1].childNodes[3],
+        window.document.body.childNodes[1].childNodes[3].classList
+      ]);
     });
   });
 });

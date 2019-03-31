@@ -1,7 +1,7 @@
-import {applyDomDiffDel2} from "./applyDomDiffDel2";
-import * as delDomProp2 from "./delDomProp2";
+import {applyDomDiffDel} from "./applyDomDiffDel";
+import * as delDomProp2 from "./delDomProperty";
 
-describe("applyDomDiffDel2()", () => {
+describe("applyDomDiffDel()", () => {
   const window = <any>global;
 
   beforeEach(() => {
@@ -110,7 +110,7 @@ describe("applyDomDiffDel2()", () => {
     delete window.window;
   });
 
-  it("should invoke delDomProp2() with paths", () => {
+  it("should invoke delDomProperty() with paths", () => {
     const diffSet = {
       "body.childNodes.0:tr.childNodes.0:td.classList.foo": null,
       "body.childNodes.0:tr.childNodes.1:td.classList.foo": null,
@@ -119,8 +119,8 @@ describe("applyDomDiffDel2()", () => {
       "body.childNodes.1:tr.childNodes.1:td.classList.foo": null,
       "body.childNodes.1:tr.childNodes.2:td.classList.foo": null
     };
-    const spy = spyOn(delDomProp2, "delDomProp2").and.returnValue(true);
-    applyDomDiffDel2(diffSet);
+    const spy = spyOn(delDomProp2, "delDomProperty").and.returnValue(true);
+    applyDomDiffDel(diffSet);
     expect(spy.calls.allArgs()).toEqual([
       [[window.document.body], "body.childNodes.0:tr.childNodes.0:td.classList.foo"],
       [[window.document.body], "body.childNodes.0:tr.childNodes.1:td.classList.foo"],
@@ -131,7 +131,7 @@ describe("applyDomDiffDel2()", () => {
     ]);
   });
 
-  describe("when delDomProp2() returns true", () => {
+  describe("when delDomProperty() returns true", () => {
     it("should return undefined", () => {
       const diffSet = {
         "body.childNodes.0:tr.childNodes.0:td.classList.foo": null,
@@ -141,12 +141,12 @@ describe("applyDomDiffDel2()", () => {
         "body.childNodes.1:tr.childNodes.1:td.classList.foo": null,
         "body.childNodes.1:tr.childNodes.2:td.classList.foo": null
       };
-      spyOn(delDomProp2, "delDomProp2").and.returnValue(true);
-      expect(applyDomDiffDel2(diffSet)).toBeUndefined();
+      spyOn(delDomProp2, "delDomProperty").and.returnValue(true);
+      expect(applyDomDiffDel(diffSet)).toBeUndefined();
     });
   });
 
-  describe("when delDomProp2() returns false", () => {
+  describe("when delDomProperty() returns false", () => {
     it("should return bounced paths", () => {
       const diffSet = {
         "body.childNodes.0:tr.childNodes.0:td.classList.foo": null,
@@ -156,10 +156,10 @@ describe("applyDomDiffDel2()", () => {
         "body.childNodes.1:tr.childNodes.1:td.classList.foo": null,
         "body.childNodes.1:tr.childNodes.2:td.classList.foo": null
       };
-      spyOn(delDomProp2, "delDomProp2").and.callFake((a, path) => {
+      spyOn(delDomProp2, "delDomProperty").and.callFake((a, path) => {
         return path !== "body.childNodes.0:tr.childNodes.2:td.classList.foo";
       });
-      expect(applyDomDiffDel2(diffSet)).toEqual({
+      expect(applyDomDiffDel(diffSet)).toEqual({
         "body.childNodes.0:tr.childNodes.2:td.classList.foo": null
       });
     });

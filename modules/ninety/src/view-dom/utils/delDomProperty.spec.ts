@@ -1,7 +1,7 @@
-import {delDomProp2} from "./delDomProp2";
-import {setDomProp2} from "./setDomProp2";
+import {delDomProperty} from "./delDomProperty";
+import {setDomProperty} from "./setDomProperty";
 
-describe("delDomProp2()", () => {
+describe("delDomProperty()", () => {
   const window = <any>global;
 
   beforeEach(() => {
@@ -111,21 +111,21 @@ describe("delDomProp2()", () => {
   it("should return true", () => {
     const stack = [window.document.body];
     const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    setDomProp2(stack, path, true);
-    expect(delDomProp2(stack, path)).toBe(true);
+    setDomProperty(stack, path, true);
+    expect(delDomProperty(stack, path)).toBe(true);
   });
 
   describe("for node", () => {
     beforeEach(() => {
       const stack = [window.document.body];
       const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
-      setDomProp2(stack, path, "bar");
+      setDomProperty(stack, path, "bar");
     });
 
     it("should replace node w/ comment", () => {
       const stack = [window.document.body];
       const path = "body.childNodes.1:div.childNodes.3";
-      delDomProp2(stack, path);
+      delDomProperty(stack, path);
       const node = window.document.body.childNodes[1].childNodes[3];
       expect(node instanceof window.Comment).toBeTruthy();
     });
@@ -135,13 +135,13 @@ describe("delDomProp2()", () => {
     beforeEach(() => {
       const stack = [window.document.body];
       const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
-      setDomProp2(stack, path, "bar");
+      setDomProperty(stack, path, "bar");
     });
 
     it("should remove attribute", () => {
       const stack = [window.document.body];
       const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
-      delDomProp2(stack, path);
+      delDomProperty(stack, path);
       expect(
         window.document.body.childNodes[1].childNodes[3].attributes
         .getNamedItem("foo")
@@ -153,13 +153,13 @@ describe("delDomProp2()", () => {
     beforeEach(() => {
       const stack = [window.document.body];
       const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      setDomProp2(stack, path, "bar");
+      setDomProperty(stack, path, "bar");
     });
 
     it("should remove class", () => {
       const stack = [window.document.body];
       const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      delDomProp2(stack, path);
+      delDomProperty(stack, path);
       expect(
         window.document.body.childNodes[1].childNodes[3].classList.contains("foo")
       ).toBeFalsy();
@@ -170,13 +170,13 @@ describe("delDomProp2()", () => {
     beforeEach(() => {
       const stack = [window.document.body];
       const path = "body.childNodes.1:div.childNodes.3:span.style.foo";
-      setDomProp2(stack, path, "bar");
+      setDomProperty(stack, path, "bar");
     });
 
     it("should remove class", () => {
       const stack = [window.document.body];
       const path = "body.childNodes.1:div.childNodes.3:span.style.foo";
-      delDomProp2(stack, path);
+      delDomProperty(stack, path);
       expect(
         window.document.body.childNodes[1].childNodes[3].style.foo
       ).toBe(null);
@@ -187,13 +187,13 @@ describe("delDomProp2()", () => {
     beforeEach(() => {
       const stack = [window.document.body];
       const path = "body.childNodes.1:div.childNodes.3:span.onclick";
-      setDomProp2(stack, path, () => null);
+      setDomProperty(stack, path, () => null);
     });
 
     it("should reset handler property", () => {
       const stack = [window.document.body];
       const path = "body.childNodes.1:div.childNodes.3:span.onclick";
-      delDomProp2(stack, path);
+      delDomProperty(stack, path);
       expect(window.document.body.childNodes[1].childNodes[3].onclick)
       .toBe(null);
     });
@@ -203,7 +203,7 @@ describe("delDomProp2()", () => {
     it("should return true", () => {
       const stack = [window.document.body];
       const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      expect(delDomProp2(stack, path)).toBe(true);
+      expect(delDomProperty(stack, path)).toBe(true);
     });
   });
 });

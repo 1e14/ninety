@@ -17,7 +17,7 @@ function addPlaceholders(node: Node, index: number): void {
   }
 }
 
-export function fetchDomParent2(stack: Array<any>, path: string): any {
+export function fetchDomParent(stack: Array<any>, path: string): any {
   const stackSize = stack.length;
   const parentDepth = countPathComponents(path) - 1;
   let property = stack[stackSize - 1];

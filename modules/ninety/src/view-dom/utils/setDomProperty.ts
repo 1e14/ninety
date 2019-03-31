@@ -1,5 +1,5 @@
 import {PATH_DELIMITER} from "../../flame/utils";
-import {fetchDomParent2} from "./fetchDomParent2";
+import {fetchDomParent} from "./fetchDomParent";
 
 /**
  * Sets single property in the DOM.
@@ -7,12 +7,12 @@ import {fetchDomParent2} from "./fetchDomParent2";
  * @param path Path to DOM property.
  * @param value Property value to be set.
  */
-export function setDomProp2(
+export function setDomProperty(
   stack: Array<any>,
   path: string,
   value: any
 ): boolean {
-  const parent = fetchDomParent2(stack, path);
+  const parent = fetchDomParent(stack, path);
   const key = path.slice(path.lastIndexOf(PATH_DELIMITER) + 1);
   if (parent instanceof Node) {
     parent[key] = value;
