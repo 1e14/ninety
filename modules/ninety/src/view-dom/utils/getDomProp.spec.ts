@@ -5,6 +5,8 @@ describe("getDomProp()", () => {
   const window = <any>global;
 
   beforeEach(() => {
+    window.Attr = function () {//
+    };
     window.Comment = function () {
       this.parentNode = null;
     };
