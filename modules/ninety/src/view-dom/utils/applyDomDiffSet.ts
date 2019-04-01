@@ -2,6 +2,10 @@ import {Flame} from "../../flame/types";
 import {countCommonComponents} from "../../flame/utils";
 import {setDomProperty} from "./setDomProperty";
 
+/**
+ * Applies the 'set' side of a view diff to the DOM.
+ * @param diffSet Collection of DOM path - value pairs.
+ */
 export function applyDomDiffSet(diffSet: Flame): Flame {
   const bounced: Flame = {};
   const stack = [window.document.body];

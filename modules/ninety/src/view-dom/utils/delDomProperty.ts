@@ -2,6 +2,11 @@ import {PATH_DELIMITER} from "../../flame/utils";
 import {ContextualNodeListOf} from "../types";
 import {getDomParent} from "./getDomParent";
 
+/**
+ * Deletes single property or entire subtree from the DOM.
+ * @param stack Cached parent DOM properties along the path.
+ * @param path Path to DOM property or subtree.
+ */
 export function delDomProperty(
   stack: Array<any>,
   path: string

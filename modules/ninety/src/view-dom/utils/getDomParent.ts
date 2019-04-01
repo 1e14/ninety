@@ -2,9 +2,8 @@ import {countPathComponents, getPathComponent} from "../../flame/utils";
 import {PATH_TAG_DELIMITER} from "./fetchDomParent";
 
 /**
- * Retrieves parent DOM property for the specified DOM path, starting at
- * the specified position in the path.
- * @param stack
+ * Retrieves parent DOM property for the specified DOM path.
+ * @param stack Cached parent DOM properties along the path.
  * @param path Path to fetch parent property for.
  */
 export function getDomParent(stack: Array<any>, path: string): any {

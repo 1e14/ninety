@@ -17,6 +17,12 @@ function addPlaceholders(node: Node, index: number): void {
   }
 }
 
+/**
+ * Retrieves parent DOM property for the specified path. Creates and stacks DOM
+ * properties along the path if necessary.
+ * @param stack Cached parent DOM properties along the path.
+ * @param path Path to DOM property.
+ */
 export function fetchDomParent(stack: Array<any>, path: string): any {
   const stackSize = stack.length;
   const parentDepth = countPathComponents(path) - 1;

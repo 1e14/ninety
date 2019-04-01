@@ -3,7 +3,7 @@ import {fetchDomParent} from "./fetchDomParent";
 
 /**
  * Sets single property in the DOM.
- * @param stack
+ * @param stack Cached parent DOM properties along the path.
  * @param path Path to DOM property.
  * @param value Property value to be set.
  */

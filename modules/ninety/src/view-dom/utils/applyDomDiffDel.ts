@@ -2,6 +2,10 @@ import {Flame} from "../../flame/types";
 import {countCommonComponents} from "../../flame/utils";
 import {delDomProperty} from "./delDomProperty";
 
+/**
+ * Applies the 'del' side of a view diff to the DOM.
+ * @param diffDel Collection of DOM path - null pairs.
+ */
 export function applyDomDiffDel(diffDel: Flame): Flame {
   const bounced: Flame = {};
   const stack = [window.document.body];
