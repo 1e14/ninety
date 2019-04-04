@@ -14,7 +14,7 @@ module.exports = function (grunt) {
     "ninety-webworker",
     "ninety-view-dom",
     "ninety",
-    "ninety-dom-ui",
+    "ninety-ui-dom",
     "ninety-demo"
   ];
 

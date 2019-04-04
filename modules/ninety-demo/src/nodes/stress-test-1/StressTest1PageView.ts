@@ -1,6 +1,6 @@
 import {connect, Node} from "1e14";
 import {createFlameDiffSplitter} from "flamejet";
-import {createDomTextView} from "ninety-dom-ui";
+import {createDomTextView} from "ninety-ui-dom";
 import {createParentView, ParentViewIn, ParentViewOut} from "ninety-view";
 import {createStressTableView} from "./StressTableView";
 

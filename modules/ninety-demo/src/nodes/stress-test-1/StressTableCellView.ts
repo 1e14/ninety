@@ -1,6 +1,6 @@
 import {connect, Node} from "1e14";
 import {createFlameDiffSplitter} from "flamejet";
-import {createDomTableCellView, createDomTextView} from "ninety-dom-ui";
+import {createDomTableCellView, createDomTextView} from "ninety-ui-dom";
 import {ParentViewIn, ParentViewOut} from "ninety-view";
 import {createDomStyleView} from "ninety-view-dom";
 
