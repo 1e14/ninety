@@ -1,6 +1,10 @@
 import {connect, Node} from "1e14";
-import {createParentView, ParentViewIn, ParentViewOut} from "ninety";
 import {createDomLinkView, createDomListItemView} from "ninety-dom-ui";
+import {
+  createParentView,
+  ParentViewIn,
+  ParentViewOut
+} from "ninety-view";
 
 export type In = ParentViewIn;
 

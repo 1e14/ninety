@@ -1,11 +1,11 @@
 import {connect, Node} from "1e14";
+import {createFlameDiffSplitter} from "flamejet";
 import {
-  createFlameDiffSplitter,
   createLeafView,
   createParentView,
   ParentViewIn,
   ParentViewOut
-} from "ninety";
+} from "ninety-view";
 import {createHelloWorldPageView} from "./hello-world";
 import {createMainMenuView} from "./MainMenuView";
 import {createStressTest1PageView} from "./stress-test-1";

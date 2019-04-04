@@ -4,7 +4,7 @@ import {
   ParentViewIn,
   ParentViewOut,
   PathMapperCallback
-} from "ninety";
+} from "ninety-view";
 import {createStressTableCellView} from "./StressTableCellView";
 
 export type In = ParentViewIn;

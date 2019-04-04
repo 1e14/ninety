@@ -1,11 +1,8 @@
 import {connect, Node} from "1e14";
-import {
-  createDomStyleView,
-  createFlameDiffSplitter,
-  ParentViewIn,
-  ParentViewOut
-} from "ninety";
+import {createFlameDiffSplitter} from "flamejet";
 import {createDomTableCellView, createDomTextView} from "ninety-dom-ui";
+import {ParentViewIn, ParentViewOut} from "ninety-view";
+import {createDomStyleView} from "ninety-view-dom";
 
 export type In = ParentViewIn;
 

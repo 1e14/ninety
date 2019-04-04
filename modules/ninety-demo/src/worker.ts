@@ -2,7 +2,9 @@ import {connect} from "1e14";
 import {createMapper} from "1e14-fp";
 import {createDemuxer, createMuxer} from "1e14-mux";
 import {createTicker} from "1e14-time";
-import {createParentThread, createRouter, FlameDiff} from "ninety";
+import {FlameDiff} from "flamejet";
+import {createRouter} from "ninety-router";
+import {createParentThread} from "ninety-webworker";
 import {createMainPageView} from "./nodes";
 import {generateTableData} from "./utils";
 

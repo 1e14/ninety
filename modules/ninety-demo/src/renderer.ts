@@ -2,14 +2,11 @@ import {connect} from "1e14";
 import {createMapper} from "1e14-fp";
 import {createDemuxer, createMuxer} from "1e14-mux";
 import {createTicker} from "1e14-time";
-import {
-  createDiffBuffer,
-  createDomDiffApplier,
-  createDomReadyNotifier,
-  createLocationHash,
-  createWorkerThread,
-  FlameDiff
-} from "ninety";
+import {createDiffBuffer, FlameDiff} from "flamejet";
+import {createDomReadyNotifier} from "ninety-dom";
+import {createLocationHash} from "ninety-location";
+import {createDomDiffApplier} from "ninety-view-dom";
+import {createWorkerThread} from "ninety-webworker";
 
 // setting up threading
 const workerThread = createWorkerThread("worker.js");

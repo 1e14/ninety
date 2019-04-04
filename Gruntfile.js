@@ -1,10 +1,18 @@
 /* jshint node:true */
+// tslint:disable
 const {resolve} = require("path");
 
 module.exports = function (grunt) {
   "use strict";
 
   const modules = [
+    "flamejet",
+    "ninety-view",
+    "ninety-router",
+    "ninety-dom",
+    "ninety-location",
+    "ninety-webworker",
+    "ninety-view-dom",
     "ninety",
     "ninety-dom-ui",
     "ninety-demo"
@@ -105,7 +113,7 @@ module.exports = function (grunt) {
         cmd: () => {
           const pkg = grunt.file.readJSON(`modules/${module}/package.json`);
           const deps = Object.keys(pkg.dependencies || {})
-          .filter((name) => /^(?:1e14|ninety).*$/.test(name));
+          .filter((name) => /^(?:1e14|flamejet|ninety).*$/.test(name));
           return deps
           .map((dep) => `npm ln ${dep}`)
           .join(" && ") || "echo noop";

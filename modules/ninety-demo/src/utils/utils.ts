@@ -1,4 +1,4 @@
-import {FlameDiff} from "ninety";
+import {FlameDiff} from "flamejet";
 
 const COLORS = ["red", "green", "blue", "black", "purple", "teal", "grey"];
 

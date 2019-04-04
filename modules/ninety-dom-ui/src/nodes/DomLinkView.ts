@@ -1,12 +1,12 @@
 import {connect, Node} from "1e14";
+import {createFlameDiffSplitter} from "flamejet";
 import {
-  createDomPropertyView,
-  createFlameDiffSplitter,
   createParentView,
   ParentViewIn,
   ParentViewOut,
   PathMapperCallback
-} from "ninety";
+} from "ninety-view";
+import {createDomPropertyView} from "ninety-view-dom";
 
 export type In = ParentViewIn;
 
