@@ -1,5 +1,5 @@
 import {FlameDiff} from "../types";
-import {compoundDiff} from "./diff";
+import {compoundDiff} from "./compoundDiff";
 
 describe("compoundDiff()", () => {
   describe("when source is empty", () => {
