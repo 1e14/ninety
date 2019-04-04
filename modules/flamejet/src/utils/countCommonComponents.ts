@@ -1,4 +1,5 @@
-import {countPathComponents, PATH_DELIMITER} from "./path";
+import {PATH_DELIMITER} from "./constants";
+import {countPathComponents} from "./countPathComponents";
 
 export function countCommonComponents(path1: string, path2: string): number {
   if (path1 === path2) {
