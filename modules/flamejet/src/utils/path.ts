@@ -2,37 +2,6 @@ import {ComponentsByPort, Flame, PortsByComponent} from "../types";
 
 export const PATH_DELIMITER = ".";
 
-/**
- * Extracts root path from the specified path-indexed lookup.
- * @param paths
- */
-export function getRootPath(paths: Flame): string {
-  let keys: Array<string>;
-  let root: string;
-  for (const path in paths) {
-    if (keys) {
-      if (!path.startsWith(root)) {
-        const split = path.split(PATH_DELIMITER);
-        const length = Math.min(keys.length, split.length);
-        let i;
-        for (i = 0; i < length; i++) {
-          if (keys[i] !== split[i]) {
-            break;
-          }
-        }
-        keys = keys.splice(0, i);
-        root = keys.join(PATH_DELIMITER);
-      }
-    } else {
-      const split = path.split(PATH_DELIMITER);
-      split.pop();
-      keys = split;
-      root = keys.join(PATH_DELIMITER);
-    }
-  }
-  return root;
-}
-
 export function countPathComponents(path: string): number {
   let i: number = 0;
   let next: number = -1;
@@ -94,7 +63,6 @@ export function replacePathComponent(
  * result of the specified callback.
  * @param path
  * @param cb
- * TODO: Rename to replacePathTail once other replacePathTail is removed.
  */
 export function replacePathTail(
   path: string,

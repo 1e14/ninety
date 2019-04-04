@@ -1,41 +1,9 @@
 import {
   countPathComponents,
   getPathComponent,
-  getRootPath,
   replacePathComponent,
   replacePathTail
 } from "./path";
-
-describe("getRootPath()", () => {
-  describe("for empty path set", () => {
-    it("should return undefined", () => {
-      expect(getRootPath({})).toBeUndefined();
-    });
-  });
-
-  describe("for single path", () => {
-    it("should return parent path", () => {
-      expect(getRootPath({
-        "foo.bar": null
-      })).toBe("foo");
-    });
-  });
-
-  describe("for multiple paths", () => {
-    it("should return root path", () => {
-      expect(getRootPath({
-        "foo.bar.baz": null,
-        "foo.bar.quux": null,
-        "foo.baz": null
-      })).toBe("foo");
-      expect(getRootPath({
-        "bar.baz": null,
-        "bar.quux": null,
-        "baz": null
-      })).toBe("");
-    });
-  });
-});
 
 describe("countPathComponents()", () => {
   it("should return number of path components", () => {
