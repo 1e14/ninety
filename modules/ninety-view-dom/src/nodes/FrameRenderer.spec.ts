@@ -52,6 +52,21 @@ describe("createFrameRenderer()", () => {
       });
     });
 
+    it("should emit on 'ev_done'", () => {
+      spyOn(utils, "applyDomDiff");
+      spyOn(window, "requestAnimationFrame").and.callThrough();
+      const spy = jasmine.createSpy();
+      connect(node.o.ev_done, spy);
+      node.i.d_diff({
+        del: {},
+        set: {
+          "foo.bar": 1,
+          "foo.baz": 2
+        }
+      }, "1");
+      expect(spy).toHaveBeenCalledWith(null, "1");
+    });
+
     describe("when diff is null", () => {
       it("should not schedule animation frame", () => {
         const spy = spyOn(window, "requestAnimationFrame");
