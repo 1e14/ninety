@@ -2,7 +2,7 @@ import {connect} from "1e14";
 import {createMapper} from "1e14-fp";
 import {createDemuxer, createMuxer} from "1e14-mux";
 import {createTicker} from "1e14-time";
-import {FlameDiff} from "flamejet";
+import {createDiffBuffer, FlameDiff} from "flamejet";
 import {createRouter} from "ninety-router";
 import {createParentThread} from "ninety-webworker";
 import {createMainPageView} from "./nodes";
@@ -26,6 +26,12 @@ const mainPageVm = createMapper<any, FlameDiff>(() => ({
     "page.menu.1.link.url": "#stress-test-1"
   }
 }));
+connect(mainPageVm.o.d_val, mainPageView.i.d_vm);
+connect(parentDemuxer.o.ev_dom_ready, mainPageVm.i.d_val);
+
+// setting up pre-rendering
+const ticker = createTicker(10, true);
+const diffBuffer = createDiffBuffer();
 // TODO: Move out to a node.
 const pathNormalizer = createMapper<FlameDiff, FlameDiff>((diff) => {
   const set = {};
@@ -40,10 +46,10 @@ const pathNormalizer = createMapper<FlameDiff, FlameDiff>((diff) => {
   }
   return {set, del};
 });
-connect(mainPageVm.o.d_val, mainPageView.i.d_vm);
-connect(parentDemuxer.o.ev_dom_ready, mainPageVm.i.d_val);
 connect(mainPageView.o.d_view, pathNormalizer.i.d_val);
-connect(pathNormalizer.o.d_val, parentMuxer.i.d_view);
+connect(pathNormalizer.o.d_val, diffBuffer.i.d_diff);
+connect(ticker.o.ev_tick, diffBuffer.i.ev_res);
+connect(diffBuffer.o.d_diff, parentMuxer.i.d_view);
 
 // setting up routes
 const ROUTE_HELLO_WORLD = /^hello-world$/;

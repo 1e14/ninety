@@ -3,7 +3,7 @@ import {createMapper} from "1e14-fp";
 import {createDemuxer, createMuxer} from "1e14-mux";
 import {createDomReadyNotifier} from "ninety-dom";
 import {createLocationHash} from "ninety-location";
-import {createDomDiffApplier} from "ninety-view-dom";
+import {createFrameQueue, createFrameRenderer} from "ninety-view-dom";
 import {createWorkerThread} from "ninety-webworker";
 
 // setting up threading
@@ -24,5 +24,9 @@ connect(locationHash.o.d_val, hash2Path.i.d_val);
 connect(hash2Path.o.d_val, workerMuxer.i.d_hash_path);
 
 // setting up rendering engine
-const domDiffApplier = createDomDiffApplier(768);
-connect(workerDemuxer.o.d_view, domDiffApplier.i.d_diff);
+const frameQueue = createFrameQueue(768);
+const frameRenderer = createFrameRenderer();
+connect(frameQueue.o.d_frame, frameRenderer.i.d_diff);
+connect(frameQueue.o.ev_load, frameQueue.i.ev_next);
+connect(frameRenderer.o.ev_done, frameQueue.i.ev_next);
+connect(workerDemuxer.o.d_view, frameQueue.i.d_view);
