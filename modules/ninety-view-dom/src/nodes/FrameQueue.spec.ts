@@ -22,6 +22,46 @@ describe("createFrameQueue()", () => {
       }, "1");
       expect(spy).toHaveBeenCalledWith(2, "1");
     });
+
+    describe("when queue was empty", () => {
+      it("should emit on 'ev_load'", () => {
+        const spy = jasmine.createSpy();
+        connect(node.o.ev_load, spy);
+        node.i.d_view({
+          del: {},
+          set: {
+            "foo.bar": 1,
+            "foo.baz": 2,
+            "foo.quux": 3
+          }
+        }, "1");
+        expect(spy).toHaveBeenCalledWith(null, "1");
+      });
+    });
+
+    describe("when queue was not empty", () => {
+      beforeEach(() => {
+        node.i.d_view({
+          del: {},
+          set: {
+            "foo.bar": 1,
+            "foo.baz": 2
+          }
+        }, "1");
+      });
+
+      it("should not emit on 'ev_load'", () => {
+        const spy = jasmine.createSpy();
+        connect(node.o.ev_load, spy);
+        node.i.d_view({
+          del: {},
+          set: {
+            "foo.quux": 3
+          }
+        }, "1");
+        expect(spy).not.toHaveBeenCalled();
+      });
+    });
   });
 
   describe("on input (ev_next)", () => {
@@ -69,7 +109,7 @@ describe("createFrameQueue()", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_frame, spy);
         node.i.ev_next(null, "1");
-        expect(spy).toHaveBeenCalledWith(undefined, "1");
+        expect(spy).toHaveBeenCalledWith(null, "1");
       });
 
       it("should emit zero on 'd_length'", () => {

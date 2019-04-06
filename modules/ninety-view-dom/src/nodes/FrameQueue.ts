@@ -9,12 +9,14 @@ export type In = {
 export type Out = {
   d_frame: FlameDiff;
   d_length: number;
+  ev_load: any;
 };
 
 export type FrameQueue = Node<In, Out>;
 
 export function createFrameQueue(frameSize: number): FrameQueue {
-  return createNode<In, Out>(["d_frame", "d_length"], (outputs) => {
+  return createNode<In, Out>
+  (["d_frame", "d_length", "ev_load"], (outputs) => {
     const frames = [];
     let lastSize = 0;
 
@@ -116,15 +118,20 @@ export function createFrameQueue(frameSize: number): FrameQueue {
 
     return {
       d_view: (value, tag) => {
+        const lengthBefore = frames.length;
         spreadDel(value.del);
         spreadSet(value.set);
-        outputs.d_length(frames.length, tag);
+        const lengthAfter = frames.length;
+        outputs.d_length(lengthAfter, tag);
+        if (!lengthBefore && lengthAfter) {
+          outputs.ev_load(null, tag);
+        }
       },
 
       ev_next: (value, tag) => {
         const frame = frames.length ?
           frames.shift() :
-          undefined;
+          null;
         outputs.d_frame(frame, tag);
         outputs.d_length(frames.length, tag);
       }
