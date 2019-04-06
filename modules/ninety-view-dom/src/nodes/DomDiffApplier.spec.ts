@@ -117,7 +117,7 @@ describe("createDomDiffApplier()", () => {
     let node: DomDiffApplier;
 
     beforeEach(() => {
-      node = createDomDiffApplier();
+      node = createDomDiffApplier(100);
     });
 
     it("should invoke applyDomDiff()", () => {

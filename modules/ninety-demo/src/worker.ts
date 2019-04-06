@@ -26,9 +26,24 @@ const mainPageVm = createMapper<any, FlameDiff>(() => ({
     "page.menu.1.link.url": "#stress-test-1"
   }
 }));
+// TODO: Move out to a node.
+const pathNormalizer = createMapper<FlameDiff, FlameDiff>((diff) => {
+  const set = {};
+  const del = {};
+  const viewSet = diff.set;
+  const viewDel = diff.del;
+  for (const path in viewSet) {
+    set[path.replace(/,/g, ".")] = viewSet[path];
+  }
+  for (const path in viewDel) {
+    del[path.replace(/,/g, ".")] = null;
+  }
+  return {set, del};
+});
 connect(mainPageVm.o.d_val, mainPageView.i.d_vm);
 connect(parentDemuxer.o.ev_dom_ready, mainPageVm.i.d_val);
-connect(mainPageView.o.d_view, parentMuxer.i.d_view);
+connect(mainPageView.o.d_view, pathNormalizer.i.d_val);
+connect(pathNormalizer.o.d_val, parentMuxer.i.d_view);
 
 // setting up routes
 const ROUTE_HELLO_WORLD = /^hello-world$/;
