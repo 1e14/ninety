@@ -5,3 +5,5 @@ export {delDomProperty} from "./delDomProperty";
 export {fetchDomParent} from "./fetchDomParent";
 export {getDomParent} from "./getDomParent";
 export {setDomProperty} from "./setDomProperty";
+export {spreadDiffDel} from "./spreadDiffDel";
+export {spreadDiffSet} from "./spreadDiffSet";
