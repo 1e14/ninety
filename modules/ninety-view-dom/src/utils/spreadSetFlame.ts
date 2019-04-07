@@ -1,4 +1,5 @@
-import {Flame, FlameDiff} from "flamejet";
+import {Flame} from "flamejet";
+import {Frame} from "../types";
 
 /**
  * Spreads diff.set across scheduled frames.
@@ -6,16 +7,14 @@ import {Flame, FlameDiff} from "flamejet";
  * @param frames Frames over which to distribute flame.
  * @param frameSize Maximum size of each frame, adding up items in del & set
  * flames.
- * @param lastSize Current size of the last, incomplete frame.
  * @returns Size of last, incomplete frame after spreading flame.
  * TODO: Add tests.
  */
 export function spreadSetFlame(
-  frames: Array<FlameDiff>,
+  frames: Array<Frame>,
   frameSize: number,
-  setFlame: Flame,
-  lastSize: number
-): number {
+  setFlame: Flame
+): void {
   // walking though all path/value pairs in flame
   for (const path in setFlame) {
     // distributing path/value across existing, complete frames
@@ -29,6 +28,7 @@ export function spreadSetFlame(
         // path found in one of the frames
         // removing path and moving on
         delete frameDel[path];
+        frame.size--;
         found = true;
         break;
       } else if (path in frameSet) {
@@ -50,23 +50,22 @@ export function spreadSetFlame(
         // path found in last frame
         // removing and updating size
         delete frameDel[path];
-        lastSize--;
-      } else if (frameSet && lastSize < frameSize) {
+        frame.size--;
+      } else if (frameSet && frame.size < frameSize) {
         // path not found in last frame but there is room left
         // setting path/value pair and updating size
         frameSet[path] = setFlame[path];
-        lastSize++;
+        frame.size++;
       } else {
         // path not found in last frame but last frame is full
         // adding frame with path/value
-        frameSet = {};
+        frameSet = {
+          [path]: setFlame[path]
+        };
         frameDel = {};
-        frame = {set: frameSet, del: frameDel};
+        frame = {set: frameSet, del: frameDel, size: 1};
         frames.push(frame);
-        frameSet[path] = setFlame[path];
-        lastSize = 1;
       }
     }
   }
-  return lastSize;
 }

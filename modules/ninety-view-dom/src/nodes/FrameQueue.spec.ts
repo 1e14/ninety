@@ -92,7 +92,8 @@ describe("createFrameQueue()", () => {
           set: {
             "foo.bar": 1,
             "foo.baz": 2
-          }
+          },
+          size: 2
         }, "2");
       });
 

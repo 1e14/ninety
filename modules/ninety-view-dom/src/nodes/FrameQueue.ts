@@ -1,5 +1,6 @@
 import {createNode, Node} from "1e14";
 import {FlameDiff} from "flamejet";
+import {Frame} from "../types";
 import {spreadDelFlame, spreadSetFlame} from "../utils";
 
 export type In = {
@@ -23,7 +24,7 @@ export type Out = {
   /**
    * Next frame.
    */
-  d_frame: FlameDiff;
+  d_frame: Frame;
 
   /**
    * Queue length.
@@ -49,7 +50,6 @@ export function createFrameQueue(fs: number = 512): FrameQueue {
   return createNode<In, Out>
   (["d_frame", "d_length", "ev_load"], (outputs) => {
     const frames = [];
-    let lastSize = 0;
 
     return {
       d_fs: (value) => {
@@ -58,8 +58,8 @@ export function createFrameQueue(fs: number = 512): FrameQueue {
 
       d_view: (value, tag) => {
         const lengthBefore = frames.length;
-        lastSize = spreadDelFlame(frames, fs, value.del, lastSize);
-        lastSize = spreadSetFlame(frames, fs, value.set, lastSize);
+        spreadDelFlame(frames, fs, value.del);
+        spreadSetFlame(frames, fs, value.set);
         const lengthAfter = frames.length;
         outputs.d_length(lengthAfter, tag);
         if (!lengthBefore && lengthAfter) {

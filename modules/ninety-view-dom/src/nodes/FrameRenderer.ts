@@ -1,12 +1,12 @@
 import {createNode, Node} from "1e14";
-import {FlameDiff} from "flamejet";
+import {Frame} from "../types";
 import {applyDomDiff} from "../utils";
 
 export type In = {
   /**
    * Frame to be rendered.
    */
-  d_frame: FlameDiff;
+  d_frame: Frame;
 };
 
 export type Out = {
