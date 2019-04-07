@@ -108,13 +108,6 @@ describe("delDomProperty()", () => {
     delete window.document;
   });
 
-  it("should return true", () => {
-    const stack = [window.document.body];
-    const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    setDomProperty(stack, path, true);
-    expect(delDomProperty(stack, path)).toBe(true);
-  });
-
   describe("for node", () => {
     beforeEach(() => {
       const stack = [window.document.body];
@@ -196,14 +189,6 @@ describe("delDomProperty()", () => {
       delDomProperty(stack, path);
       expect(window.document.body.childNodes[1].childNodes[3].onclick)
       .toBe(null);
-    });
-  });
-
-  describe("for absent path", () => {
-    it("should return true", () => {
-      const stack = [window.document.body];
-      const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-      expect(delDomProperty(stack, path)).toBe(true);
     });
   });
 });

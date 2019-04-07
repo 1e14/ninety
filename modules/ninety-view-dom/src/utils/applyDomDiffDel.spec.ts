@@ -130,38 +130,4 @@ describe("applyDomDiffDel()", () => {
       [[window.document.body], "body.childNodes.1:tr.childNodes.2:td.classList.foo"]
     ]);
   });
-
-  describe("when delDomProperty() returns true", () => {
-    it("should return undefined", () => {
-      const diffSet = {
-        "body.childNodes.0:tr.childNodes.0:td.classList.foo": null,
-        "body.childNodes.0:tr.childNodes.1:td.classList.foo": null,
-        "body.childNodes.0:tr.childNodes.2:td.classList.foo": null,
-        "body.childNodes.1:tr.childNodes.0:td.classList.foo": null,
-        "body.childNodes.1:tr.childNodes.1:td.classList.foo": null,
-        "body.childNodes.1:tr.childNodes.2:td.classList.foo": null
-      };
-      spyOn(delDomProp2, "delDomProperty").and.returnValue(true);
-      expect(applyDomDiffDel(diffSet)).toBeUndefined();
-    });
-  });
-
-  describe("when delDomProperty() returns false", () => {
-    it("should return bounced paths", () => {
-      const diffSet = {
-        "body.childNodes.0:tr.childNodes.0:td.classList.foo": null,
-        "body.childNodes.0:tr.childNodes.1:td.classList.foo": null,
-        "body.childNodes.0:tr.childNodes.2:td.classList.foo": null,
-        "body.childNodes.1:tr.childNodes.0:td.classList.foo": null,
-        "body.childNodes.1:tr.childNodes.1:td.classList.foo": null,
-        "body.childNodes.1:tr.childNodes.2:td.classList.foo": null
-      };
-      spyOn(delDomProp2, "delDomProperty").and.callFake((a, path) => {
-        return path !== "body.childNodes.0:tr.childNodes.2:td.classList.foo";
-      });
-      expect(applyDomDiffDel(diffSet)).toEqual({
-        "body.childNodes.0:tr.childNodes.2:td.classList.foo": null
-      });
-    });
-  });
 });

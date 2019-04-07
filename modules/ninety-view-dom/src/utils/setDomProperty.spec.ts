@@ -107,12 +107,6 @@ describe("setDomProperty()", () => {
     delete window.document;
   });
 
-  it("should return true", () => {
-    const stack = [window.document.body];
-    const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
-    expect(setDomProperty(stack, path, true)).toBe(true);
-  });
-
   describe("for attribute", () => {
     let stack;
 
@@ -192,19 +186,6 @@ describe("setDomProperty()", () => {
       setDomProperty(stack, path, cb);
       expect(window.document.body.childNodes[1].childNodes[3].onclick)
       .toBe(cb);
-    });
-  });
-
-  describe("when unsuccessful", () => {
-    let stack;
-
-    beforeEach(() => {
-      stack = [window.document.body];
-    });
-
-    it("should return false", () => {
-      const path = "body.childNodes.1.foo.bar";
-      expect(setDomProperty(stack, path, true)).toBe(false);
     });
   });
 });

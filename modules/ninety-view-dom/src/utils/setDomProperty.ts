@@ -11,12 +11,11 @@ export function setDomProperty(
   stack: Array<any>,
   path: string,
   value: any
-): boolean {
+): void {
   const parent = fetchDomParent(stack, path);
   const key = path.slice(path.lastIndexOf(PATH_DELIMITER) + 1);
   if (parent instanceof Node) {
     parent[key] = value;
-    return true;
   } else if (parent instanceof NamedNodeMap) {
     // attributes
     let attribute = parent.getNamedItem(key);
@@ -25,17 +24,11 @@ export function setDomProperty(
       parent.setNamedItem(attribute);
     }
     attribute.value = value;
-    return true;
   } else if (parent instanceof DOMTokenList) {
     // CSS classes
     parent.add(key, key);
-    return true;
   } else if (parent instanceof CSSStyleDeclaration) {
     // CSS styles
     parent[key] = value;
-    return true;
-  } else {
-    // unrecognized property parent
-    return false;
   }
 }

@@ -30,7 +30,6 @@ export function createFrameRenderer(): FrameRenderer {
       d_frame: (value, tag) => {
         if (value) {
           requestAnimationFrame(() => {
-            // TODO: Deal with bounced? (Or remove bounce.)
             const startAt = performance.now();
             applyDomDiff(value);
             const finishAt = performance.now();
