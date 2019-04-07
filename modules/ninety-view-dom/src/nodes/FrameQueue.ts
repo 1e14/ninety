@@ -50,7 +50,6 @@ export function createFrameQueue(fs: number = 512): FrameQueue {
   return createNode<In, Out>
   (["d_frame", "d_length", "ev_load"], (outputs) => {
     const frames = [];
-
     return {
       d_fs: (value) => {
         fs = value;
@@ -68,11 +67,11 @@ export function createFrameQueue(fs: number = 512): FrameQueue {
       },
 
       ev_next: (value, tag) => {
-        const frame = frames.length ?
-          frames.shift() :
-          null;
-        outputs.d_frame(frame, tag);
-        outputs.d_length(frames.length, tag);
+        if (frames.length) {
+          const frame = frames.shift();
+          outputs.d_frame(frame, tag);
+          outputs.d_length(frames.length, tag);
+        }
       }
     };
   });

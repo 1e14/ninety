@@ -77,13 +77,5 @@ describe("createFrameRenderer()", () => {
       }, "1");
       expect(spy).toHaveBeenCalledWith(5, "1");
     });
-
-    describe("when diff is null", () => {
-      it("should not schedule animation frame", () => {
-        const spy = spyOn(window, "requestAnimationFrame");
-        node.i.d_frame(null, "1");
-        expect(spy).not.toHaveBeenCalled();
-      });
-    });
   });
 });

@@ -28,14 +28,12 @@ export function createFrameRenderer(): FrameRenderer {
   return createNode<In, Out>(["d_dur"], (outputs) => {
     return {
       d_frame: (value, tag) => {
-        if (value) {
-          requestAnimationFrame(() => {
-            const startAt = performance.now();
-            applyDomDiff(value);
-            const finishAt = performance.now();
-            outputs.d_dur(finishAt - startAt, tag);
-          });
-        }
+        requestAnimationFrame(() => {
+          const startAt = performance.now();
+          applyDomDiff(value);
+          const finishAt = performance.now();
+          outputs.d_dur(finishAt - startAt, tag);
+        });
       }
     };
   });

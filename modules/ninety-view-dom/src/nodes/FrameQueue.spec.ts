@@ -106,18 +106,18 @@ describe("createFrameQueue()", () => {
     });
 
     describe("when queue is empty", () => {
-      it("should emit undefined frame on 'd_frame'", () => {
+      it("should not emit on 'd_frame'", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_frame, spy);
         node.i.ev_next(null, "1");
-        expect(spy).toHaveBeenCalledWith(null, "1");
+        expect(spy).not.toHaveBeenCalled();
       });
 
-      it("should emit zero on 'd_length'", () => {
+      it("should not emit on 'd_length'", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_length, spy);
         node.i.ev_next(null, "1");
-        expect(spy).toHaveBeenCalledWith(0, "1");
+        expect(spy).not.toHaveBeenCalled();
       });
     });
   });
