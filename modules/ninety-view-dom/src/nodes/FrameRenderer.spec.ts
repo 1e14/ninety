@@ -7,15 +7,21 @@ describe("createFrameRenderer()", () => {
 
   beforeEach(() => {
     window.requestAnimationFrame = (cb) => cb();
+    window.performance = {
+      now() {
+        return 0;
+      }
+    };
     window.window = window;
   });
 
   afterEach(() => {
     delete window.requestAnimationFrame;
+    delete window.performance;
     delete window.window;
   });
 
-  describe("on input (d_diff)", () => {
+  describe("on input (d_frame)", () => {
     let node: FrameRenderer;
 
     beforeEach(() => {
@@ -24,7 +30,7 @@ describe("createFrameRenderer()", () => {
 
     it("should schedule animation frame", () => {
       const spy = spyOn(window, "requestAnimationFrame");
-      node.i.d_diff({
+      node.i.d_frame({
         del: {},
         set: {
           "foo.bar": 1,
@@ -36,7 +42,7 @@ describe("createFrameRenderer()", () => {
 
     it("should invoke applyDomDiff()", () => {
       const spy = spyOn(utils, "applyDomDiff");
-      node.i.d_diff({
+      node.i.d_frame({
         del: {},
         set: {
           "foo.bar": 1,
@@ -52,25 +58,26 @@ describe("createFrameRenderer()", () => {
       });
     });
 
-    it("should emit on 'ev_done'", () => {
+    it("should emit duration on 'ev_done'", () => {
+      spyOn(window.performance, "now").and.returnValues(3, 8);
       spyOn(utils, "applyDomDiff");
       spyOn(window, "requestAnimationFrame").and.callThrough();
       const spy = jasmine.createSpy();
       connect(node.o.ev_done, spy);
-      node.i.d_diff({
+      node.i.d_frame({
         del: {},
         set: {
           "foo.bar": 1,
           "foo.baz": 2
         }
       }, "1");
-      expect(spy).toHaveBeenCalledWith(null, "1");
+      expect(spy).toHaveBeenCalledWith(5, "1");
     });
 
     describe("when diff is null", () => {
       it("should not schedule animation frame", () => {
         const spy = spyOn(window, "requestAnimationFrame");
-        node.i.d_diff(null, "1");
+        node.i.d_frame(null, "1");
         expect(spy).not.toHaveBeenCalled();
       });
     });

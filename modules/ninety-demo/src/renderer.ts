@@ -26,7 +26,7 @@ connect(hash2Path.o.d_val, workerMuxer.i.d_hash_path);
 // setting up rendering engine
 const frameQueue = createFrameQueue(768);
 const frameRenderer = createFrameRenderer();
-connect(frameQueue.o.d_frame, frameRenderer.i.d_diff);
+connect(frameQueue.o.d_frame, frameRenderer.i.d_frame);
 connect(frameQueue.o.ev_load, frameQueue.i.ev_next);
 connect(frameRenderer.o.ev_done, frameQueue.i.ev_next);
 connect(workerDemuxer.o.d_view, frameQueue.i.d_view);
