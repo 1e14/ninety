@@ -3,6 +3,7 @@ import {createMapper} from "1e14-fp";
 import {createDemuxer, createMuxer} from "1e14-mux";
 import {createTicker} from "1e14-time";
 import {createDiffBuffer, FlameDiff} from "flamejet";
+import {normalizePaths} from "flamejet/dist/callbacks/map";
 import {createRouter} from "ninety-router";
 import {createParentThread} from "ninety-webworker";
 import {createMainPageView} from "./nodes";
@@ -32,20 +33,7 @@ connect(parentDemuxer.o.ev_dom_ready, mainPageVm.i.d_val);
 // setting up pre-rendering
 const ticker = createTicker(10, true);
 const diffBuffer = createDiffBuffer();
-// TODO: Move out to a node.
-const pathNormalizer = createMapper<FlameDiff, FlameDiff>((diff) => {
-  const set = {};
-  const del = {};
-  const viewSet = diff.set;
-  const viewDel = diff.del;
-  for (const path in viewSet) {
-    set[path.replace(/,/g, ".")] = viewSet[path];
-  }
-  for (const path in viewDel) {
-    del[path.replace(/,/g, ".")] = null;
-  }
-  return {set, del};
-});
+const pathNormalizer = createMapper(normalizePaths);
 connect(mainPageView.o.d_view, pathNormalizer.i.d_val);
 connect(pathNormalizer.o.d_val, diffBuffer.i.d_diff);
 connect(ticker.o.ev_tick, diffBuffer.i.ev_res);
