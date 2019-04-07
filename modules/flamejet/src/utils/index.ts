@@ -1,4 +1,4 @@
-export * from "./constants";
+export * from "./PATH_DELIMITER";
 export {compoundDiff} from "./compoundDiff";
 export {countCommonComponents} from "./countCommonComponents";
 export {countPathComponents} from "./countPathComponents";

@@ -1,4 +1,4 @@
-import {PATH_DELIMITER} from "./constants";
+import {PATH_DELIMITER} from "./PATH_DELIMITER";
 
 /**
  * Replaces the specified path component and the rest of the path with the

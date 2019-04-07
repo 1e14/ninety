@@ -1,3 +1,11 @@
 export * from "./nodes";
 export * from "./types";
-export * from "./utils";
+export {
+  countCommonComponents,
+  countPathComponents,
+  getPathComponent,
+  invertPathsByComponent,
+  PATH_DELIMITER,
+  replacePathComponent,
+  replacePathTail
+} from "./utils";
