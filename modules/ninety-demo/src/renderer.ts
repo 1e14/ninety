@@ -24,9 +24,24 @@ connect(locationHash.o.d_val, hash2Path.i.d_val);
 connect(hash2Path.o.d_val, workerMuxer.i.d_hash_path);
 
 // setting up rendering engine
-const frameQueue = createFrameQueue(768);
+const MIN_SCRIPT_DURATION = 4; // [ms]
+const MAX_SCRIPT_DURATION = 7; // [ms]
+const FRAME_STEP_RATIO = 1.1;
+let fs = 768;
+const frameQueue = createFrameQueue(fs);
 const frameRenderer = createFrameRenderer();
+const frameSizeAdjuster = createMapper<number, number>((value) => {
+  if (value > MAX_SCRIPT_DURATION) {
+    fs = Math.floor(fs / FRAME_STEP_RATIO);
+  } else if (value < MIN_SCRIPT_DURATION) {
+    fs = Math.floor(fs * FRAME_STEP_RATIO);
+  }
+  return fs;
+});
+
 connect(frameQueue.o.d_frame, frameRenderer.i.d_frame);
 connect(frameQueue.o.ev_load, frameQueue.i.ev_next);
 connect(frameRenderer.o.d_dur, frameQueue.i.ev_next);
+connect(frameRenderer.o.d_dur, frameSizeAdjuster.i.d_val);
+connect(frameSizeAdjuster.o.d_val, frameQueue.i.d_fs);
 connect(workerDemuxer.o.d_view, frameQueue.i.d_view);
