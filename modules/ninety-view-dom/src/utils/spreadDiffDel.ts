@@ -1,50 +1,63 @@
 import {FlameDiff, NullFlame} from "flamejet";
 
 /**
- * Spreads diff.del across scheduled frames.
- * @param diffDel
- * @param frames
- * @param frameSize
- * @param lastSize
+ * Spreads diff.del across frames.
+ * @param delFlame 'Delete' flame to be distributed over frames.
+ * @param frames Frames over which to distribute flame.
+ * @param frameSize Maximum size of each frame, adding up items in del & set
+ * flames.
+ * @param lastSize Current size of the last, incomplete frame.
+ * @returns Size of last, incomplete frame after spreading flame.
+ * TODO: Add tests.
  */
 export function spreadDiffDel(
   frames: Array<FlameDiff>,
   frameSize: number,
-  diffDel: NullFlame,
+  delFlame: NullFlame,
   lastSize: number
 ): number {
-  let applied = false;
-  for (const path in diffDel) {
-    const length = frames.length;
-    // distributing path across existing frames
+  // walking though all paths in flame
+  for (const path in delFlame) {
+    // distributing path across existing, complete frames
+    const length = frames.length - 1;
+    let found = false;
     for (let i = 0; i < length; i++) {
       const frame = frames[i];
       const frameSet = frame.set;
       const frameDel = frame.del;
       if (path in frameSet) {
+        // path found in one of the frames
+        // removing path and moving on
         delete frameSet[path];
-        applied = true;
+        found = true;
         break;
       } else if (path in frameDel) {
-        frameDel[path] = null;
-        applied = true;
+        // path found in one of the frames
+        // moving on
+        found = true;
         break;
       }
     }
 
-    if (!applied) {
+    if (!found) {
+      // path not found in any of the complete frames
+      // looking in last, incomplete frame
       let frame = frames[length - 1];
       let frameSet = frame && frame.set;
       let frameDel = frame && frame.del;
       if (frameSet && path in frameSet) {
+        // path found in last frame
+        // removing and updating size
         delete frameSet[path];
         lastSize--;
       } else if (frameDel && lastSize < frameSize) {
-        // there is room in latest frame
+        // path not found in last frame but there is room left
+        // setting path and updating size
         frameDel[path] = null;
         lastSize++;
       } else {
-        // must open new frame
+        // path not found in last frame but last frame is full
+        // adding frame with path
         frameSet = {};
         frameDel = {};
         frame = {set: frameSet, del: frameDel};
