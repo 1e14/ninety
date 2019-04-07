@@ -35,7 +35,8 @@ describe("createFrameRenderer()", () => {
         set: {
           "foo.bar": 1,
           "foo.baz": 2
-        }
+        },
+        size: 2
       }, "1");
       expect(spy).toHaveBeenCalled();
     });
@@ -47,14 +48,16 @@ describe("createFrameRenderer()", () => {
         set: {
           "foo.bar": 1,
           "foo.baz": 2
-        }
+        },
+        size: 2
       }, "1");
       expect(spy).toHaveBeenCalledWith({
         del: {},
         set: {
           "foo.bar": 1,
           "foo.baz": 2
-        }
+        },
+        size: 2
       });
     });
 
@@ -69,7 +72,8 @@ describe("createFrameRenderer()", () => {
         set: {
           "foo.bar": 1,
           "foo.baz": 2
-        }
+        },
+        size: 2
       }, "1");
       expect(spy).toHaveBeenCalledWith(5, "1");
     });

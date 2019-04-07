@@ -18,7 +18,7 @@ export function spreadDelFlame(
   // walking though all paths in flame
   for (const path in delFlame) {
     // distributing path across existing, complete frames
-    const length = frames.length - 1;
+    const length = frames.length;
     let found = false;
     for (let i = 0; i < length; i++) {
       const frame = frames[i];
@@ -40,31 +40,30 @@ export function spreadDelFlame(
     }
 
     if (!found) {
-      // path not found in any of the complete frames
-      // looking in last, incomplete frame
-      let frame = frames[length - 1];
-      let frameSet = frame && frame.set;
-      let frameDel = frame && frame.del;
-      if (frameSet && path in frameSet) {
-        // path found in last frame
-        // removing and updating size
-        delete frameSet[path];
-        frame.size--;
-      } else if (frameDel && frame.size < frameSize) {
-        // path not found in last frame but there is room left
-        // setting path and updating size
-        frameDel[path] = null;
-        frame.size++;
-      } else {
-        // path not found in last frame but last frame is full
-        // adding frame with path
-        frameSet = {};
-        frameDel = {
-          [path]: null
-        };
-        frame = {set: frameSet, del: frameDel, size: 1};
-        frames.push(frame);
+      // looking for room in existing frames
+      for (let i = 0; i < length; i++) {
+        const frame = frames[i];
+        if (frame.size < frameSize) {
+          // frame with room left found
+          // adding path and moving on
+          frame.del[path] = null;
+          frame.size++;
+          found = true;
+          break;
+        }
       }
+    }
+
+    if (!found) {
+      // path could not be applied to existing frames
+      // adding frame with path
+      frames.push({
+        del: {
+          [path]: null
+        },
+        set: {},
+        size: 1
+      });
     }
   }
 }

@@ -41,31 +41,30 @@ export function spreadSetFlame(
     }
 
     if (!found) {
-      // path not found in any of the complete frames
-      // looking in last, incomplete frame
-      let frame = frames[length - 1];
-      let frameSet = frame && frame.set;
-      let frameDel = frame && frame.del;
-      if (frameDel && path in frameDel) {
-        // path found in last frame
-        // removing and updating size
-        delete frameDel[path];
-        frame.size--;
-      } else if (frameSet && frame.size < frameSize) {
-        // path not found in last frame but there is room left
-        // setting path/value pair and updating size
-        frameSet[path] = setFlame[path];
-        frame.size++;
-      } else {
-        // path not found in last frame but last frame is full
-        // adding frame with path/value
-        frameSet = {
-          [path]: setFlame[path]
-        };
-        frameDel = {};
-        frame = {set: frameSet, del: frameDel, size: 1};
-        frames.push(frame);
+      // looking for room in existing frames
+      for (let i = 0; i < length; i++) {
+        const frame = frames[i];
+        if (frame.size < frameSize) {
+          // frame with room left found
+          // adding path and moving on
+          frame.set[path] = setFlame[path];
+          frame.size++;
+          found = true;
+          break;
+        }
       }
+    }
+
+    if (!found) {
+      // path not found in any of the complete frames
+      // adding frame with path/value
+      frames.push({
+        del: {},
+        set: {
+          [path]: setFlame[path]
+        },
+        size: 1
+      });
     }
   }
 }
