@@ -28,5 +28,5 @@ const frameQueue = createFrameQueue(768);
 const frameRenderer = createFrameRenderer();
 connect(frameQueue.o.d_frame, frameRenderer.i.d_frame);
 connect(frameQueue.o.ev_load, frameQueue.i.ev_next);
-connect(frameRenderer.o.ev_done, frameQueue.i.ev_next);
+connect(frameRenderer.o.d_dur, frameQueue.i.ev_next);
 connect(workerDemuxer.o.d_view, frameQueue.i.d_view);

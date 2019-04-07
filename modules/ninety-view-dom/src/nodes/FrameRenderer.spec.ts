@@ -58,12 +58,12 @@ describe("createFrameRenderer()", () => {
       });
     });
 
-    it("should emit duration on 'ev_done'", () => {
+    it("should emit duration on 'd_dur'", () => {
       spyOn(window.performance, "now").and.returnValues(3, 8);
       spyOn(utils, "applyDomDiff");
       spyOn(window, "requestAnimationFrame").and.callThrough();
       const spy = jasmine.createSpy();
-      connect(node.o.ev_done, spy);
+      connect(node.o.d_dur, spy);
       node.i.d_frame({
         del: {},
         set: {

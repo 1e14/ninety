@@ -13,7 +13,7 @@ export type Out = {
   /**
    * Signals end of rendering, with duration in [ms].
    */
-  ev_done: DOMHighResTimeStamp;
+  d_dur: DOMHighResTimeStamp;
 };
 
 /**
@@ -25,7 +25,7 @@ export type FrameRenderer = Node<In, Out>;
  * Creates a FrameRenderer node.
  */
 export function createFrameRenderer(): FrameRenderer {
-  return createNode<In, Out>(["ev_done"], (outputs) => {
+  return createNode<In, Out>(["d_dur"], (outputs) => {
     return {
       d_frame: (value, tag) => {
         if (value) {
@@ -34,7 +34,7 @@ export function createFrameRenderer(): FrameRenderer {
             const startAt = performance.now();
             applyDomDiff(value);
             const finishAt = performance.now();
-            outputs.ev_done(finishAt - startAt, tag);
+            outputs.d_dur(finishAt - startAt, tag);
           });
         }
       }
