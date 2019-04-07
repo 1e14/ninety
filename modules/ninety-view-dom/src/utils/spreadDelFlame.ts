@@ -10,7 +10,7 @@ import {FlameDiff, NullFlame} from "flamejet";
  * @returns Size of last, incomplete frame after spreading flame.
  * TODO: Add tests.
  */
-export function spreadDiffDel(
+export function spreadDelFlame(
   frames: Array<FlameDiff>,
   frameSize: number,
   delFlame: NullFlame,
