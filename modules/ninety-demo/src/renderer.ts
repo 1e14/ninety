@@ -38,12 +38,9 @@ const frameSizeAdjuster = createMapper<number, number>((value) => {
   }
   return fs;
 });
-
-// tslint:disable:no-console
 connect(frameBuffer.o.d_frame, frameRenderer.i.d_frame);
 connect(frameBuffer.o.ev_load, frameBuffer.i.ev_next);
 connect(frameRenderer.o.d_dur, frameBuffer.i.ev_next);
 connect(frameRenderer.o.d_dur, frameSizeAdjuster.i.d_val);
 connect(frameSizeAdjuster.o.d_val, frameBuffer.i.d_fs);
-connect(frameSizeAdjuster.o.d_val, console.log);
 connect(workerDemuxer.o.d_view, frameBuffer.i.d_view);
