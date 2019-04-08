@@ -24,8 +24,8 @@ connect(locationHash.o.d_val, hash2Path.i.d_val);
 connect(hash2Path.o.d_val, workerMuxer.i.d_hash_path);
 
 // setting up rendering engine
-const MIN_SCRIPT_DURATION = 3; // [ms]
-const MAX_SCRIPT_DURATION = 6; // [ms]
+const MIN_SCRIPT_DURATION = 4; // [ms]
+const MAX_SCRIPT_DURATION = 7; // [ms]
 const FRAME_STEP_RATIO = 1.1;
 let fs = 768;
 const frameBuffer = createFrameBuffer(fs);
