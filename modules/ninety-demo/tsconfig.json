@@ -4,7 +4,11 @@
     "rootDir": "./src",
     "outDir": "./dist"
   },
+  "files": [
+    "./src/renderer.ts",
+    "./src/worker.ts"
+  ],
   "include": [
-    "./src/**/*.ts"
+    "./src/**/*.spec.ts"
   ]
 }
