@@ -1,11 +1,12 @@
-import {ComponentsByPort, PortsByComponent} from "../types";
+import {PathComponentsByPort, PortsByComponent} from "../types";
 
 /**
+ * Inverts path component to port associations.
+ * @param bundles Path component bundles indexed by ports.
  * TODO: Add tests
- * @param bundles
  */
-export function invertPathsByComponent<P extends string>(
-  bundles: ComponentsByPort<P>
+export function invertComponentsByPort<P extends string>(
+  bundles: PathComponentsByPort<P>
 ): PortsByComponent<P> {
   const result = <PortsByComponent<P>>{};
   for (const port in bundles) {

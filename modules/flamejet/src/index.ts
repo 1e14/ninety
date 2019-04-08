@@ -5,7 +5,7 @@ export {
   countCommonComponents,
   countPathComponents,
   getPathComponent,
-  invertPathsByComponent,
+  invertComponentsByPort,
   PATH_DELIMITER,
   replacePathComponent,
   replacePathTail

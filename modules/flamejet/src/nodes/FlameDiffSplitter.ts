@@ -1,6 +1,6 @@
 import {createNode, Node} from "1e14";
-import {ComponentsByPort, FlameDiff} from "../types";
-import {getPathComponent, invertPathsByComponent} from "../utils";
+import {FlameDiff, PathComponentsByPort} from "../types";
+import {getPathComponent, invertComponentsByPort} from "../utils";
 
 export type FlameDiffsByPort<P extends string> = {
   [K in P]: FlameDiff
@@ -19,10 +19,10 @@ export type Out<P extends string> = FlameDiffsByPort<P>;
 export type FlameDiffSplitter<P extends string> = Node<In, Out<P>>;
 
 export function createFlameDiffSplitter<P extends string>(
-  pathsByPort: ComponentsByPort<P>,
+  pathsByPort: PathComponentsByPort<P>,
   depth: number
 ): FlameDiffSplitter<P> {
-  const portsByComponent = invertPathsByComponent(pathsByPort);
+  const portsByComponent = invertComponentsByPort(pathsByPort);
   return createNode<In, Out<P>>
   (<Array<P>>Object.keys(pathsByPort), (outputs) => ({
     d_diff: (value, tag) => {
