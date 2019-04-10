@@ -1,5 +1,5 @@
 import {connect, Node} from "1e14";
-import {createFlameDiffSplitter} from "flamejet";
+import {createFlameSplitter} from "flamejet";
 import {
   createLeafView,
   createParentView,
@@ -22,14 +22,14 @@ export function createMainPageView(): MainPageView {
   const emptyPageView = createLeafView(() => "childNodes.1:DIV");
   const helloWorldPageView = createHelloWorldPageView("childNodes.1:DIV", 1);
   const stressTest1PageView = createStressTest1PageView("childNodes.1:DIV", 1);
-  const splitter = createFlameDiffSplitter({
+  const splitter = createFlameSplitter({
     d_content: ["content"],
     d_hello: ["hello"],
     d_menu: ["menu"],
     d_stress1: ["stress1"]
   }, 1);
 
-  connect(view.o.d_vm, splitter.i.d_diff);
+  connect(view.o.d_vm, splitter.i.d_val);
   connect(splitter.o.d_menu, mainMenuView.i.d_vm);
   connect(splitter.o.d_content, emptyPageView.i.d_vm);
   connect(splitter.o.d_hello, helloWorldPageView.i.d_vm);

@@ -1,12 +1,12 @@
 import {createNode, Node} from "1e14";
-import {Frame} from "../types";
-import {applyDomDiff} from "../utils";
+import {Flame} from "flamejet";
+import {applyViewToDom} from "../utils";
 
 export type In = {
   /**
    * Frame to be rendered.
    */
-  d_frame: Frame;
+  d_frame: Flame;
 };
 
 export type Out = {
@@ -30,7 +30,7 @@ export function createFrameRenderer(): FrameRenderer {
       d_frame: (value, tag) => {
         requestAnimationFrame(() => {
           const startAt = performance.now();
-          applyDomDiff(value);
+          applyViewToDom(value);
           const finishAt = performance.now();
           outputs.d_dur(finishAt - startAt, tag);
         });

@@ -1,7 +1,7 @@
-import {applyDomDiffDel} from "./applyDomDiffDel";
-import * as delDomProp2 from "./delDomProperty";
+import {applyViewToDom} from "./applyViewToDom";
+import * as setDomProp2 from "./setDomProperty";
 
-describe("applyDomDiffDel()", () => {
+describe("applyViewToDom()", () => {
   const window = <any>global;
 
   beforeEach(() => {
@@ -110,24 +110,24 @@ describe("applyDomDiffDel()", () => {
     delete window.window;
   });
 
-  it("should invoke delDomProperty() with paths", () => {
-    const diffSet = {
-      "body.childNodes.0:tr.childNodes.0:td.classList.foo": null,
-      "body.childNodes.0:tr.childNodes.1:td.classList.foo": null,
-      "body.childNodes.0:tr.childNodes.2:td.classList.foo": null,
-      "body.childNodes.1:tr.childNodes.0:td.classList.foo": null,
-      "body.childNodes.1:tr.childNodes.1:td.classList.foo": null,
-      "body.childNodes.1:tr.childNodes.2:td.classList.foo": null
+  it("should invoke setDomProperty() with paths & values", () => {
+    const view = {
+      "body.childNodes.0:tr.childNodes.0:td.classList.foo": true,
+      "body.childNodes.0:tr.childNodes.1:td.classList.foo": true,
+      "body.childNodes.0:tr.childNodes.2:td.classList.foo": true,
+      "body.childNodes.1:tr.childNodes.0:td.classList.foo": true,
+      "body.childNodes.1:tr.childNodes.1:td.classList.foo": true,
+      "body.childNodes.1:tr.childNodes.2:td.classList.foo": true
     };
-    const spy = spyOn(delDomProp2, "delDomProperty").and.returnValue(true);
-    applyDomDiffDel(diffSet);
+    const spy = spyOn(setDomProp2, "setDomProperty").and.returnValue(true);
+    applyViewToDom(view);
     expect(spy.calls.allArgs()).toEqual([
-      [[window.document.body], "body.childNodes.0:tr.childNodes.0:td.classList.foo"],
-      [[window.document.body], "body.childNodes.0:tr.childNodes.1:td.classList.foo"],
-      [[window.document.body], "body.childNodes.0:tr.childNodes.2:td.classList.foo"],
-      [[window.document.body], "body.childNodes.1:tr.childNodes.0:td.classList.foo"],
-      [[window.document.body], "body.childNodes.1:tr.childNodes.1:td.classList.foo"],
-      [[window.document.body], "body.childNodes.1:tr.childNodes.2:td.classList.foo"]
+      [[window.document.body], "body.childNodes.0:tr.childNodes.0:td.classList.foo", true],
+      [[window.document.body], "body.childNodes.0:tr.childNodes.1:td.classList.foo", true],
+      [[window.document.body], "body.childNodes.0:tr.childNodes.2:td.classList.foo", true],
+      [[window.document.body], "body.childNodes.1:tr.childNodes.0:td.classList.foo", true],
+      [[window.document.body], "body.childNodes.1:tr.childNodes.1:td.classList.foo", true],
+      [[window.document.body], "body.childNodes.1:tr.childNodes.2:td.classList.foo", true]
     ]);
   });
 });

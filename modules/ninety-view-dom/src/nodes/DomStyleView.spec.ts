@@ -13,20 +13,10 @@ describe("createDomStyleView()", () => {
       const spy = jasmine.createSpy();
       connect(node.o.d_view, spy);
       node.i.d_vm({
-        del: {
-          "bar.baz": null
-        },
-        set: {
-          "bar.baz": "a"
-        }
+        "bar.baz": "a"
       }, "1");
       expect(spy).toHaveBeenCalledWith({
-        del: {
-          "bar.style,foo": null
-        },
-        set: {
-          "bar.style,foo": "a"
-        }
+        "bar.style,foo": "a"
       }, "1");
     });
   });

@@ -2,7 +2,7 @@ import {connect} from "1e14";
 import {createMapper} from "1e14-fp";
 import {createDemuxer, createMuxer} from "1e14-mux";
 import {createTicker} from "1e14-time";
-import {createDiffBuffer, FlameDiff} from "flamejet";
+import {createFlameBuffer, Flame} from "flamejet";
 import {normalizePaths} from "flamejet/dist/callbacks/map";
 import {createRouter} from "ninety-router";
 import {createParentThread} from "ninety-webworker";
@@ -18,26 +18,23 @@ connect(parentMuxer.o.d_mux, parentThread.i.d_msg);
 
 // setting up main page
 const mainPageView = createMainPageView();
-const mainPageVm = createMapper<any, FlameDiff>(() => ({
-  del: {},
-  set: {
-    "page.menu.0.link.text": "Hello world",
-    "page.menu.0.link.url": "#hello-world",
-    "page.menu.1.link.text": "Stress test (table)",
-    "page.menu.1.link.url": "#stress-test-1"
-  }
+const mainPageVm = createMapper<any, Flame>(() => ({
+  "page.menu.0.link.text": "Hello world",
+  "page.menu.0.link.url": "#hello-world",
+  "page.menu.1.link.text": "Stress test (table)",
+  "page.menu.1.link.url": "#stress-test-1"
 }));
 connect(mainPageVm.o.d_val, mainPageView.i.d_vm);
 connect(parentDemuxer.o.ev_dom_ready, mainPageVm.i.d_val);
 
 // setting up pre-rendering
 const ticker = createTicker(10, true);
-const diffBuffer = createDiffBuffer();
+const flameBuffer = createFlameBuffer();
 const pathNormalizer = createMapper(normalizePaths);
 connect(mainPageView.o.d_view, pathNormalizer.i.d_val);
-connect(pathNormalizer.o.d_val, diffBuffer.i.d_diff);
-connect(ticker.o.ev_tick, diffBuffer.i.ev_res);
-connect(diffBuffer.o.d_diff, parentMuxer.i.d_view);
+connect(pathNormalizer.o.d_val, flameBuffer.i.d_val);
+connect(ticker.o.ev_tick, flameBuffer.i.ev_res);
+connect(flameBuffer.o.d_val, parentMuxer.i.d_view);
 
 // setting up routes
 const ROUTE_HELLO_WORLD = /^hello-world$/;
@@ -46,32 +43,29 @@ const ROUTE_REST = /^.*$/;
 
 // "page" 0: no content
 const emptyPageView = createMapper(() => ({
-  del: {"page.content": null},
-  set: {}
+  "page.content": null
 }));
 connect(emptyPageView.o.d_val, mainPageView.i.d_vm);
 
 // "page" 1: "hello world"
 const helloWorldPageVm = createMapper(() => ({
-  del: {"page.hello": null},
-  set: {"page.hello.caption.text": "Hello World!"}
+  "page.hello": null,
+  "page.hello.caption.text": "Hello World!"
 }));
 connect(helloWorldPageVm.o.d_val, mainPageView.i.d_vm);
 
 // "page" 2: stress test with large table
 const stressTest1PageVm = createMapper(() => ({
-  del: {"page.stress1": null},
-  set: {
-    "page.stress1.buttons.start.click": null,
-    "page.stress1.buttons.start.text": "Start",
-    "page.stress1.buttons.stop.click": null,
-    "page.stress1.buttons.stop.text": "Stop",
-    "page.stress1.desc.text":
-      "Firehose test using a table with 1024 cells"
-  }
+  "page.stress1": null,
+  "page.stress1.buttons.start.click": null,
+  "page.stress1.buttons.start.text": "Start",
+  "page.stress1.buttons.stop.click": null,
+  "page.stress1.buttons.stop.text": "Stop",
+  "page.stress1.desc.text":
+    "Firehose test using a table with 1024 cells"
 }));
 const tableTicker = createTicker(100, true);
-const tableDataGenerator = createMapper<any, FlameDiff>(
+const tableDataGenerator = createMapper<any, Flame>(
   () => generateTableData("page.stress1.table", 32, 32));
 connect(tableTicker.o.ev_tick, tableDataGenerator.i.d_val);
 connect(tableDataGenerator.o.d_val, mainPageView.i.d_vm);

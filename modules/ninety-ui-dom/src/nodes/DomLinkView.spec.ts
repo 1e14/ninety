@@ -14,19 +14,14 @@ describe("createDomLinkView()", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_view, spy);
         node.i.d_vm({
-          del: {},
-          set: {
-            "foo.text": "Hello",
-            "foo.url": "http://"
-          }
+          "foo.text": "Hello",
+          "foo.url": "http://"
         }, "1");
         expect(spy).toHaveBeenCalledWith({
-          del: {},
-          set: {"childNodes.0:A.innerText": "Hello"}
+          "childNodes.0:A.innerText": "Hello"
         }, "1");
         expect(spy).toHaveBeenCalledWith({
-          del: {},
-          set: {"childNodes.0:A.href": "http://"}
+          "childNodes.0:A.href": "http://"
         }, "1");
       });
     });
@@ -34,11 +29,8 @@ describe("createDomLinkView()", () => {
     describe("on del", () => {
       beforeEach(() => {
         node.i.d_vm({
-          del: {},
-          set: {
-            "foo.text": "Hello",
-            "foo.url": "http://"
-          }
+          "foo.text": "Hello",
+          "foo.url": "http://"
         }, "1");
       });
 
@@ -46,19 +38,14 @@ describe("createDomLinkView()", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_view, spy);
         node.i.d_vm({
-          del: {
-            "foo.text": null,
-            "foo.url": null
-          },
-          set: {}
+          "foo.text": null,
+          "foo.url": null
         }, "2");
         expect(spy).toHaveBeenCalledWith({
-          del: {"childNodes.0:A.innerText": null},
-          set: {}
+          "childNodes.0:A.innerText": null
         }, "2");
         expect(spy).toHaveBeenCalledWith({
-          del: {"childNodes.0:A.href": null},
-          set: {}
+          "childNodes.0:A.href": null
         }, "2");
       });
     });

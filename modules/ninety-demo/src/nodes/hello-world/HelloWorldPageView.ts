@@ -1,5 +1,5 @@
 import {connect, Node} from "1e14";
-import {createFlameDiffSplitter} from "flamejet";
+import {createFlameSplitter} from "flamejet";
 import {createDomTextView} from "ninety-ui-dom";
 import {createParentView, ParentViewIn, ParentViewOut} from "ninety-view";
 
@@ -15,11 +15,11 @@ export function createHelloWorldPageView(
 ): HelloWorldPageView {
   const view = createParentView(() => path, depth);
   const textView = createDomTextView(() => "childNodes.0:SPAN", depth + 1);
-  const splitter = createFlameDiffSplitter<"d_caption">({
+  const splitter = createFlameSplitter<"d_caption">({
     d_caption: ["caption"]
   }, depth + 1);
 
-  connect(view.o.d_vm, splitter.i.d_diff);
+  connect(view.o.d_vm, splitter.i.d_val);
   connect(splitter.o.d_caption, textView.i.d_vm);
   connect(textView.o.d_view, view.i.d_view);
 

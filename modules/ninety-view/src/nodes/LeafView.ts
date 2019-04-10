@@ -1,13 +1,13 @@
 import {createNode, Node} from "1e14";
-import {FlameDiff, replacePathTail} from "flamejet";
+import {Flame, replacePathTail} from "flamejet";
 import {PathMapperCallback} from "../types";
 
 export type In = {
-  d_vm: FlameDiff;
+  d_vm: Flame;
 };
 
 export type Out = {
-  d_view: FlameDiff;
+  d_view: Flame;
 };
 
 export type LeafView = Node<In, Out>;
@@ -20,17 +20,11 @@ export function createLeafView(
   return createNode<In, Out>
   (["d_view"], (outputs) => ({
     d_vm: (value, tag) => {
-      const set = {};
-      const del = {};
-      const vmSet = value.set;
-      const vmDel = value.del;
-      for (const abs in vmSet) {
-        set[replacePathTail(abs, cb)] = vmSet[abs];
+      const view = {};
+      for (const abs in value) {
+        view[replacePathTail(abs, cb)] = value[abs];
       }
-      for (const abs in vmDel) {
-        del[replacePathTail(abs, cb)] = null;
-      }
-      outputs.d_view({set, del}, tag);
+      outputs.d_view(view, tag);
     }
   }));
 }

@@ -13,13 +13,9 @@ describe("createFrameBuffer()", () => {
       const spy = jasmine.createSpy();
       connect(node.o.d_size, spy);
       node.i.d_view({
-        del: {
-          foo: null
-        },
-        set: {
-          "foo.bar": 1,
-          "foo.baz": 2
-        }
+        "foo": null,
+        "foo.bar": 1,
+        "foo.baz": 2
       }, "1");
       expect(spy).toHaveBeenCalledWith(3, "1");
     });
@@ -29,13 +25,9 @@ describe("createFrameBuffer()", () => {
         const spy = jasmine.createSpy();
         connect(node.o.ev_load, spy);
         node.i.d_view({
-          del: {
-            foo: null
-          },
-          set: {
-            "foo.bar": 1,
-            "foo.baz": 2
-          }
+          "foo": null,
+          "foo.bar": 1,
+          "foo.baz": 2
         }, "1");
         expect(spy).toHaveBeenCalledWith(null, "1");
       });
@@ -44,13 +36,9 @@ describe("createFrameBuffer()", () => {
     describe("when nonzero buffer size changes", () => {
       beforeEach(() => {
         node.i.d_view(<any>{
-          del: {
-            foo: null
-          },
-          set: {
-            "foo.bar": 1,
-            "foo.baz": 2
-          }
+          "foo": null,
+          "foo.bar": 1,
+          "foo.baz": 2
         }, "1");
       });
 
@@ -58,10 +46,7 @@ describe("createFrameBuffer()", () => {
         const spy = jasmine.createSpy();
         connect(node.o.ev_load, spy);
         node.i.d_view(<any>{
-          del: {
-            "foo.bar": 1
-          },
-          set: {}
+          "foo.bar": 1
         }, "1");
         expect(spy).not.toHaveBeenCalled();
       });
@@ -78,13 +63,9 @@ describe("createFrameBuffer()", () => {
     describe("when buffer is non-empty", () => {
       beforeEach(() => {
         node.i.d_view({
-          del: {
-            foo: null
-          },
-          set: {
-            "foo.bar": 1,
-            "foo.baz": 2
-          }
+          "foo": null,
+          "foo.bar": 1,
+          "foo.baz": 2
         }, "1");
       });
 
@@ -93,12 +74,8 @@ describe("createFrameBuffer()", () => {
         connect(node.o.d_frame, spy);
         node.i.ev_next(null, "2");
         expect(spy).toHaveBeenCalledWith({
-          del: {
-            foo: null
-          },
-          set: {
-            "foo.bar": 1
-          }
+          "foo": null,
+          "foo.bar": 1
         }, "2");
       });
     });

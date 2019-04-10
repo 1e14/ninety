@@ -17,12 +17,10 @@ describe("createDomTextView()", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_view, spy);
         node.i.d_vm({
-          del: {},
-          set: {"page.table.2,4.text": "Foo"}
+          "page.table.2,4.text": "Foo"
         }, "1");
         expect(spy).toHaveBeenCalledWith({
-          del: {},
-          set: {"page.table.childNodes,2:TR,childNodes,4:TD.innerText": "Foo"}
+          "page.table.childNodes,2:TR,childNodes,4:TD.innerText": "Foo"
         }, "1");
       });
     });
@@ -32,12 +30,10 @@ describe("createDomTextView()", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_view, spy);
         node.i.d_vm({
-          del: {"page.table.2,4.text": null},
-          set: {}
+          "page.table.2,4.text": null
         }, "2");
         expect(spy).toHaveBeenCalledWith({
-          del: {"page.table.childNodes,2:TR,childNodes,4:TD.innerText": null},
-          set: {}
+          "page.table.childNodes,2:TR,childNodes,4:TD.innerText": null
         }, "2");
       });
     });

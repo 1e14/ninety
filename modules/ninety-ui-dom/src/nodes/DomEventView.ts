@@ -23,11 +23,9 @@ export function createDomEventView<T extends Event>(
 ): DomEventView {
   return createNode<In, Out>(["d_event", "d_view"], (outputs) => ({
     d_vm: (value, tag) => {
-      const set = {};
-      const vmSet = value.set;
-      const del = value.del;
-      for (const path in vmSet) {
-        set[replacePathTail(path, () => type)] = (event) => {
+      const view = {};
+      for (const path in value) {
+        view[replacePathTail(path, () => type)] = (event) => {
           event.stopImmediatePropagation();
           // TODO: Timestamp event tag?
           outputs.d_event({
@@ -36,7 +34,7 @@ export function createDomEventView<T extends Event>(
           return;
         };
       }
-      outputs.d_view({set, del}, tag);
+      outputs.d_view(view, tag);
     }
   }));
 }

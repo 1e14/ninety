@@ -31,49 +31,33 @@ describe("createFrameRenderer()", () => {
     it("should schedule animation frame", () => {
       const spy = spyOn(window, "requestAnimationFrame");
       node.i.d_frame({
-        del: {},
-        set: {
-          "foo.bar": 1,
-          "foo.baz": 2
-        },
-        size: 2
+        "foo.bar": 1,
+        "foo.baz": 2
       }, "1");
       expect(spy).toHaveBeenCalled();
     });
 
-    it("should invoke applyDomDiff()", () => {
-      const spy = spyOn(utils, "applyDomDiff");
+    it("should invoke applyViewToDom()", () => {
+      const spy = spyOn(utils, "applyViewToDom");
       node.i.d_frame({
-        del: {},
-        set: {
-          "foo.bar": 1,
-          "foo.baz": 2
-        },
-        size: 2
+        "foo.bar": 1,
+        "foo.baz": 2
       }, "1");
       expect(spy).toHaveBeenCalledWith({
-        del: {},
-        set: {
-          "foo.bar": 1,
-          "foo.baz": 2
-        },
-        size: 2
+        "foo.bar": 1,
+        "foo.baz": 2
       });
     });
 
     it("should emit duration on 'd_dur'", () => {
       spyOn(window.performance, "now").and.returnValues(3, 8);
-      spyOn(utils, "applyDomDiff");
+      spyOn(utils, "applyViewToDom");
       spyOn(window, "requestAnimationFrame").and.callThrough();
       const spy = jasmine.createSpy();
       connect(node.o.d_dur, spy);
       node.i.d_frame({
-        del: {},
-        set: {
-          "foo.bar": 1,
-          "foo.baz": 2
-        },
-        size: 2
+        "foo.bar": 1,
+        "foo.baz": 2
       }, "1");
       expect(spy).toHaveBeenCalledWith(5, "1");
     });

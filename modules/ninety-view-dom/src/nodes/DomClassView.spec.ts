@@ -13,20 +13,10 @@ describe("createDomClassView()", () => {
       const spy = jasmine.createSpy();
       connect(node.o.d_view, spy);
       node.i.d_vm({
-        del: {
-          "bar.baz": null
-        },
-        set: {
-          "bar.baz": 5
-        }
+        "bar.baz": 5
       }, "1");
       expect(spy).toHaveBeenCalledWith({
-        del: {
-          "bar.classList,foo": null
-        },
-        set: {
-          "bar.classList,foo": 5
-        }
+        "bar.classList,foo": 5
       }, "1");
     });
   });

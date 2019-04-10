@@ -1,5 +1,5 @@
 import {createNode, Node} from "1e14";
-import {FlameDiff} from "flamejet";
+import {Flame} from "flamejet";
 
 export type In = {
   /**
@@ -10,7 +10,7 @@ export type In = {
   /**
    * View to be buffered.
    */
-  d_view: FlameDiff;
+  d_view: Flame;
 
   /**
    * Requests next frame from the buffer.
@@ -22,7 +22,7 @@ export type Out = {
   /**
    * Next frame.
    */
-  d_frame: FlameDiff;
+  d_frame: Flame;
 
   /**
    * Buffer size.
@@ -35,9 +35,6 @@ export type Out = {
   ev_load: any;
 };
 
-/**
- * Breaks down and queues diffs as frames of a specified size.
- */
 export type FrameBuffer = Node<In, Out>;
 
 /**
@@ -47,8 +44,7 @@ export type FrameBuffer = Node<In, Out>;
 export function createFrameBuffer(fs: number = 512): FrameBuffer {
   return createNode<In, Out>
   (["d_frame", "d_size", "ev_load"], (outputs) => {
-    const bufferSet = new Map<string, any>();
-    const bufferDel = new Set<string>();
+    const buffer = new Map<string, any>();
 
     return {
       d_fs: (value) => {
@@ -56,9 +52,9 @@ export function createFrameBuffer(fs: number = 512): FrameBuffer {
       },
 
       d_view: (value, tag) => {
-        const sizeBefore = bufferSet.size + bufferDel.size;
-        compoundView(bufferSet, bufferDel, value);
-        const sizeAfter = bufferSet.size + bufferDel.size;
+        const sizeBefore = buffer.size;
+        compoundView(buffer, value);
+        const sizeAfter = buffer.size;
         if (!sizeBefore && sizeAfter) {
           outputs.ev_load(null, tag);
         }
@@ -66,9 +62,9 @@ export function createFrameBuffer(fs: number = 512): FrameBuffer {
       },
 
       ev_next: (dummy, tag) => {
-        if (bufferSet.size + bufferDel.size) {
-          outputs.d_frame(extractNextFrame(bufferSet, bufferDel, fs), tag);
-          outputs.d_size(bufferSet.size + bufferDel.size, tag);
+        if (buffer.size) {
+          outputs.d_frame(extractNextFrame(buffer, fs), tag);
+          outputs.d_size(buffer.size, tag);
         }
       }
     };
@@ -76,48 +72,26 @@ export function createFrameBuffer(fs: number = 512): FrameBuffer {
 }
 
 function compoundView(
-  bufferSet: Map<string, any>,
-  bufferDel: Set<string>,
-  view: FlameDiff
+  buffer: Map<string, any>,
+  view: Flame
 ): void {
-  const {set, del} = view;
-  for (const path in del) {
-    if (bufferSet.has(path)) {
-      bufferSet.delete(path);
-    } else {
-      bufferDel.add(path);
-    }
-  }
-  for (const path in set) {
-    if (bufferDel.has(path)) {
-      bufferDel.delete(path);
-    } else {
-      bufferSet.set(path, set[path]);
-    }
+  for (const path in view) {
+    buffer.set(path, view[path]);
   }
 }
 
 function extractNextFrame(
-  bufferSet: Map<string, any>,
-  bufferDel: Set<string>,
+  buffer: Map<string, any>,
   fs: number
-): FlameDiff {
-  const set = {};
-  const del = {};
-  let i = fs;
-  for (const path of bufferDel) {
-    del[path] = null;
-    bufferDel.delete(path);
+): Flame {
+  let i = Math.min(fs, buffer.size);
+  const frame = {};
+  for (const [path, value] of buffer.entries()) {
+    frame[path] = value;
+    buffer.delete(path);
     if (!--i) {
       break;
     }
   }
-  for (const [path, value] of bufferSet.entries()) {
-    set[path] = value;
-    bufferSet.delete(path);
-    if (!--i) {
-      break;
-    }
-  }
-  return {set, del};
+  return frame;
 }

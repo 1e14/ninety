@@ -17,20 +17,12 @@ describe("createParentView()", () => {
       const spy = jasmine.createSpy();
       connect(node.o.d_vm, spy);
       node.i.d_vm({
-        del: {
-          "page.table.1,3.text": null
-        },
-        set: {
-          "page.table.2,4.text": "Foo"
-        }
+        "page.table.1,3.text": null,
+        "page.table.2,4.text": "Foo"
       }, "1");
       expect(spy).toHaveBeenCalledWith({
-        del: {
-          "page.table.1,3.text": null
-        },
-        set: {
-          "page.table.2,4.text": "Foo"
-        }
+        "page.table.1,3.text": null,
+        "page.table.2,4.text": "Foo"
       }, "1");
     });
 
@@ -39,16 +31,10 @@ describe("createParentView()", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_view, spy);
         node.i.d_vm({
-          del: {
-            "page.table.1,3": null
-          },
-          set: {}
+          "page.table.1,3": null
         }, "1");
         expect(spy).toHaveBeenCalledWith({
-          del: {
-            "page.table.childNodes,1:tr,childNodes,3:td": null
-          },
-          set: {}
+          "page.table.childNodes,1:tr,childNodes,3:td": null
         }, "1");
       });
     });
@@ -65,24 +51,16 @@ describe("createParentView()", () => {
       }, 2);
     });
 
-    it("should emit processed diff on 'd_view'", () => {
+    it("should emit processed view on 'd_view'", () => {
       const spy = jasmine.createSpy();
       connect(node.o.d_view, spy);
       node.i.d_view({
-        del: {
-          "page.table.1,3.text": null
-        },
-        set: {
-          "page.table.2,4.text": "Foo"
-        }
+        "page.table.1,3.text": null,
+        "page.table.2,4.text": "Foo"
       }, "1");
       expect(spy).toHaveBeenCalledWith({
-        del: {
-          "page.table.childNodes,1:tr,childNodes,3:td.text": null
-        },
-        set: {
-          "page.table.childNodes,2:tr,childNodes,4:td.text": "Foo"
-        }
+        "page.table.childNodes,1:tr,childNodes,3:td.text": null,
+        "page.table.childNodes,2:tr,childNodes,4:td.text": "Foo"
       }, "1");
     });
   });

@@ -1,5 +1,5 @@
 import {connect, Node} from "1e14";
-import {createFlameDiffSplitter} from "flamejet";
+import {createFlameSplitter} from "flamejet";
 import {createDomTableCellView, createDomTextView} from "ninety-ui-dom";
 import {ParentViewIn, ParentViewOut} from "ninety-view";
 import {createDomStyleView} from "ninety-view-dom";
@@ -16,16 +16,16 @@ export function createStressTableCellView(
   const view = createDomTableCellView(depth);
   const text = createDomTextView(() => "childNodes,0:SPAN", depth + 1);
   const color = createDomStyleView("color");
-  const callSplitter = createFlameDiffSplitter({
+  const callSplitter = createFlameSplitter({
     d_content: ["content"]
   }, depth + 1);
-  const textSplitter = createFlameDiffSplitter({
+  const textSplitter = createFlameSplitter({
     d_color: ["color"]
   }, depth + 2);
 
-  connect(view.o.d_vm, callSplitter.i.d_diff);
+  connect(view.o.d_vm, callSplitter.i.d_val);
   connect(callSplitter.o.d_content, text.i.d_vm);
-  connect(text.o.d_vm, textSplitter.i.d_diff);
+  connect(text.o.d_vm, textSplitter.i.d_val);
   connect(textSplitter.o.d_color, color.i.d_vm);
   connect(color.o.d_view, text.i.d_view);
   connect(text.o.d_view, view.i.d_view);

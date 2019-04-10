@@ -1,5 +1,5 @@
 import {connect, Node} from "1e14";
-import {createFlameDiffSplitter} from "flamejet";
+import {createFlameSplitter} from "flamejet";
 import {
   createParentView,
   ParentViewIn,
@@ -21,11 +21,11 @@ export function createDomTextView(
   const view = createParentView(cb, depth);
   const textView = createDomPropertyView("innerText");
 
-  const splitter = createFlameDiffSplitter<"d_text">({
+  const splitter = createFlameSplitter<"d_text">({
     d_text: ["text"]
   }, depth + 1);
 
-  connect(view.o.d_vm, splitter.i.d_diff);
+  connect(view.o.d_vm, splitter.i.d_val);
   connect(splitter.o.d_text, textView.i.d_vm);
   connect(textView.o.d_view, view.i.d_view);
 

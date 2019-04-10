@@ -27,14 +27,11 @@ describe("createEventView()", () => {
       const spy = jasmine.createSpy();
       connect(node.o.d_view, spy);
       node.i.d_vm({
-        del: {},
-        set: {
-          "foo.bar.baz": null
-        }
+        "foo.bar.baz": null
       }, "1");
       expect(spy).toHaveBeenCalled();
       const args = spy.calls.argsFor(0);
-      expect(typeof args[0].set["foo.bar.onclick"]).toBe("function");
+      expect(typeof args[0]["foo.bar.onclick"]).toBe("function");
       expect(args[1]).toBe("1");
     });
   });
@@ -45,14 +42,11 @@ describe("createEventView()", () => {
 
     beforeEach(() => {
       node = createDomEventView("onclick");
-      connect(node.o.d_view, (diff) => {
-        onclick = diff.set["foo.bar.onclick"];
+      connect(node.o.d_view, (view) => {
+        onclick = view["foo.bar.onclick"];
       });
       node.i.d_vm({
-        del: {},
-        set: {
-          "foo.bar.baz": null
-        }
+        "foo.bar.baz": null
       }, "1");
     });
 

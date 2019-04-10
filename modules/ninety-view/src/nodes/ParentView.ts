@@ -2,7 +2,6 @@ import {createNode, Node} from "1e14";
 import {
   countPathComponents,
   Flame,
-  FlameDiff,
   replacePathComponent,
   replacePathTail
 } from "flamejet";
@@ -10,19 +9,19 @@ import {
 export type PathMapperCallback = (path: string) => string;
 
 export type In = {
-  /** View diff processed by children */
-  d_view: FlameDiff;
+  /** View processed by children */
+  d_view: Flame;
 
-  /** View-model diff passed down by parent */
-  d_vm: FlameDiff;
+  /** View-model passed down by parent */
+  d_vm: Flame;
 };
 
 export type Out = {
-  /** View diff processed by current node */
-  d_view: FlameDiff;
+  /** View processed by current node */
+  d_view: Flame;
 
-  /** View-model diff to be passed down to children */
-  d_vm: FlameDiff;
+  /** View-model to be passed down to children */
+  d_vm: Flame;
 };
 
 /**
@@ -53,30 +52,24 @@ export function createParentView(
       outputs.d_vm(value, tag);
 
       // bouncing subtree delete paths
-      let del: Flame;
-      for (const path in value.del) {
-        if (countPathComponents(path) === depth + 1) {
-          del = del || {};
-          del[replacePathTail(path, cb)] = null;
+      const view: Flame = {};
+      for (const path in value) {
+        if (value[path] === null && countPathComponents(path) === depth + 1) {
+          view[replacePathTail(path, cb)] = null;
         }
       }
-      if (del) {
-        outputs.d_view({set: {}, del}, tag);
+      for (const path in view) {
+        outputs.d_view(view, tag);
+        break;
       }
     },
 
     d_view: (value, tag) => {
-      const set = {};
-      const del = {};
-      const viewSet = value.set;
-      const viewDel = value.del;
-      for (const path in viewSet) {
-        set[replacePathComponent(path, depth, cb)] = viewSet[path];
+      const view = {};
+      for (const path in value) {
+        view[replacePathComponent(path, depth, cb)] = value[path];
       }
-      for (const path in viewDel) {
-        del[replacePathComponent(path, depth, cb)] = null;
-      }
-      outputs.d_view({set, del}, tag);
+      outputs.d_view(view, tag);
     }
   }));
 }
