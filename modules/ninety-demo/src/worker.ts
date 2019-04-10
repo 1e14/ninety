@@ -57,12 +57,7 @@ connect(helloWorldPageVm.o.d_val, mainPageView.i.d_vm);
 // "page" 2: stress test with large table
 const stressTest1PageVm = createMapper(() => ({
   "page.stress1": null,
-  "page.stress1.buttons.start.click": null,
-  "page.stress1.buttons.start.text": "Start",
-  "page.stress1.buttons.stop.click": null,
-  "page.stress1.buttons.stop.text": "Stop",
-  "page.stress1.desc.text":
-    "Firehose test using a table with 1024 cells"
+  "page.stress1.desc.text": "Firehose test using a table with 1024 cells"
 }));
 const tableTicker = createTicker(100, true);
 const tableDataGenerator = createMapper<any, Flame>(
