@@ -71,19 +71,26 @@ export function createFrameBuffer(fs: number = 512): FrameBuffer {
   });
 }
 
-function compoundView(
-  buffer: Map<string, any>,
-  view: Flame
-): void {
+function compoundView(buffer: Map<string, any>, view: Flame): void {
+  // deleting paths from buffer that belong to a removed subtree
+  for (const viewPath in view) {
+    const value = view[viewPath];
+    if (value === null) {
+      for (const bufferPath of buffer.keys()) {
+        if (bufferPath.startsWith(viewPath)) {
+          buffer.delete(bufferPath);
+        }
+      }
+    }
+  }
+
+  // transferring new values to buffer
   for (const path in view) {
     buffer.set(path, view[path]);
   }
 }
 
-function extractNextFrame(
-  buffer: Map<string, any>,
-  fs: number
-): Flame {
+function extractNextFrame(buffer: Map<string, any>, fs: number): Flame {
   let i = Math.min(fs, buffer.size);
   const frame = {};
   for (const [path, value] of buffer.entries()) {
