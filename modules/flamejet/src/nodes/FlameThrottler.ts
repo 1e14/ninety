@@ -1,49 +1,49 @@
 import {createNode, Node} from "1e14";
-import {Flame} from "flamejet";
+import {Flame} from "../types";
 
 export type In = {
   /**
-   * Maximum frame size.
+   * Maximum flame size.
    */
   d_fs: number;
 
   /**
-   * View to be buffered.
+   * Flame to be throttled.
    */
-  d_view: Flame;
+  d_val: Flame;
 
   /**
-   * Requests next frame from the buffer.
+   * Requests next flame from the buffer.
    */
   ev_next: any;
 };
 
 export type Out = {
   /**
-   * Next frame.
-   */
-  d_frame: Flame;
-
-  /**
    * Buffer size.
    */
   d_size: number;
 
   /**
-   * Signals queue going from empty to non-empty.
+   * Next output flame.
+   */
+  d_val: Flame;
+
+  /**
+   * Signals buffer went from empty to non-empty.
    */
   ev_load: any;
 };
 
-export type FrameBuffer = Node<In, Out>;
+export type FlameThrottler = Node<In, Out>;
 
 /**
  * Creates a FrameQueue node.
  * @param fs Initial frame size
  */
-export function createFrameBuffer(fs: number = 512): FrameBuffer {
+export function createFlameThrottler(fs: number = 512): FlameThrottler {
   return createNode<In, Out>
-  (["d_frame", "d_size", "ev_load"], (outputs) => {
+  (["d_size", "d_val", "ev_load"], (outputs) => {
     const buffer = new Map<string, any>();
 
     return {
@@ -51,9 +51,9 @@ export function createFrameBuffer(fs: number = 512): FrameBuffer {
         fs = value;
       },
 
-      d_view: (value, tag) => {
+      d_val: (value, tag) => {
         const sizeBefore = buffer.size;
-        compoundView(buffer, value);
+        compoundFlames(buffer, value);
         const sizeAfter = buffer.size;
         if (!sizeBefore && sizeAfter) {
           outputs.ev_load(null, tag);
@@ -63,7 +63,7 @@ export function createFrameBuffer(fs: number = 512): FrameBuffer {
 
       ev_next: (dummy, tag) => {
         if (buffer.size) {
-          outputs.d_frame(extractNextFrame(buffer, fs), tag);
+          outputs.d_val(extractNext(buffer, fs), tag);
           outputs.d_size(buffer.size, tag);
         }
       }
@@ -71,13 +71,13 @@ export function createFrameBuffer(fs: number = 512): FrameBuffer {
   });
 }
 
-function compoundView(buffer: Map<string, any>, view: Flame): void {
+function compoundFlames(buffer: Map<string, any>, flame: Flame): void {
   // deleting paths from buffer that belong to a removed subtree
-  for (const viewPath in view) {
-    const value = view[viewPath];
+  for (const flamePath in flame) {
+    const value = flame[flamePath];
     if (value === null) {
       for (const bufferPath of buffer.keys()) {
-        if (bufferPath.startsWith(viewPath)) {
+        if (bufferPath.startsWith(flamePath)) {
           buffer.delete(bufferPath);
         }
       }
@@ -85,12 +85,12 @@ function compoundView(buffer: Map<string, any>, view: Flame): void {
   }
 
   // transferring new values to buffer
-  for (const path in view) {
-    buffer.set(path, view[path]);
+  for (const path in flame) {
+    buffer.set(path, flame[path]);
   }
 }
 
-function extractNextFrame(buffer: Map<string, any>, fs: number): Flame {
+function extractNext(buffer: Map<string, any>, fs: number): Flame {
   let i = Math.min(fs, buffer.size);
   const frame = {};
   for (const [path, value] of buffer.entries()) {
