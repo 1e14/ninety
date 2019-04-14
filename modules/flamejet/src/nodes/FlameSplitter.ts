@@ -2,18 +2,30 @@ import {createNode, Node} from "1e14";
 import {Flame, PathComponentsByPort} from "../types";
 import {getPathComponent, invertComponentsByPort} from "../utils";
 
+/**
+ * Lookup of flames indexed by port name.
+ */
 export type FlamesByPort<P extends string> = {
   [K in P]: Flame
 };
 
 export type In = {
+  /** Flame to be split. */
   d_val: Flame;
 };
 
 export type Out<P extends string> = FlamesByPort<P>;
 
+/**
+ * Splits flames by path component at given depth.
+ */
 export type FlameSplitter<P extends string> = Node<In, Out<P>>;
 
+/**
+ * Creates a FlameSplitter node.
+ * @param componentsByPort
+ * @param depth
+ */
 export function createFlameSplitter<P extends string>(
   componentsByPort: PathComponentsByPort<P>,
   depth: number

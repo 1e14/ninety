@@ -2,36 +2,24 @@ import {createNode, Node} from "1e14";
 import {Flame} from "../types";
 
 export type In = {
-  /**
-   * Maximum flame size.
-   */
+  /** Maximum flame size. */
   d_fs: number;
 
-  /**
-   * Flame to be throttled.
-   */
+  /** Flame to be throttled. */
   d_val: Flame;
 
-  /**
-   * Requests next flame from the buffer.
-   */
+  /** Requests next flame from the buffer. */
   ev_next: any;
 };
 
 export type Out = {
-  /**
-   * Buffer size.
-   */
+  /** Buffer size. */
   d_size: number;
 
-  /**
-   * Next output flame.
-   */
+  /** Next output flame. */
   d_val: Flame;
 
-  /**
-   * Signals buffer went from empty to non-empty.
-   */
+  /** Signals buffer went from empty to non-empty. */
   ev_load: any;
 };
 
@@ -71,6 +59,12 @@ export function createFlameThrottler(fs: number = 512): FlameThrottler {
   });
 }
 
+/**
+ * Compounds flame on a flame buffer. Updates path/value pairs.
+ * Handles subtree removal.
+ * @param buffer
+ * @param flame
+ */
 function compoundFlames(buffer: Map<string, any>, flame: Flame): void {
   // deleting paths from buffer that belong to a removed subtree
   for (const flamePath in flame) {
@@ -90,6 +84,12 @@ function compoundFlames(buffer: Map<string, any>, flame: Flame): void {
   }
 }
 
+/**
+ * Extracts next flame of a given size from the buffer. The extracted flame
+ * is removed from the buffer before being returned.
+ * @param buffer
+ * @param fs
+ */
 function extractNext(buffer: Map<string, any>, fs: number): Flame {
   let i = Math.min(fs, buffer.size);
   const frame = {};
