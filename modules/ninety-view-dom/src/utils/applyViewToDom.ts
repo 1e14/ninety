@@ -1,4 +1,5 @@
-import {countCommonComponents, Flame} from "flamejet";
+import {Flame} from "flamejet";
+import {traverseFlame} from "flamejet/dist/utils/traverseFlame";
 import {delDomProperty} from "./delDomProperty";
 import {setDomProperty} from "./setDomProperty";
 
@@ -7,40 +8,16 @@ import {setDomProperty} from "./setDomProperty";
  * @param view DOM flame.
  */
 export function applyViewToDom(view: Flame): void {
-  deleteDomProperties(view);
-  setDomProperties(view);
-}
-
-function deleteDomProperties(view: Flame): void {
   const stack = [window.document.body];
-  let last: string = "body";
-  for (const path in view) {
-    const value = view[path];
-    if (value === null) {
-      const count = countCommonComponents(path, last);
-      if (stack.length > count) {
-        // trimming stack back to common root
-        stack.length = count;
-      }
+  traverseFlame(view, (path, value, start) => {
+    if (stack.length > start) {
+      // trimming stack back to common root
+      stack.length = start;
+    }
+    if (value !== null) {
+      setDomProperty(stack, path, value);
+    } else {
       delDomProperty(stack, path);
     }
-    last = path;
-  }
-}
-
-function setDomProperties(view: Flame): void {
-  const stack = [window.document.body];
-  let last: string = "body";
-  for (const path in view) {
-    const value = view[path];
-    if (value !== null) {
-      const count = countCommonComponents(path, last);
-      if (stack.length > count) {
-        // trimming stack back to common root
-        stack.length = count;
-      }
-      setDomProperty(stack, path, value);
-    }
-    last = path;
-  }
+  }, "body");
 }
