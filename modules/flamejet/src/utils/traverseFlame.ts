@@ -13,6 +13,8 @@ export function traverseFlame(
   root: string
 ): void {
   let last: string = root;
+  // going in order of paths makes traversal smoother and makes sure any
+  // subtree operations are done before affected leaf nodes
   const paths = Object.keys(flame).sort();
   const count = paths.length;
   for (let i = 0; i < count; i++) {
