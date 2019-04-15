@@ -4,7 +4,6 @@ export * from "./types";
 export {
   countPathComponents,
   getPathComponent,
-  invertComponentsByPort,
   PATH_DELIMITER,
   replacePathComponent,
   replacePathTail
