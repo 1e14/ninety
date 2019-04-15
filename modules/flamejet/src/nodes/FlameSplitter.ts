@@ -1,5 +1,5 @@
 import {createNode, Node} from "1e14";
-import {Flame, PathComponentsByPort} from "../types";
+import {ComponentsByPort, Flame} from "../types";
 import {getPathComponent, invertComponentsByPort} from "../utils";
 
 /**
@@ -27,7 +27,7 @@ export type FlameSplitter<P extends string> = Node<In, Out<P>>;
  * @param depth
  */
 export function createFlameSplitter<P extends string>(
-  componentsByPort: PathComponentsByPort<P>,
+  componentsByPort: ComponentsByPort<P>,
   depth: number
 ): FlameSplitter<P> {
   const portsByComponent = invertComponentsByPort(componentsByPort);

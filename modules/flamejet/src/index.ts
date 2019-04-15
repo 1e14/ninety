@@ -1,6 +1,9 @@
 export * from "./callbacks";
 export * from "./nodes";
-export * from "./types";
+export {
+  Flame,
+  FlameTraversalCallback
+} from "./types";
 export {
   countPathComponents,
   getPathComponent,
