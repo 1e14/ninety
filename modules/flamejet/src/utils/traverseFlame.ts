@@ -1,5 +1,5 @@
 import {Flame, FlameTraversalCallback} from "../types";
-import {countCommonComponents} from "./countCommonComponents";
+import {getCommonRootLength} from "./getCommonRootLength";
 
 /**
  * Traverses a flame and invokes a callback on each iteration.
@@ -13,9 +13,12 @@ export function traverseFlame(
   root: string
 ): void {
   let last: string = root;
-  for (const path in flame) {
+  const paths = Object.keys(flame).sort();
+  const count = paths.length;
+  for (let i = 0; i < count; i++) {
+    const path = paths[i];
     const value = flame[path];
-    const start = countCommonComponents(path, last);
+    const start = getCommonRootLength(path, last);
     cb(path, value, start);
     last = path;
   }

@@ -1,5 +1,5 @@
 export * from "./PATH_DELIMITER";
-export {countCommonComponents} from "./countCommonComponents";
+export {getCommonRootLength} from "./getCommonRootLength";
 export {countPathComponents} from "./countPathComponents";
 export {getPathComponent} from "./getPathComponent";
 export {invertComponentsByPort} from "./invertComponentsByPort";
