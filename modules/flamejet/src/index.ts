@@ -6,8 +6,10 @@ export {
 } from "./types";
 export {
   countPathComponents,
+  flameToTree,
   getPathComponent,
   PATH_DELIMITER,
   replacePathComponent,
-  replacePathTail
+  replacePathTail,
+  treeToFlame
 } from "./utils";
