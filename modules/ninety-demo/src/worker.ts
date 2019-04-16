@@ -7,7 +7,7 @@ import {normalizePaths} from "flamejet/dist/callbacks/map";
 import {createRouter} from "ninety-router";
 import {createParentThread} from "ninety-webworker";
 import {createMainPageView} from "./nodes";
-import {generateTableData} from "./utils";
+import {generateTableVm} from "./utils";
 
 // setting up thread communication
 const parentThread = createParentThread();
@@ -61,7 +61,7 @@ const stressTest1PageVm = createMapper(() => ({
 }));
 const tableTicker = createTicker(100, true);
 const tableDataGenerator = createMapper<any, Flame>(
-  () => generateTableData("page.stress1.table", 32, 32));
+  () => generateTableVm("page.stress1.table", 32, 32));
 connect(tableTicker.o.ev_tick, tableDataGenerator.i.d_val);
 connect(tableDataGenerator.o.d_val, mainPageView.i.d_vm);
 connect(stressTest1PageVm.o.d_val, mainPageView.i.d_vm);

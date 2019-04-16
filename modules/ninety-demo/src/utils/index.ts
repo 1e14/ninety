@@ -1,1 +1,1 @@
-export * from "./generateTableData";
+export * from "./generateTableVm";
