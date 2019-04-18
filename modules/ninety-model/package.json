@@ -19,6 +19,7 @@
     "url": "git@github.com:1e14/ninety.git"
   },
   "dependencies": {
-    "1e14": "^0.1.0"
+    "1e14": "^0.1.0",
+    "flamejet": "^0.1.0"
   }
 }
