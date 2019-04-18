@@ -1,0 +1,24 @@
+{
+  "name": "ninety-model",
+  "version": "0.1.0",
+  "description": "Model component for Ninety",
+  "homepage": "http://1e14.org",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "!dist/**/*.spec.*",
+    "package.json",
+    "README.md"
+  ],
+  "keywords": [],
+  "author": "Dan Stocker <dan@kwaia.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:1e14/ninety.git"
+  },
+  "dependencies": {
+    "1e14": "^0.1.0"
+  }
+}
