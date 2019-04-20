@@ -19,10 +19,10 @@ connect(parentMuxer.o.d_mux, parentThread.i.d_msg);
 // setting up main page
 const mainPageView = createMainPageView();
 const mainPageVm = createMapper<any, Flame>(() => ({
-  "page.menu.0.link.text": "Hello world",
-  "page.menu.0.link.url": "#hello-world",
-  "page.menu.1.link.text": "Stress test (table)",
-  "page.menu.1.link.url": "#stress-test-1"
+  "menu.0.link.text": "Hello world",
+  "menu.0.link.url": "#hello-world",
+  "menu.1.link.text": "Stress test (table)",
+  "menu.1.link.url": "#stress-test-1"
 }));
 connect(mainPageVm.o.d_val, mainPageView.i.d_vm);
 connect(parentDemuxer.o.ev_dom_ready, mainPageVm.i.d_val);
@@ -43,25 +43,25 @@ const ROUTE_REST = /^.*$/;
 
 // "page" 0: no content
 const emptyPageView = createMapper(() => ({
-  "page.content": null
+  content: null
 }));
 connect(emptyPageView.o.d_val, mainPageView.i.d_vm);
 
 // "page" 1: "hello world"
 const helloWorldPageVm = createMapper(() => ({
-  "page.hello": null,
-  "page.hello.caption.text": "Hello World!"
+  "hello": null,
+  "hello.caption.text": "Hello World!"
 }));
 connect(helloWorldPageVm.o.d_val, mainPageView.i.d_vm);
 
 // "page" 2: stress test with large table
 const stressTest1PageVm = createMapper(() => ({
-  "page.stress1": null,
-  "page.stress1.desc.text": "Firehose test using a table with 1024 cells"
+  "stress1": null,
+  "stress1.desc.text": "Firehose test using a table with 1024 cells"
 }));
 const tableTicker = createTicker(100, true);
 const tableDataGenerator = createMapper<any, Flame>(
-  () => generateTableVm("page.stress1.table", 32, 32));
+  () => generateTableVm("stress1.table", 32, 32));
 connect(tableTicker.o.ev_tick, tableDataGenerator.i.d_val);
 connect(tableDataGenerator.o.d_val, mainPageView.i.d_vm);
 connect(stressTest1PageVm.o.d_val, mainPageView.i.d_vm);
