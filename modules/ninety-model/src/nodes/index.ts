@@ -1,1 +1,1 @@
-export {Model, createModel} from "./Model";
+export {Store, createStore} from "./Store";
