@@ -9,12 +9,12 @@ describe("treeToFlame()", () => {
         },
         quux: ["hello", "world", null]
       }
-    }, "root");
+    });
     expect(result).toEqual({
-      "root.foo.bar.baz": 3,
-      "root.foo.quux.0": "hello",
-      "root.foo.quux.1": "world",
-      "root.foo.quux.2": null
+      "foo.bar.baz": 3,
+      "foo.quux.0": "hello",
+      "foo.quux.1": "world",
+      "foo.quux.2": null
     });
   });
 });

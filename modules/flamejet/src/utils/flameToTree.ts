@@ -5,10 +5,10 @@ import {PATH_DELIMITER} from "./PATH_DELIMITER";
 import {traverseFlame} from "./traverseFlame";
 
 function fetchTreeParent(stack, path) {
-  const stackSize = stack.length;
+  const parentStackSize = stack.length - 1;
   const parentDepth = countPathComponents(path) - 1;
-  let property = stack[stackSize - 1];
-  for (let i = stackSize; i < parentDepth; i++) {
+  let property = stack[parentStackSize];
+  for (let i = parentStackSize; i < parentDepth; i++) {
     const component = getPathComponent(path, i);
     const parent = property;
     property = property[component];
@@ -27,7 +27,6 @@ function setTreeProperty(
   value: any
 ): void {
   const parent = fetchTreeParent(stack, path);
-  // console.log("parent", path, parent);
   const key = path.slice(path.lastIndexOf(PATH_DELIMITER) + 1);
   parent[key] = value;
 }
@@ -35,17 +34,17 @@ function setTreeProperty(
 /**
  * Inflates flame and returns the inflated flame as a tree.
  * @param flame
- * @param root
  */
-export function flameToTree(flame: Flame, root: string): any {
+export function flameToTree(flame: Flame): any {
   const result = {};
   const stack = [result];
-  traverseFlame(flame, (path, value, start) => {
-    if (stack.length > start) {
-      // trimming stack back to common root
-      stack.length = start;
+  traverseFlame(flame, (path, value, commonPathLength) => {
+    // stack is one item longer than path b/c of root
+    const maxStackLength = commonPathLength + 1;
+    if (stack.length > maxStackLength) {
+      stack.length = maxStackLength;
     }
     setTreeProperty(stack, path, value);
-  }, root);
+  });
   return result;
 }

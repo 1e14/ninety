@@ -3,11 +3,11 @@ import {flameToTree} from "./flameToTree";
 describe("flameToTree()", () => {
   it("should convert flame to tree", () => {
     const result = flameToTree({
-      "root.foo.bar.baz": 3,
-      "root.foo.quux.0": "hello",
-      "root.foo.quux.1": "world",
-      "root.foo.quux.2": null
-    }, "root");
+      "foo.bar.baz": 3,
+      "foo.quux.0": "hello",
+      "foo.quux.1": "world",
+      "foo.quux.2": null
+    });
     expect(result).toEqual({
       foo: {
         bar: {

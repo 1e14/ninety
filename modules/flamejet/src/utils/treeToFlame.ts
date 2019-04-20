@@ -21,10 +21,19 @@ function treeToFlameR(node: any, path: string, result: Flame): void {
  * Flattens tree and returns the flattened tree as a flame. The tree can't
  * be circular.
  * @param tree Tree data.
- * @param root Path to the tree relative to its parent.
  */
-export function treeToFlame(tree: any, root: string): Flame {
+export function treeToFlame(tree: any): Flame {
   const result = {};
-  treeToFlameR(tree, root, result);
+  if (tree instanceof Array) {
+    for (let i = 0, length = tree.length; i < length; i++) {
+      treeToFlameR(tree[i], String(i), result);
+    }
+  } else if (tree instanceof Object) {
+    const keys = Object.keys(tree);
+    for (let i = 0, length = keys.length; i < length; i++) {
+      const key = keys[i];
+      treeToFlameR(tree[key], key, result);
+    }
+  }
   return result;
 }

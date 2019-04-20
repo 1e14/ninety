@@ -10,7 +10,7 @@ describe("traverseFlame()", () => {
 
   it("should invoke callback", () => {
     const spy = jasmine.createSpy();
-    traverseFlame(flame, spy, "bar");
+    traverseFlame(flame, spy);
     expect(spy.calls.allArgs()).toEqual([
       ["bar", 0, 1],
       ["foo.bar", 1, 0],

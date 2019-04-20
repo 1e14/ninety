@@ -5,14 +5,14 @@ import {getCommonRootLength} from "./getCommonRootLength";
  * Traverses a flame and invokes a callback on each iteration.
  * @param flame Flame to be traversed.
  * @param cb Function to be invoked on each path/value pair.
- * @param root Root path.
  */
 export function traverseFlame(
   flame: Flame,
-  cb: FlameTraversalCallback,
-  root: string
+  cb: FlameTraversalCallback
 ): void {
-  let last: string = root;
+  /** Last path */
+  let last: string = "";
+
   // going in order of paths makes traversal smoother and makes sure any
   // subtree operations are done before affected leaf nodes
   const paths = Object.keys(flame).sort();
@@ -20,8 +20,8 @@ export function traverseFlame(
   for (let i = 0; i < count; i++) {
     const path = paths[i];
     const value = flame[path];
-    const start = getCommonRootLength(path, last);
-    cb(path, value, start);
+    const commonPathLength = getCommonRootLength(path, last);
+    cb(path, value, commonPathLength);
     last = path;
   }
 }
