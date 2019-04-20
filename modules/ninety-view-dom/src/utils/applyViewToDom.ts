@@ -9,15 +9,16 @@ import {setDomProperty} from "./setDomProperty";
  */
 export function applyViewToDom(view: Flame): void {
   const stack = [window.document.body];
-  traverseFlame(view, (path, value, start) => {
-    if (stack.length > start) {
-      // trimming stack back to common root
-      stack.length = start;
+  traverseFlame(view, (path, value, commonPathLength) => {
+    // stack is one item longer than path b/c of root
+    const maxStackLength = commonPathLength + 1;
+    if (stack.length > maxStackLength) {
+      stack.length = maxStackLength;
     }
     if (value !== null) {
       setDomProperty(stack, path, value);
     } else {
       delDomProperty(stack, path);
     }
-  }, "body");
+  });
 }

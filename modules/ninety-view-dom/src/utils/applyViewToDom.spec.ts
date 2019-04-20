@@ -113,43 +113,43 @@ describe("applyViewToDom()", () => {
 
   it("should invoke setDomProperty() with paths & values", () => {
     const view = {
-      "body.childNodes.0:tr.childNodes.0:td.classList.foo": true,
-      "body.childNodes.0:tr.childNodes.1:td.classList.foo": true,
-      "body.childNodes.0:tr.childNodes.2:td.classList.foo": true,
-      "body.childNodes.1:tr.childNodes.0:td.classList.foo": true,
-      "body.childNodes.1:tr.childNodes.1:td.classList.foo": true,
-      "body.childNodes.1:tr.childNodes.2:td.classList.foo": true
+      "childNodes.0:tr.childNodes.0:td.classList.foo": true,
+      "childNodes.0:tr.childNodes.1:td.classList.foo": true,
+      "childNodes.0:tr.childNodes.2:td.classList.foo": true,
+      "childNodes.1:tr.childNodes.0:td.classList.foo": true,
+      "childNodes.1:tr.childNodes.1:td.classList.foo": true,
+      "childNodes.1:tr.childNodes.2:td.classList.foo": true
     };
     const spy = spyOn(setDomProperty, "setDomProperty").and.returnValue(true);
     applyViewToDom(view);
     expect(spy.calls.allArgs()).toEqual([
-      [[window.document.body], "body.childNodes.0:tr.childNodes.0:td.classList.foo", true],
-      [[window.document.body], "body.childNodes.0:tr.childNodes.1:td.classList.foo", true],
-      [[window.document.body], "body.childNodes.0:tr.childNodes.2:td.classList.foo", true],
-      [[window.document.body], "body.childNodes.1:tr.childNodes.0:td.classList.foo", true],
-      [[window.document.body], "body.childNodes.1:tr.childNodes.1:td.classList.foo", true],
-      [[window.document.body], "body.childNodes.1:tr.childNodes.2:td.classList.foo", true]
+      [[window.document.body], "childNodes.0:tr.childNodes.0:td.classList.foo", true],
+      [[window.document.body], "childNodes.0:tr.childNodes.1:td.classList.foo", true],
+      [[window.document.body], "childNodes.0:tr.childNodes.2:td.classList.foo", true],
+      [[window.document.body], "childNodes.1:tr.childNodes.0:td.classList.foo", true],
+      [[window.document.body], "childNodes.1:tr.childNodes.1:td.classList.foo", true],
+      [[window.document.body], "childNodes.1:tr.childNodes.2:td.classList.foo", true]
     ]);
   });
 
   it("should invoke delDomProperty() with paths", () => {
     const view = {
-      "body.childNodes.0:tr.childNodes.0:td.classList.foo": null,
-      "body.childNodes.0:tr.childNodes.1:td.classList.foo": null,
-      "body.childNodes.0:tr.childNodes.2:td.classList.foo": null,
-      "body.childNodes.1:tr.childNodes.0:td.classList.foo": null,
-      "body.childNodes.1:tr.childNodes.1:td.classList.foo": null,
-      "body.childNodes.1:tr.childNodes.2:td.classList.foo": null
+      "childNodes.0:tr.childNodes.0:td.classList.foo": null,
+      "childNodes.0:tr.childNodes.1:td.classList.foo": null,
+      "childNodes.0:tr.childNodes.2:td.classList.foo": null,
+      "childNodes.1:tr.childNodes.0:td.classList.foo": null,
+      "childNodes.1:tr.childNodes.1:td.classList.foo": null,
+      "childNodes.1:tr.childNodes.2:td.classList.foo": null
     };
     const spy = spyOn(delDomProperty, "delDomProperty").and.returnValue(true);
     applyViewToDom(view);
     expect(spy.calls.allArgs()).toEqual([
-      [[window.document.body], "body.childNodes.0:tr.childNodes.0:td.classList.foo"],
-      [[window.document.body], "body.childNodes.0:tr.childNodes.1:td.classList.foo"],
-      [[window.document.body], "body.childNodes.0:tr.childNodes.2:td.classList.foo"],
-      [[window.document.body], "body.childNodes.1:tr.childNodes.0:td.classList.foo"],
-      [[window.document.body], "body.childNodes.1:tr.childNodes.1:td.classList.foo"],
-      [[window.document.body], "body.childNodes.1:tr.childNodes.2:td.classList.foo"]
+      [[window.document.body], "childNodes.0:tr.childNodes.0:td.classList.foo"],
+      [[window.document.body], "childNodes.0:tr.childNodes.1:td.classList.foo"],
+      [[window.document.body], "childNodes.0:tr.childNodes.2:td.classList.foo"],
+      [[window.document.body], "childNodes.1:tr.childNodes.0:td.classList.foo"],
+      [[window.document.body], "childNodes.1:tr.childNodes.1:td.classList.foo"],
+      [[window.document.body], "childNodes.1:tr.childNodes.2:td.classList.foo"]
     ]);
   });
 });

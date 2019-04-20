@@ -116,7 +116,7 @@ describe("setDomProperty()", () => {
 
     describe("when attribute does not exist yet", () => {
       it("should add new attribute", () => {
-        const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
+        const path = "childNodes.1:div.childNodes.3:span.attributes.foo";
         setDomProperty(stack, path, "bar");
         expect(
           window.document.body.childNodes[1].childNodes[3].attributes
@@ -127,12 +127,12 @@ describe("setDomProperty()", () => {
 
     describe("when attribute already exists", () => {
       beforeEach(() => {
-        const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
+        const path = "childNodes.1:div.childNodes.3:span.attributes.foo";
         setDomProperty(stack, path, "bar");
       });
 
       it("should set attribute value", () => {
-        const path = "body.childNodes.1:div.childNodes.3:span.attributes.foo";
+        const path = "childNodes.1:div.childNodes.3:span.attributes.foo";
         setDomProperty(stack, path, "baz");
         expect(
           window.document.body.childNodes[1].childNodes[3].attributes
@@ -150,7 +150,7 @@ describe("setDomProperty()", () => {
     });
 
     it("should add class", () => {
-      const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
+      const path = "childNodes.1:div.childNodes.3:span.classList.foo";
       setDomProperty(stack, path, true);
       expect(
         window.document.body.childNodes[1].childNodes[3].classList.contains("foo")
@@ -166,7 +166,7 @@ describe("setDomProperty()", () => {
     });
 
     it("should set style property", () => {
-      const path = "body.childNodes.1:div.childNodes.3:span.style.foo";
+      const path = "childNodes.1:div.childNodes.3:span.style.foo";
       setDomProperty(stack, path, "bar");
       expect(window.document.body.childNodes[1].childNodes[3].style.foo)
       .toBe("bar");
@@ -182,7 +182,7 @@ describe("setDomProperty()", () => {
 
     it("should set handler property", () => {
       const cb = () => null;
-      const path = "body.childNodes.1:div.childNodes.3:span.onclick";
+      const path = "childNodes.1:div.childNodes.3:span.onclick";
       setDomProperty(stack, path, cb);
       expect(window.document.body.childNodes[1].childNodes[3].onclick)
       .toBe(cb);

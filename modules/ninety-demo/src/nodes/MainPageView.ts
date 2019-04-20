@@ -17,7 +17,7 @@ export type Out = ParentViewOut;
 export type MainPageView = Node<In, Out>;
 
 export function createMainPageView(): MainPageView {
-  const view = createParentView(() => "body");
+  const view = createParentView(() => "childNodes.0:DIV");
   const mainMenuView = createMainMenuView("childNodes.0:UL", 1);
   const emptyPageView = createLeafView(() => "childNodes.1:DIV");
   const helloWorldPageView = createHelloWorldPageView("childNodes.1:DIV", 1);

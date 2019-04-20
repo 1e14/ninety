@@ -7,11 +7,10 @@ import {PATH_TAG_DELIMITER} from "./fetchDomParent";
  * @param path Path to fetch parent property for.
  */
 export function getDomParent(stack: Array<any>, path: string): any {
-  const stackSize = stack.length;
+  const parentStackSize = stack.length - 1;
   const parentDepth = countPathComponents(path) - 1;
-  let property = stack[stackSize - 1];
-
-  for (let i = stackSize; i < parentDepth; i++) {
+  let property = stack[parentStackSize];
+  for (let i = parentStackSize; i < parentDepth; i++) {
     const component = getPathComponent(path, i);
     if (property instanceof Node) {
       property = property[component];
@@ -30,6 +29,5 @@ export function getDomParent(stack: Array<any>, path: string): any {
     }
     stack.push(property);
   }
-
   return property;
 }

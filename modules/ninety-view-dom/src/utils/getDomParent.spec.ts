@@ -111,20 +111,20 @@ describe("getDomParent()", () => {
   describe("when path exists", () => {
     beforeEach(() => {
       const stack = [window.document.body];
-      const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
+      const path = "childNodes.1:div.childNodes.3:span.classList.foo";
       fetchDomParent(stack, path);
     });
 
     it("should return DOM parent", () => {
       const stack = [window.document.body];
-      const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
+      const path = "childNodes.1:div.childNodes.3:span.classList.foo";
       const result = getDomParent(stack, path);
       expect(result).toBe(window.document.body.childNodes[1].childNodes[3].classList);
     });
 
     it("should build stack", () => {
       const stack = [window.document.body];
-      const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
+      const path = "childNodes.1:div.childNodes.3:span.classList.foo";
       getDomParent(stack, path);
       expect(stack).toEqual([
         window.document.body,
@@ -140,7 +140,7 @@ describe("getDomParent()", () => {
   describe("when path does not exist", () => {
     it("should return undefined", () => {
       const stack = [window.document.body];
-      const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
+      const path = "childNodes.1:div.childNodes.3:span.classList.foo";
       const result = getDomParent(stack, path);
       expect(result).toBeUndefined();
     });
@@ -149,20 +149,20 @@ describe("getDomParent()", () => {
   describe("when partial path exists", () => {
     beforeEach(() => {
       const stack = [window.document.body];
-      const path = "body.childNodes.1:div.classList.foo";
+      const path = "childNodes.1:div.classList.foo";
       fetchDomParent(stack, path);
     });
 
     it("should return undefined", () => {
       const stack = [window.document.body];
-      const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
+      const path = "childNodes.1:div.childNodes.3:span.classList.foo";
       const result = getDomParent(stack, path);
       expect(result).toBeUndefined();
     });
 
     it("should build partial stack", () => {
       const stack = [window.document.body];
-      const path = "body.childNodes.1:div.childNodes.3:span.classList.foo";
+      const path = "childNodes.1:div.childNodes.3:span.classList.foo";
       getDomParent(stack, path);
       expect(stack).toEqual([
         window.document.body,
