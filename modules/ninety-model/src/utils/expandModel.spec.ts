@@ -87,4 +87,68 @@ describe("expandModel()", () => {
       });
     });
   });
+
+  describe("for collection references", () => {
+    it("should expand collection", () => {
+      const result = expandModel<{
+        d_model: {
+          name: string,
+          friends: string
+        },
+        d_friends: {
+          [id: string]: string
+        },
+        d_friend: {
+          name: string
+        }
+      }>({
+        d_friend: {
+          7: {
+            name: "John Doe"
+          },
+          8: {
+            name: "Jane Doe"
+          }
+        },
+        d_friends: {
+          3: {
+            5: "7",
+            6: "8"
+          }
+        },
+        d_model: {
+          1: {
+            friends: "4",
+            name: "foo"
+          },
+          2: {
+            friends: "3",
+            name: "bar"
+          }
+        }
+      }, {
+        d_friends: "d_friend",
+        d_model: {
+          friends: "d_friends"
+        }
+      });
+      expect(result).toEqual({
+        1: {
+          friends: null,
+          name: "foo"
+        },
+        2: {
+          friends: {
+            5: {
+              name: "John Doe"
+            },
+            6: {
+              name: "Jane Doe"
+            }
+          },
+          name: "bar"
+        }
+      });
+    });
+  });
 });

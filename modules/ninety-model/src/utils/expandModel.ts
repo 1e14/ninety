@@ -10,14 +10,34 @@ import {ModelBuffer} from "../types";
  */
 export function expandModel<T extends { [type: string]: Flame }>(
   models: { [type in keyof T]: ModelBuffer<T[type]> },
-  config: { [type in keyof T]?: { [field in keyof T[type]]?: keyof T } }
+  config: { [type in keyof T]?: keyof T | { [field in keyof T[type]]?: keyof T } }
 ): ModelBuffer<Flame> {
   const expand = (model: ModelBuffer<Flame>, references?): ModelBuffer<Flame> => {
     let result: ModelBuffer<Flame>;
-    if (references) {
-      // model has expanding references defined
+    if (typeof references === "string") {
+      // collection with ID fields
       result = {};
-      // walking through entries in model and expanding references
+      for (const id in model) {
+        const entryIn = model[id];
+        let entryOut = result[id];
+        if (!entryOut) {
+          entryOut = result[id] = {};
+        }
+        for (const field in entryIn) {
+          const type = references;
+          const referredId = entryIn[field];
+          const referredModel = models[type];
+          const referredEntry = referredModel && referredModel[referredId];
+          if (referredEntry) {
+            entryOut[field] = expand({[referredId]: referredEntry}, config[type])[referredId];
+          } else {
+            entryOut[field] = null;
+          }
+        }
+      }
+    } else if (references) {
+      // document with named fields
+      result = {};
       for (const id in model) {
         const entryIn = model[id];
         let entryOut = result[id];
