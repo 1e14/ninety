@@ -3,21 +3,30 @@ import {Flame, getPathComponent} from "flamejet";
 import {ModelBuffer} from "../types";
 
 export type In = {
-  d_model: Flame
+  /** Model coming from API or view-model. */
+  d_model: Flame;
+
+  /** Sampling signal. */
   ev_smp: {
+    /** Identifies model entry */
     id: string;
-  }
+  };
 };
 
 export type Out = {
-  d_model: Flame
+  /** Sampled / diff-ed model. */
+  d_model: Flame;
 };
 
 /**
+ * Stores model entries. Allows setting and querying model data.
  * TODO: Add invalidation
  */
 export type Store = Node<In, Out>;
 
+/**
+ * Creates a Store node.
+ */
 export function createStore(): Store {
   return createNode<In, Out>(["d_model"], (outputs) => {
     const buffer: ModelBuffer = {};
