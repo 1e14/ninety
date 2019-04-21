@@ -4,3 +4,4 @@ export {
 export {
   LeafView, createLeafView, In as LeafViewIn, Out as LeafViewOut
 }from "./LeafView";
+export {MainView, createMainView} from "./MainView";
