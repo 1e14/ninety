@@ -1,5 +1,4 @@
-import {Flame} from "flamejet";
-import {ModelBuffer} from "../types";
+import {ModelBuffer, Models, ReferenceConfig} from "../types";
 
 /**
  * Expands model references, substituting references with referred model
@@ -8,12 +7,12 @@ import {ModelBuffer} from "../types";
  * @param config Configuration of expanding references. In each affected host
  * type, assigns a referred type to expanding reference fields.
  */
-export function expandModel<T extends { [type: string]: Flame }>(
+export function expandModel<T extends Models>(
   models: { [type in keyof T]: ModelBuffer<T[type]> },
-  config: { [type in keyof T]?: keyof T | { [field in keyof T[type]]?: keyof T } }
-): ModelBuffer<Flame> {
-  const expand = (model: ModelBuffer<Flame>, references?): ModelBuffer<Flame> => {
-    let result: ModelBuffer<Flame>;
+  config: ReferenceConfig<T>
+): ModelBuffer {
+  const expand = (model: ModelBuffer, references?): ModelBuffer => {
+    let result: ModelBuffer;
     if (typeof references === "string") {
       // collection with ID fields
       result = {};
