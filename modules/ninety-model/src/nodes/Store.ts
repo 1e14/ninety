@@ -1,16 +1,13 @@
 import {createNode, Node} from "1e14";
 import {Flame} from "flamejet";
-import {ModelBuffer} from "../types";
+import {ModelBuffer, ModelQuery} from "../types";
 
 export type In<F extends Flame> = {
   /** Model coming from API or view-model. */
   d_model: ModelBuffer<F>;
 
   /** Sampling signal. */
-  ev_smp: {
-    /** Identifies model entries */
-    ids: Array<string>;
-  };
+  ev_smp: ModelQuery;
 };
 
 export type Out<F extends Flame> = {
