@@ -2,15 +2,23 @@ import {expandModel} from "./expandModel";
 
 describe("expandModel()", () => {
   it("should expand model", () => {
-    const result = expandModel({
+    const result = expandModel<{
+      d_model: {
+        name: string,
+        person: string
+      },
+      d_person: {
+        name: string
+      }
+    }>({
       d_model: {
         1: {
           name: "foo",
-          person: 4
+          person: "4"
         },
         2: {
           name: "bar",
-          person: 3
+          person: "3"
         }
       },
       d_person: {

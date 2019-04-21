@@ -4,12 +4,13 @@ import {ModelBuffer} from "../types";
 /**
  * Expands model references, substituting references with referred model
  * entries.
- * @param models All referenced models.
- * @param config Defines expanding references.
+ * @param models All affected model entries, indexed by type, then id.
+ * @param config Configuration of expanding references. In each affected host
+ * type, assigns a referred type to expanding reference fields.
  */
-export function expandModel(
-  models: { [port: string]: ModelBuffer<Flame> },
-  config: { [port: string]: { [field: string]: any } }
+export function expandModel<T extends { [type: string]: Flame }>(
+  models: { [type in keyof T]: ModelBuffer<T[type]> },
+  config: { [type in keyof T]?: { [field in keyof T[type]]?: keyof T } }
 ): ModelBuffer<Flame> {
   const expand = (model: ModelBuffer<Flame>, references?): ModelBuffer<Flame> => {
     let result: ModelBuffer<Flame>;
@@ -27,12 +28,12 @@ export function expandModel(
           if (field in references) {
             // field is an expanding reference
             // assigning (expanded) referred model entry
-            const port = references[field];
+            const type = references[field];
             const referredId = entryIn[field];
-            const referredModel = models[port];
+            const referredModel = models[type];
             const referredEntry = referredModel && referredModel[referredId];
             if (referredEntry) {
-              entryOut[field] = expand({[referredId]: referredEntry}, config[port])[referredId];
+              entryOut[field] = expand({[referredId]: referredEntry}, config[type])[referredId];
             } else {
               entryOut[field] = null;
             }
