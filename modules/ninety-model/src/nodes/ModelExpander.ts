@@ -10,11 +10,21 @@ export type In<T extends Models> = {
 };
 
 export type Out = {
+  /** Model as consumed by view-model */
   d_model: Flame;
 };
 
+/**
+ * Expands model references into a tree so that it fits the view-model.
+ * config must list all expanding references for all affected types.
+ */
 export type ModelExpander<T extends Models> = Node<In<T>, Out>;
 
+/**
+ * Creates a ModelExpander node.
+ * @param config Defines expanding references.
+ * @see ReferenceConfig
+ */
 export function createModelExpander<T extends Models>(
   config: ReferenceConfig<T>
 ): ModelExpander<T> {
