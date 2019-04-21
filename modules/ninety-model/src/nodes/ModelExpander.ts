@@ -28,6 +28,7 @@ export type ModelExpander<T extends Models> = Node<In<T>, Out>;
 export function createModelExpander<T extends Models>(
   config: ReferenceConfig<T>
 ): ModelExpander<T> {
+  // TODO: Should extract port names from values as well
   const inPorts = Object.keys(config);
 
   const syncer = createSyncer<In<T>>(inPorts);

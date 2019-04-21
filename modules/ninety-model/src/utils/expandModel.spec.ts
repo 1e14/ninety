@@ -32,7 +32,8 @@ describe("expandModel()", () => {
     }, {
       d_model: {
         person: "d_person"
-      }
+      },
+      d_person: null
     });
     expect(result).toEqual({
       1: {
@@ -127,6 +128,7 @@ describe("expandModel()", () => {
           }
         }
       }, {
+        d_friend: null,
         d_friends: "d_friend",
         d_model: {
           friends: "d_friends"

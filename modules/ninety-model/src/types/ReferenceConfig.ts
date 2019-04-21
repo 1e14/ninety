@@ -7,5 +7,5 @@ import {Models} from "./Models";
  * associated value is one of the other types.
  */
 export type ReferenceConfig<T extends Models> = {
-  [type in keyof T]?: keyof T | { [field in keyof T[type]]?: keyof T }
+  [type in keyof T]: keyof T | { [field in keyof T[type]]?: keyof T }
 };
