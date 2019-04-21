@@ -20,6 +20,8 @@ export type Out = {
 
 /**
  * Stores model entries. Allows setting and querying model data.
+ * The first component in model flame paths is expected to identify the
+ * entry in the model.
  * TODO: Add invalidation
  */
 export type Store = Node<In, Out>;
