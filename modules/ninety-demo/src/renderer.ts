@@ -40,8 +40,8 @@ const frameSizeAdjuster = createMapper<number, number>((value) => {
   return fs;
 });
 connect(viewThrottler.o.d_val, frameRenderer.i.d_frame);
-connect(viewThrottler.o.ev_load, viewThrottler.i.ev_next);
-connect(frameRenderer.o.d_dur, viewThrottler.i.ev_next);
+connect(viewThrottler.o.ev_load, viewThrottler.i.a_next);
+connect(frameRenderer.o.d_dur, viewThrottler.i.a_next);
 connect(frameRenderer.o.d_dur, frameSizeAdjuster.i.d_val);
 connect(frameSizeAdjuster.o.d_val, viewThrottler.i.d_fs);
 connect(workerDemuxer.o.d_view, viewThrottler.i.d_val);

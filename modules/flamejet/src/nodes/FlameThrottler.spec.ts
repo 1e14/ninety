@@ -53,7 +53,7 @@ describe("createFlameThrottler()", () => {
     });
   });
 
-  describe("on input (ev_next)", () => {
+  describe("on input (a_next)", () => {
     let node: FlameThrottler;
 
     beforeEach(() => {
@@ -72,7 +72,7 @@ describe("createFlameThrottler()", () => {
       it("should emit on 'd_val'", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_val, spy);
-        node.i.ev_next(null, "2");
+        node.i.a_next(null, "2");
         expect(spy).toHaveBeenCalledWith({
           "foo": null,
           "foo.bar": 1
@@ -84,7 +84,7 @@ describe("createFlameThrottler()", () => {
       it("should not emit on 'd_val'", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_val, spy);
-        node.i.ev_next(null, "2");
+        node.i.a_next(null, "2");
         expect(spy).not.toHaveBeenCalled();
       });
     });

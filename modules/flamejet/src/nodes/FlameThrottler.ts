@@ -9,7 +9,7 @@ export type In = {
   d_val: Flame;
 
   /** Requests next flame from the buffer. */
-  ev_next: any;
+  a_next: any;
 };
 
 export type Out = {
@@ -49,7 +49,7 @@ export function createFlameThrottler(fs: number = 512): FlameThrottler {
         outputs.d_size(sizeAfter, tag);
       },
 
-      ev_next: (dummy, tag) => {
+      a_next: (dummy, tag) => {
         if (buffer.size) {
           outputs.d_val(extractNext(buffer, fs), tag);
           outputs.d_size(buffer.size, tag);
