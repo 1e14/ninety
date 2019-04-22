@@ -6,7 +6,7 @@ import {createFlameBuffer, Flame} from "flamejet";
 import {normalizePaths} from "flamejet/dist/callbacks/map";
 import {createRouter} from "ninety-router";
 import {createParentThread} from "ninety-webworker";
-import {createMainPageView} from "./nodes";
+import {createMainPageView, createModelTest1PageView} from "./nodes";
 import {generateTableVm} from "./utils";
 
 // setting up thread communication
@@ -22,7 +22,9 @@ const mainPageVm = createMapper<any, Flame>(() => ({
   "menu.0.link.text": "Hello world",
   "menu.0.link.url": "#hello-world",
   "menu.1.link.text": "Stress test (table)",
-  "menu.1.link.url": "#stress-test-1"
+  "menu.1.link.url": "#stress-test-1",
+  "menu.2.link.text": "Model reference test",
+  "menu.2.link.url": "#model-test-1"
 }));
 connect(mainPageVm.o.d_val, mainPageView.i.d_vm);
 connect(parentDemuxer.o.ev_dom_ready, mainPageVm.i.d_val);
@@ -39,6 +41,7 @@ connect(flameBuffer.o.d_val, parentMuxer.i.d_view);
 // setting up routes
 const ROUTE_HELLO_WORLD = /^hello-world$/;
 const ROUTE_STRESS_TEST_1 = /^stress-test-1$/;
+const ROUTE_MODEL_TEST_1 = /^model-test-1$/;
 const ROUTE_REST = /^.*$/;
 
 // "page" 0: no content
@@ -69,15 +72,24 @@ const tableRouteDetector = createMapper<RegExp, boolean>(
   (pattern) => pattern === ROUTE_STRESS_TEST_1);
 connect(tableRouteDetector.o.d_val, tableTicker.i.st_ticking);
 
+// "page" 3: model test with list with references
+const modelTest1PageVm = createMapper(() => ({
+  "model1": null,
+  "model1.desc.text": "List items with references"
+}));
+connect(modelTest1PageVm.o.d_val, mainPageView.i.d_vm);
+
 // setting up routing table
 const router = createRouter([
   ROUTE_HELLO_WORLD,
   ROUTE_STRESS_TEST_1,
+  ROUTE_MODEL_TEST_1,
   ROUTE_REST
 ]);
 connect(parentDemuxer.o.d_hash_path, router.i.d_route);
 connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageVm.i.d_val);
 connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], stressTest1PageVm.i.d_val);
 connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], tableDataGenerator.i.d_val);
+connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], modelTest1PageVm.i.d_val);
 connect(router.o.d_pattern, tableRouteDetector.i.d_val);
 connect(router.o[`r_${ROUTE_REST}`], emptyPageView.i.d_val);

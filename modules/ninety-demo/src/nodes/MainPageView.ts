@@ -8,6 +8,7 @@ import {
 } from "ninety-view";
 import {createHelloWorldPageView} from "./hello-world";
 import {createMainMenuView} from "./MainMenuView";
+import {createModelTest1PageView} from "./model-test-1";
 import {createStressTest1PageView} from "./stress-test-1";
 
 export type In = ParentViewIn;
@@ -24,10 +25,12 @@ export function createMainPageView(): MainPageView {
   const emptyPageView = createLeafView(() => "childNodes.1:DIV");
   const helloWorldPageView = createHelloWorldPageView("childNodes.1:DIV", MAIN_PAGE_DEPTH);
   const stressTest1PageView = createStressTest1PageView("childNodes.1:DIV", MAIN_PAGE_DEPTH);
+  const modelTest1PageView = createModelTest1PageView("childNodes.1:DIV", MAIN_PAGE_DEPTH);
   const splitter = createFlameSplitter({
     d_content: ["content"],
     d_hello: ["hello"],
     d_menu: ["menu"],
+    d_model1: ["model1"],
     d_stress1: ["stress1"]
   }, MAIN_PAGE_DEPTH);
 
@@ -36,10 +39,12 @@ export function createMainPageView(): MainPageView {
   connect(splitter.o.d_content, emptyPageView.i.d_vm);
   connect(splitter.o.d_hello, helloWorldPageView.i.d_vm);
   connect(splitter.o.d_stress1, stressTest1PageView.i.d_vm);
+  connect(splitter.o.d_model1, modelTest1PageView.i.d_vm);
   connect(mainMenuView.o.d_view, mainView.i.d_view);
   connect(emptyPageView.o.d_view, mainView.i.d_view);
   connect(helloWorldPageView.o.d_view, mainView.i.d_view);
   connect(stressTest1PageView.o.d_view, mainView.i.d_view);
+  connect(modelTest1PageView.o.d_view, mainView.i.d_view);
 
   return mainView;
 }

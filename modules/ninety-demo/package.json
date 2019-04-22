@@ -27,6 +27,7 @@
     "flamejet": "^0.1.0",
     "ninety-dom": "^0.1.0",
     "ninety-location": "^0.1.0",
+    "ninety-model": "^0.1.0",
     "ninety-router": "^0.1.0",
     "ninety-ui-dom": "^0.1.0",
     "ninety-view": "^0.1.0",
