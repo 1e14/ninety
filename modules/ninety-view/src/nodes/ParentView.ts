@@ -5,8 +5,7 @@ import {
   replacePathComponent,
   replacePathTail
 } from "flamejet";
-
-export type PathMapperCallback = (path: string) => string;
+import {PathMapperCallback} from "../types";
 
 export type In = {
   /** View processed by children */
