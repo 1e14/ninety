@@ -33,7 +33,7 @@ const flameBuffer = createFlameBuffer();
 const pathNormalizer = createMapper(normalizePaths);
 connect(mainPageView.o.d_view, pathNormalizer.i.d_val);
 connect(pathNormalizer.o.d_val, flameBuffer.i.d_val);
-connect(ticker.o.ev_tick, flameBuffer.i.ev_res);
+connect(ticker.o.ev_tick, flameBuffer.i.a_res);
 connect(flameBuffer.o.d_val, parentMuxer.i.d_view);
 
 // setting up routes
