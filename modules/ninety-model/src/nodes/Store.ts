@@ -3,10 +3,10 @@ import {Flame} from "flamejet";
 import {ModelBuffer} from "../types";
 
 export type In<F extends Flame> = {
-  /** Invalidation action */
+  /** Invalidates model entries. */
   a_inv: Array<string>;
 
-  /** Sampling action. */
+  /** Samples buffered model entries. */
   a_smp: Array<string>;
 
   /** Model coming from API or view-model. */
@@ -17,7 +17,7 @@ export type Out<F extends Flame> = {
   /** Sampled / diff-ed model. */
   d_model: ModelBuffer<F>;
 
-  /** Signals invalidated state change of model entries */
+  /** Signals change of validity in model entries */
   ev_inv: {
     [id: string]: boolean
   }
@@ -37,16 +37,16 @@ export function createStore<F extends Flame>(): Store<F> {
     const invalid: { [id: string]: true } = {};
     return {
       a_inv: (value, tag) => {
-        const diff = {};
+        const invalidDiff = {};
         for (let i = 0, count = value.length; i < count; i++) {
           const id = value[i];
           if (id in buffer && !(id in invalid)) {
             invalid[id] = true;
-            diff[id] = true;
+            invalidDiff[id] = true;
           }
         }
-        for (const id in diff) {
-          outputs.ev_inv(diff, tag);
+        for (const id in invalidDiff) {
+          outputs.ev_inv(invalidDiff, tag);
           break;
         }
       },
@@ -63,7 +63,7 @@ export function createStore<F extends Flame>(): Store<F> {
       },
 
       d_model: (value, tag) => {
-        const modelOut = <ModelBuffer<F>>{};
+        const bufferDiff = <ModelBuffer<F>>{};
         const invalidDiff = {};
         for (const id in value) {
           if (!(id in invalidDiff) && id in invalid) {
@@ -78,7 +78,7 @@ export function createStore<F extends Flame>(): Store<F> {
             if (id in buffer) {
               // removing whole entry
               delete buffer[id];
-              modelOut[id] = null;
+              bufferDiff[id] = null;
             }
           } else {
             // initializing buffer & output entries
@@ -86,9 +86,9 @@ export function createStore<F extends Flame>(): Store<F> {
             if (!entryBuf) {
               entryBuf = buffer[id] = <F>{};
             }
-            let entryOut = modelOut[id];
-            if (!entryOut) {
-              entryOut = modelOut[id] = <F>{};
+            let entryDiff = bufferDiff[id];
+            if (!entryDiff) {
+              entryDiff = bufferDiff[id] = <F>{};
             }
 
             // applying incoming entry to buffer and extracting diff for output
@@ -96,19 +96,19 @@ export function createStore<F extends Flame>(): Store<F> {
               const property = entryIn[path];
               if (property === null && path in entryBuf) {
                 delete entryBuf[path];
-                entryOut[path] = null;
+                entryDiff[path] = null;
               } else if (property !== entryBuf[path]) {
                 entryBuf[path] = property;
-                entryOut[path] = property;
+                entryDiff[path] = property;
               }
             }
           }
         }
         // TODO: Emit empty diff?
-        for (const id in modelOut) {
+        for (const id in bufferDiff) {
           // model diff has contents
           // emitting model changes
-          outputs.d_model(modelOut, tag);
+          outputs.d_model(bufferDiff, tag);
           break;
         }
         for (const id in invalidDiff) {
