@@ -30,6 +30,7 @@ export type Store<F extends Flame> = Node<In<F>, Out<F>>;
 
 /**
  * Creates a Store node.
+ * TODO: Should not compare when invalid.
  */
 export function createStore<F extends Flame>(): Store<F> {
   return createNode<In<F>, Out<F>>(["d_model", "ev_inv"], (outputs) => {
