@@ -1,25 +1,30 @@
 import {createNode, Node} from "1e14";
 import {Flame} from "flamejet";
-import {ModelBuffer, ModelQuery} from "../types";
+import {ModelBuffer} from "../types";
 
 export type In<F extends Flame> = {
   /** Model coming from API or view-model. */
   d_model: ModelBuffer<F>;
 
+  /** Invalidation signal */
+  ev_inv: Array<string>;
+
   /** Sampling signal. */
-  ev_smp: ModelQuery;
+  ev_smp: Array<string>;
 };
 
 export type Out<F extends Flame> = {
   /** Sampled / diff-ed model. */
   d_model: ModelBuffer<F>;
+
+  /** Signals invalidated state change of model entries */
+  ev_inv: {
+    [id: string]: boolean
+  }
 };
 
 /**
- * Stores model entries. Allows setting and querying model data.
- * The first component in model flame paths is expected to identify the
- * entry in the model.
- * TODO: Add invalidation
+ * Stores model entries. Allows setting, querying and invalidating model data.
  */
 export type Store<F extends Flame> = Node<In<F>, Out<F>>;
 
@@ -27,12 +32,20 @@ export type Store<F extends Flame> = Node<In<F>, Out<F>>;
  * Creates a Store node.
  */
 export function createStore<F extends Flame>(): Store<F> {
-  return createNode<In<F>, Out<F>>(["d_model"], (outputs) => {
+  return createNode<In<F>, Out<F>>(["d_model", "ev_inv"], (outputs) => {
     const buffer: ModelBuffer<F> = {};
+    const invalid: { [id: string]: true } = {};
     return {
       d_model: (value, tag) => {
         const modelOut = <ModelBuffer<F>>{};
+        const invalidDiff = {};
         for (const id in value) {
+          if (!(id in invalidDiff) && id in invalid) {
+            // resetting invalid state
+            delete invalid[id];
+            invalidDiff[id] = false;
+          }
+
           const entryIn = value[id];
           if (entryIn === null) {
             // entry is nulled out in input
@@ -65,18 +78,40 @@ export function createStore<F extends Flame>(): Store<F> {
             }
           }
         }
+        // TODO: Emit empty diff?
         for (const id in modelOut) {
-          // output has contents
-          // emitting diffed model buffer
+          // model diff has contents
+          // emitting model changes
           outputs.d_model(modelOut, tag);
+          break;
+        }
+        for (const id in invalidDiff) {
+          // invalidation diff has contents
+          // emitting invalidation changes
+          outputs.ev_inv(invalidDiff, tag);
           break;
         }
       },
 
-      ev_smp: ({ids}, tag) => {
+      ev_inv: (value, tag) => {
+        const diff = {};
+        for (let i = 0, count = value.length; i < count; i++) {
+          const id = value[i];
+          if (id in buffer && !(id in invalid)) {
+            invalid[id] = true;
+            diff[id] = true;
+          }
+        }
+        for (const id in diff) {
+          outputs.ev_inv(diff, tag);
+          break;
+        }
+      },
+
+      ev_smp: (value, tag) => {
         const modelOut = <ModelBuffer<F>>{};
-        for (let i = 0, count = ids.length; i < count; i++) {
-          const id = ids[i];
+        for (let i = 0, count = value.length; i < count; i++) {
+          const id = value[i];
           modelOut[id] = id in buffer ?
             buffer[id] :
             null;
