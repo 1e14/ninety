@@ -3,14 +3,14 @@ import {Flame} from "flamejet";
 import {ModelBuffer} from "../types";
 
 export type In<F extends Flame> = {
+  /** Invalidation action */
+  a_inv: Array<string>;
+
+  /** Sampling action. */
+  a_smp: Array<string>;
+
   /** Model coming from API or view-model. */
   d_model: ModelBuffer<F>;
-
-  /** Invalidation signal */
-  ev_inv: Array<string>;
-
-  /** Sampling signal. */
-  ev_smp: Array<string>;
 };
 
 export type Out<F extends Flame> = {
@@ -36,6 +36,32 @@ export function createStore<F extends Flame>(): Store<F> {
     const buffer: ModelBuffer<F> = {};
     const invalid: { [id: string]: true } = {};
     return {
+      a_inv: (value, tag) => {
+        const diff = {};
+        for (let i = 0, count = value.length; i < count; i++) {
+          const id = value[i];
+          if (id in buffer && !(id in invalid)) {
+            invalid[id] = true;
+            diff[id] = true;
+          }
+        }
+        for (const id in diff) {
+          outputs.ev_inv(diff, tag);
+          break;
+        }
+      },
+
+      a_smp: (value, tag) => {
+        const modelOut = <ModelBuffer<F>>{};
+        for (let i = 0, count = value.length; i < count; i++) {
+          const id = value[i];
+          modelOut[id] = id in buffer ?
+            buffer[id] :
+            null;
+        }
+        outputs.d_model(modelOut, tag);
+      },
+
       d_model: (value, tag) => {
         const modelOut = <ModelBuffer<F>>{};
         const invalidDiff = {};
@@ -91,32 +117,6 @@ export function createStore<F extends Flame>(): Store<F> {
           outputs.ev_inv(invalidDiff, tag);
           break;
         }
-      },
-
-      ev_inv: (value, tag) => {
-        const diff = {};
-        for (let i = 0, count = value.length; i < count; i++) {
-          const id = value[i];
-          if (id in buffer && !(id in invalid)) {
-            invalid[id] = true;
-            diff[id] = true;
-          }
-        }
-        for (const id in diff) {
-          outputs.ev_inv(diff, tag);
-          break;
-        }
-      },
-
-      ev_smp: (value, tag) => {
-        const modelOut = <ModelBuffer<F>>{};
-        for (let i = 0, count = value.length; i < count; i++) {
-          const id = value[i];
-          modelOut[id] = id in buffer ?
-            buffer[id] :
-            null;
-        }
-        outputs.d_model(modelOut, tag);
       }
     };
   });
