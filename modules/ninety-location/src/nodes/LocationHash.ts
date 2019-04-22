@@ -4,8 +4,8 @@ export type In = {
   /** Location hash set by user. */
   d_val: string;
 
-  /** Sampling signal */
-  ev_smp: any;
+  /** Samples location hash. */
+  a_smp: any;
 };
 
 export type Out = {
@@ -38,7 +38,7 @@ export function createLocationHash(): LocationHash {
         location.hash = value;
       },
 
-      ev_smp: (value, tag) => {
+      a_smp: (value, tag) => {
         outputs.d_val(location.hash, tag);
       }
     };

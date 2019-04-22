@@ -58,7 +58,7 @@ describe("createLocationHash()", () => {
     it("should emit on 'd_val'", () => {
       const spy = jasmine.createSpy();
       connect(node.o.d_val, spy);
-      node.i.ev_smp(null, "1");
+      node.i.a_smp(null, "1");
       expect(spy).toHaveBeenCalledWith("bar", "1");
     });
   });
