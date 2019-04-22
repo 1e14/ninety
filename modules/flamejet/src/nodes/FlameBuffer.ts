@@ -2,16 +2,26 @@ import {createNode, Node} from "1e14";
 import {Flame} from "../types";
 
 export type In = {
+  /** Flame to be buffered. */
   d_val: Flame;
-  ev_res: any;
+
+  /** Resets buffer */
+  a_res: any;
 };
 
 export type Out = {
+  /** Buffered flame. */
   d_val: Flame;
 };
 
+/**
+ * Buffers flame and releases contents on reset.
+ */
 export type FlameBuffer = Node<In, Out>;
 
+/**
+ * Creates a FlameBuffer node.
+ */
 export function createFlameBuffer(): FlameBuffer {
   let buffer: Flame = {};
 
@@ -23,7 +33,7 @@ export function createFlameBuffer(): FlameBuffer {
       }
     },
 
-    ev_res: (value, tag) => {
+    a_res: (value, tag) => {
       for (const path in buffer) {
         outputs.d_val(buffer, tag);
         buffer = {};

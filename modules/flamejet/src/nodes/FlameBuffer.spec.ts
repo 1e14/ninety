@@ -2,7 +2,7 @@ import {connect} from "1e14";
 import {createFlameBuffer, FlameBuffer} from "./FlameBuffer";
 
 describe("createFlameBuffer()", () => {
-  describe("on input (ev_res)", function () {
+  describe("on input (a_res)", function () {
     let node: FlameBuffer;
 
     beforeEach(() => {
@@ -27,7 +27,7 @@ describe("createFlameBuffer()", () => {
       it("should emit compounded flame on 'd_val'", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_val, spy);
-        node.i.ev_res(null, "1");
+        node.i.a_res(null, "1");
         expect(spy).toHaveBeenCalledWith({
           bar: false,
           foo: 3
@@ -39,7 +39,7 @@ describe("createFlameBuffer()", () => {
       it("should not emit on 'd_val'", () => {
         const spy = jasmine.createSpy();
         connect(node.o.d_val, spy);
-        node.i.ev_res(null, "1");
+        node.i.a_res(null, "1");
         expect(spy).not.toHaveBeenCalled();
       });
     });
