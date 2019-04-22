@@ -1,12 +1,15 @@
 import {connect} from "1e14";
+import {createSplitter} from "1e14-flow";
 import {createMapper} from "1e14-fp";
 import {createDemuxer, createMuxer} from "1e14-mux";
 import {createTicker} from "1e14-time";
 import {createFlameBuffer, Flame} from "flamejet";
 import {normalizePaths} from "flamejet/dist/callbacks/map";
+import {createModelExpander, createStore} from "ninety-model";
 import {createRouter} from "ninety-router";
 import {createParentThread} from "ninety-webworker";
-import {createMainPageView, createModelTest1PageView} from "./nodes";
+import {createMainPageView} from "./nodes";
+import {createUserEndpoint, Person, User} from "./nodes/model-test-1";
 import {generateTableVm} from "./utils";
 
 // setting up thread communication
@@ -73,10 +76,31 @@ const tableRouteDetector = createMapper<RegExp, boolean>(
 connect(tableRouteDetector.o.d_val, tableTicker.i.st_ticking);
 
 // "page" 3: model test with list with references
+const userEndpoint = createUserEndpoint();
+const responseSplitter = createSplitter(["users", "persons"]);
+const userStore = createStore<User>();
+const personStore = createStore<Person>();
+const userExpander = createModelExpander<{
+  d_model: User,
+  d_person: Person
+}>({
+  d_model: {
+    person: "d_person"
+  },
+  d_person: null
+});
 const modelTest1PageVm = createMapper(() => ({
   "model1": null,
   "model1.desc.text": "List items with references"
 }));
+connect(userEndpoint.o.d_res, responseSplitter.i.all);
+connect(responseSplitter.o.users, userStore.i.d_model);
+connect(responseSplitter.o.persons, personStore.i.d_model);
+connect(userStore.o.d_model, userExpander.i.d_model);
+connect(personStore.o.d_model, userExpander.i.d_person);
+// tslint:disable:no-console
+connect(userExpander.o.d_model, console.log);
+// tslint:enable:no-console
 connect(modelTest1PageVm.o.d_val, mainPageView.i.d_vm);
 
 // setting up routing table
@@ -91,5 +115,6 @@ connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageVm.i.d_val);
 connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], stressTest1PageVm.i.d_val);
 connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], tableDataGenerator.i.d_val);
 connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], modelTest1PageVm.i.d_val);
+connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], userEndpoint.i.d_req);
 connect(router.o.d_pattern, tableRouteDetector.i.d_val);
 connect(router.o[`r_${ROUTE_REST}`], emptyPageView.i.d_val);
