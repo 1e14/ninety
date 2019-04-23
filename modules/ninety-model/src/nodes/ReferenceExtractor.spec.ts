@@ -7,7 +7,10 @@ import {
 describe("createReferenceExtractor()", () => {
   describe("on input (d_model)", () => {
     let node: ReferenceExtractor<{
-      person: "d_person"
+      name: string;
+      person: string;
+    }, {
+      person: "d_person";
     }>;
 
     beforeEach(() => {
