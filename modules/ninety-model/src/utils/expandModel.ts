@@ -1,4 +1,4 @@
-import {ModelBuffer, Models, ReferenceConfig} from "../types";
+import {Model, Models, ReferenceConfig} from "../types";
 
 /**
  * Expands model references, substituting references with referred model
@@ -8,11 +8,11 @@ import {ModelBuffer, Models, ReferenceConfig} from "../types";
  * type, assigns a referred type to expanding reference fields.
  */
 export function expandModel<T extends Models>(
-  models: { [type in keyof T]: ModelBuffer<T[type]> },
+  models: { [type in keyof T]: Model<T[type]> },
   config: ReferenceConfig<T>
-): ModelBuffer {
-  const expand = (model: ModelBuffer, references?): ModelBuffer => {
-    let result: ModelBuffer;
+): Model {
+  const expand = (model: Model, references?): Model => {
+    let result: Model;
     if (typeof references === "string") {
       // collection with ID fields
       result = {};

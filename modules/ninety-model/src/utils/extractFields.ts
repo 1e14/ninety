@@ -1,4 +1,4 @@
-import {IdList, ModelBuffer} from "../types";
+import {IdList, Model, ReferenceFieldTypes} from "../types";
 
 /**
  * Creates a mapper function that extracts references a model according to
@@ -8,8 +8,8 @@ import {IdList, ModelBuffer} from "../types";
  * certain (model) type.
  */
 export function extractFields(
-  model: ModelBuffer,
-  config: { [field: string]: string }
+  model: Model,
+  config: ReferenceFieldTypes
 ): { [type: string]: IdList } {
   const result = {};
   for (const id in model) {

@@ -2,11 +2,11 @@ import {connect, InPorts, Node} from "1e14";
 import {createSyncer} from "1e14-flow";
 import {createMapper} from "1e14-fp";
 import {Flame, treeToFlame} from "flamejet";
-import {ModelBuffer, Models, ReferenceConfig} from "../types";
+import {Model, Models, ReferenceConfig} from "../types";
 import {expandModel} from "../utils/expandModel";
 
 export type In<T extends Models> = {
-  [type in keyof T]: ModelBuffer<T[type]>
+  [type in keyof T]: Model<T[type]>
 };
 
 export type Out = {

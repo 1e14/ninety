@@ -1,6 +1,6 @@
 import {createNode, Node} from "1e14";
 import {Flame} from "flamejet";
-import {ModelBuffer} from "../types";
+import {Model} from "../types";
 
 export type In<F extends Flame> = {
   /** Invalidates model entries. */
@@ -10,12 +10,12 @@ export type In<F extends Flame> = {
   a_smp: Array<string>;
 
   /** Model coming from API or view-model. */
-  d_model: ModelBuffer<F>;
+  d_model: Model<F>;
 };
 
 export type Out<F extends Flame> = {
   /** Sampled / diff-ed model. */
-  d_model: ModelBuffer<F>;
+  d_model: Model<F>;
 
   /** Signals change of validity in model entries */
   ev_inv: {
@@ -33,7 +33,7 @@ export type Store<F extends Flame> = Node<In<F>, Out<F>>;
  */
 export function createStore<F extends Flame>(): Store<F> {
   return createNode<In<F>, Out<F>>(["d_model", "ev_inv"], (outputs) => {
-    const buffer: ModelBuffer<F> = {};
+    const buffer: Model<F> = {};
     const invalid: { [id: string]: true } = {};
     return {
       a_inv: (value, tag) => {
@@ -52,7 +52,7 @@ export function createStore<F extends Flame>(): Store<F> {
       },
 
       a_smp: (value, tag) => {
-        const modelOut = <ModelBuffer<F>>{};
+        const modelOut = <Model<F>>{};
         for (let i = 0, count = value.length; i < count; i++) {
           const id = value[i];
           modelOut[id] = id in buffer ?
@@ -63,7 +63,7 @@ export function createStore<F extends Flame>(): Store<F> {
       },
 
       d_model: (value, tag) => {
-        const bufferDiff = <ModelBuffer<F>>{};
+        const bufferDiff = <Model<F>>{};
         const invalidDiff = {};
         for (const id in value) {
           if (!(id in invalidDiff) && id in invalid) {
