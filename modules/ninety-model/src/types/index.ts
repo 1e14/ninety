@@ -1,3 +1,4 @@
+export {IdListsByModelType} from "./IdListsByModelType";
 export {IdList} from "./IdList";
 export {Invert} from "./Invert";
 export {Models} from "./Models";

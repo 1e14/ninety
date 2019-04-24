@@ -1,4 +1,5 @@
-import {IdList, Model, ReferenceTypes} from "../types";
+import {Flame} from "flamejet";
+import {IdListsByModelType, Model, ReferenceTypes} from "../types";
 
 /**
  * Creates a mapper function that extracts references a model according to
@@ -7,11 +8,11 @@ import {IdList, Model, ReferenceTypes} from "../types";
  * @param config Defines which fields correspond to references of a
  * certain (model) type.
  */
-export function extractFields(
-  model: Model,
-  config: ReferenceTypes
-): { [type: string]: IdList } {
-  const result = {};
+export function extractFields<S extends Flame, R extends ReferenceTypes<S> = ReferenceTypes<S>>(
+  model: Model<S>,
+  config: R
+): IdListsByModelType<R[keyof R]> {
+  const result = <IdListsByModelType<R[keyof R]>>{};
   for (const id in model) {
     const entry = model[id];
     for (const field in config) {

@@ -1,5 +1,9 @@
 import {Flame} from "flamejet";
 
-export type Model<F extends Flame = Flame> = {
-  [id: string]: F;
+/**
+ * "Model" stands for a collection of uniform set of key/value-pairs.
+ * Type parameter S describes the model schema.
+ */
+export type Model<S extends Flame = Flame> = {
+  [id: string]: S;
 };

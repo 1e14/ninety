@@ -2,36 +2,41 @@ import {connect, Node, OutPorts} from "1e14";
 import {createSplitter} from "1e14-flow";
 import {createMapper} from "1e14-fp";
 import {Flame} from "flamejet/dist/types";
-import {IdList, Model, ReferenceTypes} from "../types";
+import {IdList, IdListsByModelType, Model, ReferenceTypes} from "../types";
 import {extractFields} from "../utils/extractFields";
 
-export type In<T extends Flame> = {
+export type In<S extends Flame> = {
   /** Model from which references to be extracted. */
-  d_model: Model<T>
+  d_model: Model<S>
 };
 
-export type Out<R extends ReferenceTypes> = {
-  [type in R[keyof R]]: IdList;
-};
+export type Out<S extends Flame, R extends ReferenceTypes<S>> =
+  IdListsByModelType<R[keyof R]>;
 
 /**
- * Extracts references from a model that match the specified field/type
- * associations.
+ * Extracts references from a model that match the specified reference
+ * field/type associations.
  * The output(s) of a ReferenceExtractor may be used to sample Stores of
  * matching type.
+ * Type parameter S describes the model schema, R describes the reference
+ * field/type associations.
  */
-export type ReferenceExtractor<T extends Flame, R extends ReferenceTypes> = Node<In<T>, Out<R>>;
+export type ReferenceExtractor<S extends Flame,
+  R extends ReferenceTypes<S>> = Node<In<S>, Out<S, R>>;
 
 /**
  * Creates a ReferenceExtractor node.
+ * Type parameter S describes the model schema, R describes the reference
+ * field/type associations.
  * @param config Specifies reference field/type associations for the current
  * model.
  */
-export function createReferenceExtractor<T extends Flame, R extends ReferenceTypes>(
+export function createReferenceExtractor<S extends Flame,
+  R extends ReferenceTypes<S>>(
   config: R
-): ReferenceExtractor<T, R> {
+): ReferenceExtractor<S, R> {
   const referenceTypes = getReferenceTypes(config);
-  const fieldExtractor = createMapper<Model<T>, { [type: string]: IdList }>((value) => {
+  const fieldExtractor = createMapper<Model<S>, { [type: string]: IdList }>((value) => {
     return extractFields(value, config);
   });
   const splitter = createSplitter<{ [type in keyof R]: IdList }>(referenceTypes);
@@ -42,7 +47,7 @@ export function createReferenceExtractor<T extends Flame, R extends ReferenceTyp
     d_model: fieldExtractor.i.d_val
   };
 
-  const o = <OutPorts<Out<R>>>{};
+  const o = <OutPorts<Out<S, R>>>{};
   for (let j = 0, count = referenceTypes.length; j < count; j++) {
     const port = referenceTypes[j];
     o[port] = splitter.o[port];
@@ -56,7 +61,7 @@ export function createReferenceExtractor<T extends Flame, R extends ReferenceTyp
  * associations.
  * @param config Reference field/type associations.
  */
-function getReferenceTypes<R extends ReferenceTypes>(
+function getReferenceTypes<S extends Flame, R extends ReferenceTypes<S>>(
   config: R
 ): Array<R[keyof R]> {
   const result = [];
