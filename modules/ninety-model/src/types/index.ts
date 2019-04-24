@@ -3,4 +3,4 @@ export {Invert} from "./Invert";
 export {Models} from "./Models";
 export {Model} from "./Model";
 export {ReferenceConfig} from "./ReferenceConfig";
-export {ReferenceFieldTypes} from "./ReferenceFieldTypes";
+export {ReferenceTypes} from "./ReferenceTypes";

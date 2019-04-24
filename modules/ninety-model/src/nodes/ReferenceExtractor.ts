@@ -2,7 +2,7 @@ import {connect, Node, OutPorts} from "1e14";
 import {createSplitter} from "1e14-flow";
 import {createMapper} from "1e14-fp";
 import {Flame} from "flamejet/dist/types";
-import {IdList, Model, ReferenceFieldTypes} from "../types";
+import {IdList, Model, ReferenceTypes} from "../types";
 import {extractFields} from "../utils/extractFields";
 
 export type In<T extends Flame> = {
@@ -10,7 +10,7 @@ export type In<T extends Flame> = {
   d_model: Model<T>
 };
 
-export type Out<R extends ReferenceFieldTypes> = {
+export type Out<R extends ReferenceTypes> = {
   [type in R[keyof R]]: IdList;
 };
 
@@ -20,14 +20,14 @@ export type Out<R extends ReferenceFieldTypes> = {
  * The output(s) of a ReferenceExtractor may be used to sample Stores of
  * matching type.
  */
-export type ReferenceExtractor<T extends Flame, R extends ReferenceFieldTypes> = Node<In<T>, Out<R>>;
+export type ReferenceExtractor<T extends Flame, R extends ReferenceTypes> = Node<In<T>, Out<R>>;
 
 /**
  * Creates a ReferenceExtractor node.
  * @param config Specifies reference field/type associations for the current
  * model.
  */
-export function createReferenceExtractor<T extends Flame, R extends ReferenceFieldTypes>(
+export function createReferenceExtractor<T extends Flame, R extends ReferenceTypes>(
   config: R
 ): ReferenceExtractor<T, R> {
   const referenceTypes = getReferenceTypes(config);
@@ -56,7 +56,7 @@ export function createReferenceExtractor<T extends Flame, R extends ReferenceFie
  * associations.
  * @param config Reference field/type associations.
  */
-function getReferenceTypes<R extends ReferenceFieldTypes>(
+function getReferenceTypes<R extends ReferenceTypes>(
   config: R
 ): Array<R[keyof R]> {
   const result = [];

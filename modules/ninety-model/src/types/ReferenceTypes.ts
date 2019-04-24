@@ -5,6 +5,6 @@
  * // lowercase: field
  * // capitalized: model type
  */
-export type ReferenceFieldTypes = {
+export type ReferenceTypes = {
   [field: string]: string
 };
