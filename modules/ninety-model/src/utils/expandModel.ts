@@ -10,9 +10,14 @@ import {Model, Models, ReferenceConfig} from "../types";
 export function expandModel<T extends Models>(
   models: { [type in keyof T]: Model<T[type]> },
   config: ReferenceConfig<T>
-): Model {
-  const expand = (model: Model, references?): Model => {
-    let result: Model;
+): Model<T[keyof T]> {
+  const expand = <K extends keyof T>(
+    model: Model<T[K][keyof T[K]]>,
+    references?
+  ): Model<T[K][keyof T[K]]> => {
+    /** Current model schema. */
+    type S = T[K][keyof T[K]];
+    let result: Model<S>;
     if (typeof references === "string") {
       // collection with ID fields
       result = {};
@@ -20,7 +25,7 @@ export function expandModel<T extends Models>(
         const entryIn = model[id];
         let entryOut = result[id];
         if (!entryOut) {
-          entryOut = result[id] = {};
+          entryOut = result[id] = <S>{};
         }
         for (const field in entryIn) {
           const type = references;
@@ -28,7 +33,10 @@ export function expandModel<T extends Models>(
           const referredModel = models[type];
           const referredEntry = referredModel && referredModel[referredId];
           if (referredEntry) {
-            entryOut[field] = expand({[referredId]: referredEntry}, config[type])[referredId];
+            entryOut[field] = expand(
+              <T[any]>{[referredId]: referredEntry},
+              config[type]
+            )[referredId];
           } else {
             entryOut[field] = null;
           }
@@ -41,7 +49,7 @@ export function expandModel<T extends Models>(
         const entryIn = model[id];
         let entryOut = result[id];
         if (!entryOut) {
-          entryOut = result[id] = {};
+          entryOut = result[id] = <S>{};
         }
         for (const field in entryIn) {
           if (field in references) {
@@ -52,7 +60,10 @@ export function expandModel<T extends Models>(
             const referredModel = models[type];
             const referredEntry = referredModel && referredModel[referredId];
             if (referredEntry) {
-              entryOut[field] = expand({[referredId]: referredEntry}, config[type])[referredId];
+              entryOut[field] = expand(
+                <T[any]>{[referredId]: referredEntry},
+                config[type]
+              )[referredId];
             } else {
               entryOut[field] = null;
             }
@@ -70,5 +81,5 @@ export function expandModel<T extends Models>(
     }
     return result;
   };
-  return expand(models.d_model, config.d_model);
+  return expand(<T["d_models"]>models.d_model, config.d_model);
 }
