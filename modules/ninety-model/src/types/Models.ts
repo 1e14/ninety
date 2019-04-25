@@ -1,7 +1,8 @@
 import {Flame} from "flamejet";
+import {Model} from "./Model";
 
-export type Models = {
-  d_model: Flame
+export type Models<S extends Flame> = {
+  d_model: Model<S>
 } & {
-  [type: string]: Flame;
+  [type: string]: Model<S>;
 };

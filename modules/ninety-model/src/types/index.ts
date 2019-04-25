@@ -1,3 +1,4 @@
+export {FlamesByModelType} from "./FlamesByModelType";
 export {IdListsByModelType} from "./IdListsByModelType";
 export {IdList} from "./IdList";
 export {Invert} from "./Invert";

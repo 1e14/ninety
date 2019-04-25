@@ -1,4 +1,4 @@
-import {Models} from "./Models";
+import {FlamesByModelType} from "./FlamesByModelType";
 
 /**
  * Configuration of expanding reference fields.
@@ -6,6 +6,6 @@ import {Models} from "./Models";
  * fields (documents). For model entries with ID fields (collections), the
  * associated value is one of the other types.
  */
-export type ReferenceConfig<T extends Models> = {
+export type ReferenceConfig<T extends FlamesByModelType> = {
   [type in keyof T]: keyof T | { [field in keyof T[type]]?: keyof T }
 };

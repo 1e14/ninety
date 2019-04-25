@@ -2,37 +2,38 @@ import {connect, InPorts, Node} from "1e14";
 import {createSyncer} from "1e14-flow";
 import {createMapper} from "1e14-fp";
 import {Flame, treeToFlame} from "flamejet";
-import {Model, Models, ReferenceConfig} from "../types";
+import {FlamesByModelType, Model, ReferenceConfig} from "../types";
 import {expandModel} from "../utils/expandModel";
 
-export type In<T extends Models> = {
+export type In<T extends FlamesByModelType> = {
   [type in keyof T]: Model<T[type]>
 };
 
-export type Out = {
+export type Out<S extends Flame> = {
   /** Model as consumed by view-model */
-  d_model: Flame;
+  d_model: Model<S>;
 };
 
 /**
  * Expands model references into a tree so that it fits the view-model.
  * config must list all expanding references for all affected types.
  */
-export type ModelExpander<T extends Models> = Node<In<T>, Out>;
+export type ModelExpander<T extends FlamesByModelType> =
+  Node<In<T>, Out<T["d_model"]>>;
 
 /**
  * Creates a ModelExpander node.
  * @param config Defines expanding references.
  * @see ReferenceConfig
  */
-export function createModelExpander<T extends Models>(
+export function createModelExpander<T extends FlamesByModelType>(
   config: ReferenceConfig<T>
 ): ModelExpander<T> {
   // TODO: Should extract port names from values as well
   const inPorts = Object.keys(config);
 
   const syncer = createSyncer<In<T>>(inPorts);
-  const expander = createMapper<In<T>, any>((value) => {
+  const expander = createMapper<{ d_model: Model<T["d_model"]> }, any>((value) => {
     return expandModel(value, config);
   });
   const flattener = createMapper(treeToFlame);
