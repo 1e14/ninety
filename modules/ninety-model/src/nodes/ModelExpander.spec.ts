@@ -2,25 +2,25 @@ import {connect} from "1e14";
 import {createModelExpander, ModelExpander} from "./ModelExpander";
 
 describe("createModelExpander()", () => {
-  type UserModel = {
+  type User = {
     name: string,
     person?: string;
   };
 
-  type PersonModel = {
+  type Person = {
     name: string;
   };
 
   describe("on input (d_model &...)", () => {
     let node: ModelExpander<{
-      d_model: UserModel,
-      d_person: PersonModel
+      d_model: User,
+      d_person: Person
     }>;
 
     beforeEach(() => {
       node = createModelExpander<{
-        d_model: UserModel,
-        d_person: PersonModel
+        d_model: User,
+        d_person: Person
       }>({
         d_model: {
           person: "d_person"
