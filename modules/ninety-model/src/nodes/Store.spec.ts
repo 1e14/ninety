@@ -205,18 +205,70 @@ describe("createModel()", () => {
       }, "1");
     });
 
-    it("should emit buffer contents on 'd_model'", () => {
-      const spy = jasmine.createSpy();
-      connect(node.o.d_model, spy);
-      node.i.a_smp(["5", "6"], "2");
-      expect(spy).toHaveBeenCalledWith({
-        5: {
-          "emails.home": "regphal@friends.com",
-          "id": "5",
-          "name": "Regina Phalange"
-        },
-        6: null
-      }, "2");
+    describe("for present, valid entries", () => {
+      it("should emit entry on 'd_model'", () => {
+        const spy = jasmine.createSpy();
+        connect(node.o.d_model, spy);
+        node.i.a_smp(["5"], "2");
+        expect(spy).toHaveBeenCalledWith({
+          5: {
+            "emails.home": "regphal@friends.com",
+            "id": "5",
+            "name": "Regina Phalange"
+          }
+        }, "2");
+      });
+
+      it("should not emit on 'ev_miss'", () => {
+        const spy = jasmine.createSpy();
+        connect(node.o.ev_miss, spy);
+        node.i.a_smp(["5"], "2");
+        expect(spy).not.toHaveBeenCalled();
+      });
+    });
+
+    describe("for absent entries", () => {
+      it("emit null for entry on 'd_model'", () => {
+        const spy = jasmine.createSpy();
+        connect(node.o.d_model, spy);
+        node.i.a_smp(["6"], "2");
+        expect(spy).toHaveBeenCalledWith({
+          6: null
+        }, "2");
+      });
+
+      it("should emit id on 'ev_miss'", () => {
+        const spy = jasmine.createSpy();
+        connect(node.o.ev_miss, spy);
+        node.i.a_smp(["6"], "2");
+        expect(spy).toHaveBeenCalledWith(["6"], "2");
+      });
+    });
+
+    describe("for invalidated entries", () => {
+      beforeEach(() => {
+        node.i.a_inv(["5"], "2");
+      });
+
+      it("should emit entry on 'd_model'", () => {
+        const spy = jasmine.createSpy();
+        connect(node.o.d_model, spy);
+        node.i.a_smp(["5"], "3");
+        expect(spy).toHaveBeenCalledWith({
+          5: {
+            "emails.home": "regphal@friends.com",
+            "id": "5",
+            "name": "Regina Phalange"
+          }
+        }, "3");
+      });
+
+      it("should emit id on 'ev_miss'", () => {
+        const spy = jasmine.createSpy();
+        connect(node.o.ev_miss, spy);
+        node.i.a_smp(["5"], "3");
+        expect(spy).toHaveBeenCalledWith(["5"], "3");
+      });
     });
   });
 });

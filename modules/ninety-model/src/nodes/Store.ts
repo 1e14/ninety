@@ -1,13 +1,13 @@
 import {createNode, Node} from "1e14";
 import {Flame} from "flamejet";
-import {Model} from "../types";
+import {IdList, Model} from "../types";
 
 export type In<F extends Flame> = {
   /** Invalidates model entries. */
-  a_inv: Array<string>;
+  a_inv: IdList;
 
   /** Samples buffered model entries. */
-  a_smp: Array<string>;
+  a_smp: IdList;
 
   /** Model coming from API or view-model. */
   d_model: Model<F>;
@@ -21,6 +21,9 @@ export type Out<F extends Flame> = {
   ev_inv: {
     [id: string]: boolean
   }
+
+  /** Signals sampled entries were absent or invalidated */
+  ev_miss: IdList
 };
 
 /**
@@ -32,7 +35,8 @@ export type Store<F extends Flame> = Node<In<F>, Out<F>>;
  * Creates a Store node.
  */
 export function createStore<F extends Flame>(): Store<F> {
-  return createNode<In<F>, Out<F>>(["d_model", "ev_inv"], (outputs) => {
+  return createNode<In<F>, Out<F>>
+  (["d_model", "ev_inv", "ev_miss"], (outputs) => {
     const buffer: Model<F> = {};
     const invalid: { [id: string]: true } = {};
     return {
@@ -53,13 +57,23 @@ export function createStore<F extends Flame>(): Store<F> {
 
       a_smp: (value, tag) => {
         const modelOut = <Model<F>>{};
+        const missed = [];
         for (let i = 0, count = value.length; i < count; i++) {
           const id = value[i];
-          modelOut[id] = id in buffer ?
-            buffer[id] :
-            null;
+          if (id in buffer) {
+            modelOut[id] = buffer[id];
+            if (id in invalid) {
+              missed.push(id);
+            }
+          } else {
+            modelOut[id] = null;
+            missed.push(id);
+          }
         }
         outputs.d_model(modelOut, tag);
+        if (missed.length) {
+          outputs.ev_miss(missed, tag);
+        }
       },
 
       d_model: (value, tag) => {
