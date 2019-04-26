@@ -1,5 +1,5 @@
 import {connect, InPorts, Node} from "1e14";
-import {createSyncer} from "1e14-flow";
+import {createMerger} from "1e14-flow";
 import {createMapper} from "1e14-fp";
 import {Flame, treeToFlame} from "flamejet";
 import {FlamesByModelType, Model, ReferenceConfig} from "../types";
@@ -32,19 +32,19 @@ export function createModelExpander<T extends FlamesByModelType>(
   // TODO: Should extract port names from values as well
   const inPorts = Object.keys(config);
 
-  const syncer = createSyncer<In<T>>(inPorts);
+  const merger = createMerger<In<T>>(inPorts);
   const expander = createMapper<{ d_model: Model<T["d_model"]> }, any>((value) => {
     return expandModel(value, config);
   });
   const flattener = createMapper(treeToFlame);
 
-  connect(syncer.o.all, expander.i.d_val);
+  connect(merger.o.all, expander.i.d_val);
   connect(expander.o.d_val, flattener.i.d_val);
 
   const i = <InPorts<In<T>>>{};
   for (let j = 0, count = inPorts.length; j < count; j++) {
     const port = inPorts[j];
-    i[port] = syncer.i[port];
+    i[port] = merger.i[port];
   }
   const o = {
     d_model: flattener.o.d_val
