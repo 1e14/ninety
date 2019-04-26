@@ -27,4 +27,29 @@ describe("extractFields()", () => {
       d_publisher: ["300", "301", "302"]
     });
   });
+
+  describe("when entries are null", () => {
+    it("should skip null entries", () => {
+      const result = extractFields({
+        100: {
+          author: "200",
+          publisher: "300",
+          title: "Where the wild things are"
+        },
+        101: null,
+        102: {
+          author: "202",
+          publisher: "302",
+          title: "The Gruffalo"
+        }
+      }, {
+        author: "d_author",
+        publisher: "d_publisher"
+      });
+      expect(result).toEqual({
+        d_author: ["200", "202"],
+        d_publisher: ["300", "302"]
+      });
+    });
+  });
 });

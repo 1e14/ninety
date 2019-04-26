@@ -40,8 +40,14 @@ export function createReferenceExtractor<S extends Flame,
     return extractFields(value, config);
   });
   const splitter = createSplitter<{ [type in keyof R]: IdList }>(referenceTypes);
+  const sanitizers = referenceTypes.map(
+    () => createMapper((ids) => ids || []));
 
   connect(fieldExtractor.o.d_val, splitter.i.all);
+  for (let j = 0, count = referenceTypes.length; j < count; j++) {
+    const port = referenceTypes[j];
+    connect(splitter.o[port], sanitizers[j].i.d_val);
+  }
 
   const i = {
     d_model: fieldExtractor.i.d_val
@@ -50,7 +56,7 @@ export function createReferenceExtractor<S extends Flame,
   const o = <OutPorts<Out<S, R>>>{};
   for (let j = 0, count = referenceTypes.length; j < count; j++) {
     const port = referenceTypes[j];
-    o[port] = splitter.o[port];
+    o[port] = sanitizers[j].o.d_val;
   }
 
   return {i, o};
