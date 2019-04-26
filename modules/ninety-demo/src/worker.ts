@@ -6,6 +6,7 @@ import {createTicker} from "1e14-time";
 import {createFlameBuffer, Flame} from "flamejet";
 import {normalizePaths} from "flamejet/dist/callbacks/map";
 import {createModelExpander, createStore} from "ninety-model";
+import {createReferenceExtractor} from "ninety-model/dist/nodes/ReferenceExtractor";
 import {createRouter} from "ninety-router";
 import {createParentThread} from "ninety-webworker";
 import {createMainPageView} from "./nodes";
@@ -80,6 +81,10 @@ const userEndpoint = createUserEndpoint();
 const responseSplitter = createSplitter(["users", "persons"]);
 const userStore = createStore<User>();
 const personStore = createStore<Person>();
+const personReferenceExtractor = createReferenceExtractor({
+  person: "d_person"
+});
+const userSampler = createMapper(() => ["100", "101"]);
 const userExpander = createModelExpander<{
   d_model: User,
   d_person: Person
@@ -96,7 +101,11 @@ const modelTest1PageVm = createMapper(() => ({
 connect(userEndpoint.o.d_res, responseSplitter.i.all);
 connect(responseSplitter.o.users, userStore.i.d_model);
 connect(responseSplitter.o.persons, personStore.i.d_model);
+connect(userSampler.o.d_val, userStore.i.a_smp);
 connect(userStore.o.d_model, userExpander.i.d_model);
+connect(userStore.o.d_model, personReferenceExtractor.i.d_model);
+connect(personReferenceExtractor.o.d_person, personStore.i.a_smp);
+connect(userStore.o.ev_miss, userEndpoint.i.d_req);
 connect(personStore.o.d_model, userExpander.i.d_person);
 // tslint:disable:no-console
 connect(userExpander.o.d_model, console.log);
@@ -115,6 +124,6 @@ connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageVm.i.d_val);
 connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], stressTest1PageVm.i.d_val);
 connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], tableDataGenerator.i.d_val);
 connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], modelTest1PageVm.i.d_val);
-connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], userEndpoint.i.d_req);
+connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], userSampler.i.d_val);
 connect(router.o.d_pattern, tableRouteDetector.i.d_val);
 connect(router.o[`r_${ROUTE_REST}`], emptyPageView.i.d_val);
