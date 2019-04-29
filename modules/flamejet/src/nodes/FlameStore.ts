@@ -2,6 +2,9 @@ import {createNode, Node} from "1e14";
 import {Flame} from "../types";
 
 export type In = {
+  /** Samples store contents */
+  a_smp: any;
+
   /** Flame to be stored. */
   d_val: Flame;
 };
@@ -21,19 +24,23 @@ export type FlameStore = Node<In, Out>;
  */
 export function createFlameStore(): FlameStore {
   return createNode<In, Out>(["d_val"], (outputs) => {
-    const buffer: Map<string, string> = new Map();
+    const buffer: Flame = {};
     return {
+      a_smp: (value, tag) => {
+        outputs.d_val(buffer, tag);
+      },
+
       d_val: (value, tag) => {
         const flame = {};
         for (const path in value) {
           const property = value[path];
           if (property === null) {
-            if (buffer.has(path)) {
-              buffer.delete(path);
+            if (path in buffer) {
+              delete buffer[path];
               flame[path] = null;
             }
-          } else if (property !== buffer.get(path)) {
-            buffer.set(path, property);
+          } else if (property !== buffer[path]) {
+            buffer[path] = property;
             flame[path] = property;
           }
         }

@@ -2,6 +2,26 @@ import {connect} from "1e14";
 import {createFlameStore, FlameStore} from "./FlameStore";
 
 describe("createFlameStore()", () => {
+  describe("on input (a_smp)", () => {
+    let node: FlameStore;
+
+    beforeEach(() => {
+      node = createFlameStore();
+      node.i.d_val({
+        foo: "bar"
+      });
+    });
+
+    it("should emit store contents on 'd_val'", () => {
+      const spy = jasmine.createSpy();
+      connect(node.o.d_val, spy);
+      node.i.a_smp(null, "2");
+      expect(spy).toHaveBeenCalledWith({
+        foo: "bar"
+      }, "2");
+    });
+  });
+
   describe("on input (d_val)", () => {
     let node: FlameStore;
 
