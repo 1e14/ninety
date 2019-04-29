@@ -16,6 +16,7 @@ export type Out = {
 
 /**
  * Buffers flame and releases contents on reset.
+ * Ideal for accumulating updates between ticks.
  */
 export type FlameBuffer = Node<In, Out>;
 
