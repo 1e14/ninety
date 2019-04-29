@@ -45,7 +45,6 @@ export function createParentView(
 ): ParentView {
   return createNode<In, Out>(["d_view", "d_vm"], (outputs) => ({
     d_vm: (value, tag) => {
-      // TODO: Handle invalidated state
       // passing VM on towards children
       // (must be split up before children get its contents)
       outputs.d_vm(value, tag);
