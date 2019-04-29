@@ -3,7 +3,7 @@ import {createSplitter} from "1e14-flow";
 import {createMapper} from "1e14-fp";
 import {createDemuxer, createMuxer} from "1e14-mux";
 import {createTicker} from "1e14-time";
-import {createFlameBuffer, Flame} from "flamejet";
+import {createFlameBuffer, createFlameStore, Flame} from "flamejet";
 import {normalizePaths} from "flamejet/dist/callbacks/map";
 import {createModelExpander, createModelStore} from "ninety-model";
 import {createReferenceExtractor} from "ninety-model/dist/nodes/ReferenceExtractor";
@@ -94,6 +94,7 @@ const userExpander = createModelExpander<{
   },
   d_person: null
 });
+const structureModel = createFlameStore();
 const modelTest1PageVm = createMapper(() => ({
   "model1": null,
   "model1.desc.text": "List items with references"
@@ -102,13 +103,15 @@ connect(userEndpoint.o.d_res, responseSplitter.i.all);
 connect(responseSplitter.o.users, userStore.i.d_model);
 connect(responseSplitter.o.persons, personStore.i.d_model);
 connect(userSampler.o.d_val, userStore.i.a_smp);
+connect(userSampler.o.d_val, structureModel.i.a_smp);
 connect(userStore.o.d_model, userExpander.i.d_model);
 connect(userStore.o.d_model, personReferenceExtractor.i.d_model);
 connect(personReferenceExtractor.o.d_person, personStore.i.a_smp);
 connect(userStore.o.ev_miss, userEndpoint.i.d_req);
 connect(personStore.o.d_model, userExpander.i.d_person);
+connect(userExpander.o.d_model, structureModel.i.d_val);
 // tslint:disable:no-console
-connect(userExpander.o.d_model, console.log);
+connect(structureModel.o.d_val, console.log);
 // tslint:enable:no-console
 connect(modelTest1PageVm.o.d_val, mainPageView.i.d_vm);
 
