@@ -29,12 +29,12 @@ export type Out<F extends Flame> = {
 /**
  * Stores model entries. Allows setting, querying and invalidating model data.
  */
-export type Store<F extends Flame> = Node<In<F>, Out<F>>;
+export type ModelStore<F extends Flame> = Node<In<F>, Out<F>>;
 
 /**
- * Creates a Store node.
+ * Creates a ModelStore node.
  */
-export function createStore<F extends Flame>(): Store<F> {
+export function createModelStore<F extends Flame>(): ModelStore<F> {
   return createNode<In<F>, Out<F>>
   (["d_model", "ev_inv", "ev_miss"], (outputs) => {
     const buffer: Model<F> = {};

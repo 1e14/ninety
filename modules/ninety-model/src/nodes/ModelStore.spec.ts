@@ -1,9 +1,9 @@
 import {connect} from "1e14";
-import {createStore, Store} from "./Store";
+import {createModelStore, ModelStore} from "./ModelStore";
 
 describe("createModel()", () => {
   describe("on input (d_model)", () => {
-    let node: Store<{
+    let node: ModelStore<{
       "emails.home"?: string;
       "emails.work"?: string;
       "id": string;
@@ -11,7 +11,7 @@ describe("createModel()", () => {
     }>;
 
     beforeEach(() => {
-      node = createStore();
+      node = createModelStore();
     });
 
     describe("when buffer is empty", () => {
@@ -136,7 +136,7 @@ describe("createModel()", () => {
   });
 
   describe("on input (a_inv)", () => {
-    let node: Store<{
+    let node: ModelStore<{
       "emails.home"?: string;
       "emails.work"?: string;
       "id": string;
@@ -144,7 +144,7 @@ describe("createModel()", () => {
     }>;
 
     beforeEach(() => {
-      node = createStore();
+      node = createModelStore();
       node.i.d_model({
         5: {
           "emails.home": "regphal@friends.com",
@@ -187,7 +187,7 @@ describe("createModel()", () => {
   });
 
   describe("on input (a_smp)", () => {
-    let node: Store<{
+    let node: ModelStore<{
       "emails.home"?: string;
       "emails.work"?: string;
       "id": string;
@@ -195,7 +195,7 @@ describe("createModel()", () => {
     }>;
 
     beforeEach(() => {
-      node = createStore();
+      node = createModelStore();
       node.i.d_model({
         5: {
           "emails.home": "regphal@friends.com",

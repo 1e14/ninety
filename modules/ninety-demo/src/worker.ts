@@ -5,7 +5,7 @@ import {createDemuxer, createMuxer} from "1e14-mux";
 import {createTicker} from "1e14-time";
 import {createFlameBuffer, Flame} from "flamejet";
 import {normalizePaths} from "flamejet/dist/callbacks/map";
-import {createModelExpander, createStore} from "ninety-model";
+import {createModelExpander, createModelStore} from "ninety-model";
 import {createReferenceExtractor} from "ninety-model/dist/nodes/ReferenceExtractor";
 import {createRouter} from "ninety-router";
 import {createParentThread} from "ninety-webworker";
@@ -79,8 +79,8 @@ connect(tableRouteDetector.o.d_val, tableTicker.i.st_ticking);
 // "page" 3: model test with list with references
 const userEndpoint = createUserEndpoint();
 const responseSplitter = createSplitter(["users", "persons"]);
-const userStore = createStore<User>();
-const personStore = createStore<Person>();
+const userStore = createModelStore<User>();
+const personStore = createModelStore<Person>();
 const personReferenceExtractor = createReferenceExtractor({
   person: "d_person"
 });
