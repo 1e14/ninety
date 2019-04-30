@@ -10,7 +10,7 @@ import {createWorkerThread} from "ninety-webworker";
 // setting up threading
 const workerThread = createWorkerThread("worker.js");
 const workerMuxer = createMuxer(["ev_dom_ready", "d_hash_path"]);
-const workerDemuxer = createDemuxer(["d_view"]);
+const workerDemuxer = createDemuxer(["d_out"]);
 connect(workerThread.o.d_msg, workerDemuxer.i.d_mux);
 connect(workerMuxer.o.d_mux, workerThread.i.d_msg);
 
@@ -44,4 +44,4 @@ connect(viewThrottler.o.ev_load, viewThrottler.i.a_next);
 connect(frameRenderer.o.d_dur, viewThrottler.i.a_next);
 connect(frameRenderer.o.d_dur, frameSizeAdjuster.i.d_val);
 connect(frameSizeAdjuster.o.d_val, viewThrottler.i.d_fs);
-connect(workerDemuxer.o.d_view, viewThrottler.i.d_val);
+connect(workerDemuxer.o.d_out, viewThrottler.i.d_val);

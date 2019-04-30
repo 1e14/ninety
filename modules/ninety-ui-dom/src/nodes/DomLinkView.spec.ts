@@ -2,7 +2,7 @@ import {connect} from "1e14";
 import {createDomLinkView, DomLinkView} from "./DomLinkView";
 
 describe("createDomLinkView()", () => {
-  describe("on input (d_vm)", () => {
+  describe("on input (d_in)", () => {
     let node: DomLinkView;
 
     beforeEach(() => {
@@ -10,10 +10,10 @@ describe("createDomLinkView()", () => {
     });
 
     describe("on set", () => {
-      it("should emit mapped vm on 'd_view'", () => {
+      it("should emit mapped vm on 'd_out'", () => {
         const spy = jasmine.createSpy();
-        connect(node.o.d_view, spy);
-        node.i.d_vm({
+        connect(node.o.d_out, spy);
+        node.i.d_in({
           "foo.text": "Hello",
           "foo.url": "http://"
         }, "1");
@@ -28,16 +28,16 @@ describe("createDomLinkView()", () => {
 
     describe("on del", () => {
       beforeEach(() => {
-        node.i.d_vm({
+        node.i.d_in({
           "foo.text": "Hello",
           "foo.url": "http://"
         }, "1");
       });
 
-      it("should emit mapped vm on 'd_view'", () => {
+      it("should emit mapped vm on 'd_out'", () => {
         const spy = jasmine.createSpy();
-        connect(node.o.d_view, spy);
-        node.i.d_vm({
+        connect(node.o.d_out, spy);
+        node.i.d_in({
           "foo.text": null,
           "foo.url": null
         }, "2");

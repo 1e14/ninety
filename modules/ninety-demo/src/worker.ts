@@ -15,7 +15,7 @@ import {generateTableVm} from "./utils";
 
 // setting up thread communication
 const parentThread = createParentThread();
-const parentMuxer = createMuxer(["d_view"]);
+const parentMuxer = createMuxer(["d_out"]);
 const parentDemuxer = createDemuxer(["ev_dom_ready", "d_hash_path"]);
 connect(parentThread.o.d_msg, parentDemuxer.i.d_mux);
 connect(parentMuxer.o.d_mux, parentThread.i.d_msg);
@@ -30,17 +30,17 @@ const mainPageVm = createMapper<any, Flame>(() => ({
   "menu.2.link.text": "Model reference test",
   "menu.2.link.url": "#model-test-1"
 }));
-connect(mainPageVm.o.d_val, mainPageView.i.d_vm);
+connect(mainPageVm.o.d_val, mainPageView.i.d_in);
 connect(parentDemuxer.o.ev_dom_ready, mainPageVm.i.d_val);
 
 // setting up pre-rendering
 const ticker = createTicker(10, true);
 const flameBuffer = createFlameBuffer();
 const pathNormalizer = createMapper(normalizePaths);
-connect(mainPageView.o.d_view, pathNormalizer.i.d_val);
+connect(mainPageView.o.d_out, pathNormalizer.i.d_val);
 connect(pathNormalizer.o.d_val, flameBuffer.i.d_val);
 connect(ticker.o.ev_tick, flameBuffer.i.a_res);
-connect(flameBuffer.o.d_val, parentMuxer.i.d_view);
+connect(flameBuffer.o.d_val, parentMuxer.i.d_out);
 
 // setting up routes
 const ROUTE_HELLO_WORLD = /^hello-world$/;
@@ -52,14 +52,14 @@ const ROUTE_REST = /^.*$/;
 const emptyPageView = createMapper(() => ({
   content: null
 }));
-connect(emptyPageView.o.d_val, mainPageView.i.d_vm);
+connect(emptyPageView.o.d_val, mainPageView.i.d_in);
 
 // "page" 1: "hello world"
 const helloWorldPageVm = createMapper(() => ({
   "hello": null,
   "hello.caption.text": "Hello World!"
 }));
-connect(helloWorldPageVm.o.d_val, mainPageView.i.d_vm);
+connect(helloWorldPageVm.o.d_val, mainPageView.i.d_in);
 
 // "page" 2: stress test with large table
 const stressTest1PageVm = createMapper(() => ({
@@ -70,8 +70,8 @@ const tableTicker = createTicker(100, true);
 const tableDataGenerator = createMapper<any, Flame>(
   () => generateTableVm("stress1.table", 32, 32));
 connect(tableTicker.o.ev_tick, tableDataGenerator.i.d_val);
-connect(tableDataGenerator.o.d_val, mainPageView.i.d_vm);
-connect(stressTest1PageVm.o.d_val, mainPageView.i.d_vm);
+connect(tableDataGenerator.o.d_val, mainPageView.i.d_in);
+connect(stressTest1PageVm.o.d_val, mainPageView.i.d_in);
 const tableRouteDetector = createMapper<RegExp, boolean>(
   (pattern) => pattern === ROUTE_STRESS_TEST_1);
 connect(tableRouteDetector.o.d_val, tableTicker.i.st_ticking);
@@ -113,7 +113,7 @@ connect(userExpander.o.d_model, structureModel.i.d_val);
 // tslint:disable:no-console
 connect(structureModel.o.d_val, console.log);
 // tslint:enable:no-console
-connect(modelTest1PageVm.o.d_val, mainPageView.i.d_vm);
+connect(modelTest1PageVm.o.d_val, mainPageView.i.d_in);
 
 // setting up routing table
 const router = createRouter([

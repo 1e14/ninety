@@ -9,45 +9,45 @@ import {PathMapperCallback} from "../types";
 
 export type In = {
   /** View processed by children */
-  d_view: Flame;
+  d_out: Flame;
 
   /** View-model passed down by parent */
-  d_vm: Flame;
+  d_in: Flame;
 };
 
 export type Out = {
   /** View processed by current node */
-  d_view: Flame;
+  d_out: Flame;
 
   /** View-model to be passed down to children */
-  d_vm: Flame;
+  d_in: Flame;
 };
 
 /**
  * Processes the view of a non-leaf component in the component tree.
- * Child views of a ParentView must connect to its output 'd_vm' and input
- * 'd_view' ports in order to work.
+ * Child views of a Parent must connect to its output 'd_in' and input
+ * 'd_out' ports in order to work.
  * Passes received view-model on to children without change. (Distribution
  * phase)
  * Processes view received from children and passes it on to prent.
  * (Bubbling phase)
  */
-export type ParentView = Node<In, Out>;
+export type Parent = Node<In, Out>;
 
 /**
- * Creates a ParentView node.
+ * Creates a Parent node.
  * @param cb Maps view-model path component to view path component.
  * @param depth Specifies location in the component tree.
  */
-export function createParentView(
+export function createParent(
   cb: PathMapperCallback,
   depth: number = 0
-): ParentView {
-  return createNode<In, Out>(["d_view", "d_vm"], (outputs) => ({
-    d_vm: (value, tag) => {
+): Parent {
+  return createNode<In, Out>(["d_out", "d_in"], (outputs) => ({
+    d_in: (value, tag) => {
       // passing VM on towards children
       // (must be split up before children get its contents)
-      outputs.d_vm(value, tag);
+      outputs.d_in(value, tag);
 
       // bouncing subtree delete paths
       const view: Flame = {};
@@ -57,17 +57,17 @@ export function createParentView(
         }
       }
       for (const path in view) {
-        outputs.d_view(view, tag);
+        outputs.d_out(view, tag);
         break;
       }
     },
 
-    d_view: (value, tag) => {
+    d_out: (value, tag) => {
       const view = {};
       for (const path in value) {
         view[replacePathComponent(path, depth, cb)] = value[path];
       }
-      outputs.d_view(view, tag);
+      outputs.d_out(view, tag);
     }
   }));
 }

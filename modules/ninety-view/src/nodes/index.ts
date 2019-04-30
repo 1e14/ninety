@@ -1,7 +1,5 @@
 export {
-  ParentView, createParentView, In as ParentViewIn, Out as ParentViewOut
-}from "./ParentView";
-export {
-  LeafView, createLeafView, In as LeafViewIn, Out as LeafViewOut
-}from "./LeafView";
-export {MainView, createMainView} from "./MainView";
+  Parent, createParent, In as ParentIn, Out as ParentOut
+} from "./Parent";
+export {Leaf, createLeaf, In as LeafIn, Out as LeafOut} from "./Leaf";
+export {Root, createRoot} from "./Root";

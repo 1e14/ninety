@@ -2,17 +2,17 @@ import {connect} from "1e14";
 import {createDomPropertyView, DomPropertyView} from "./DomPropertyView";
 
 describe("createDomPropertyView()", () => {
-  describe("on input (d_vm)", () => {
+  describe("on input (d_in)", () => {
     let node: DomPropertyView;
 
     beforeEach(() => {
       node = createDomPropertyView("innerText");
     });
 
-    it("should emit on 'd_view'", () => {
+    it("should emit on 'd_out'", () => {
       const spy = jasmine.createSpy();
-      connect(node.o.d_view, spy);
-      node.i.d_vm({
+      connect(node.o.d_out, spy);
+      node.i.d_in({
         "page.table.1-3.text": null,
         "page.table.2-4.text": "Foo"
       }, "1");

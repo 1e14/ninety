@@ -1,14 +1,14 @@
 import {Node} from "1e14";
-import {createLeafView, LeafViewIn, LeafViewOut} from "ninety-view";
+import {createLeaf, LeafIn, LeafOut} from "ninety-view";
 
-export type In = LeafViewIn;
+export type In = LeafIn;
 
-export type Out = LeafViewOut;
+export type Out = LeafOut;
 
 export type DomPropertyView = Node<In, Out>;
 
 export function createDomPropertyView(
   property: string
 ): DomPropertyView {
-  return createLeafView(() => property);
+  return createLeaf(() => property);
 }

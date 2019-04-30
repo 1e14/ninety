@@ -1,22 +1,22 @@
 import {connect} from "1e14";
-import {createParentView, ParentView} from "./ParentView";
+import {createParent, Parent} from "./Parent";
 
-describe("createParentView()", () => {
-  describe("on input (d_vm)", () => {
-    let node: ParentView;
+describe("createParent()", () => {
+  describe("on input (d_in)", () => {
+    let node: Parent;
 
     beforeEach(() => {
       const RE = /(\d+),(\d+)/;
-      node = createParentView((component) => {
+      node = createParent((component) => {
         const hits = RE.exec(component);
         return `childNodes,${hits[1]}:tr,childNodes,${hits[2]}:td`;
       }, 2);
     });
 
-    it("should forward to 'd_vm'", () => {
+    it("should forward to 'd_in'", () => {
       const spy = jasmine.createSpy();
-      connect(node.o.d_vm, spy);
-      node.i.d_vm({
+      connect(node.o.d_in, spy);
+      node.i.d_in({
         "page.table.1,3.text": null,
         "page.table.2,4.text": "Foo"
       }, "1");
@@ -27,10 +27,10 @@ describe("createParentView()", () => {
     });
 
     describe("on subtree delete", function () {
-      it("should emit subtree path on 'd_view'", () => {
+      it("should emit subtree path on 'd_out'", () => {
         const spy = jasmine.createSpy();
-        connect(node.o.d_view, spy);
-        node.i.d_vm({
+        connect(node.o.d_out, spy);
+        node.i.d_in({
           "page.table.1,3": null
         }, "1");
         expect(spy).toHaveBeenCalledWith({
@@ -40,21 +40,21 @@ describe("createParentView()", () => {
     });
   });
 
-  describe("on input (d_view)", () => {
-    let node: ParentView;
+  describe("on input (d_out)", () => {
+    let node: Parent;
 
     beforeEach(() => {
       const RE = /(\d+),(\d+)/;
-      node = createParentView((component) => {
+      node = createParent((component) => {
         const hits = RE.exec(component);
         return `childNodes,${hits[1]}:tr,childNodes,${hits[2]}:td`;
       }, 2);
     });
 
-    it("should emit processed view on 'd_view'", () => {
+    it("should emit processed view on 'd_out'", () => {
       const spy = jasmine.createSpy();
-      connect(node.o.d_view, spy);
-      node.i.d_view({
+      connect(node.o.d_out, spy);
+      node.i.d_out({
         "page.table.1,3.text": null,
         "page.table.2,4.text": "Foo"
       }, "1");

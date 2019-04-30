@@ -3,28 +3,28 @@ import {Flame, replacePathTail} from "flamejet";
 import {PathMapperCallback} from "../types";
 
 export type In = {
-  d_vm: Flame;
+  d_in: Flame;
 };
 
 export type Out = {
-  d_view: Flame;
+  d_out: Flame;
 };
 
-export type LeafView = Node<In, Out>;
+export type Leaf = Node<In, Out>;
 
 // TODO: Is a callback necessary? Are there any other use cases than string?
 //  (Perhaps when the property to be written is not known beforehand.)
-export function createLeafView(
+export function createLeaf(
   cb: PathMapperCallback
-): LeafView {
+): Leaf {
   return createNode<In, Out>
-  (["d_view"], (outputs) => ({
-    d_vm: (value, tag) => {
+  (["d_out"], (outputs) => ({
+    d_in: (value, tag) => {
       const view = {};
       for (const abs in value) {
         view[replacePathTail(abs, cb)] = value[abs];
       }
-      outputs.d_view(view, tag);
+      outputs.d_out(view, tag);
     }
   }));
 }

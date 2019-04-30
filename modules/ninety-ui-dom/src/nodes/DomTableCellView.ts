@@ -1,16 +1,16 @@
 import {Node} from "1e14";
-import {createParentView, ParentViewIn, ParentViewOut} from "ninety-view";
+import {createParent, ParentIn, ParentOut} from "ninety-view";
 
-export type In = ParentViewIn;
+export type In = ParentIn;
 
-export type Out = ParentViewOut;
+export type Out = ParentOut;
 
 export type DomTableCellView = Node<In, Out>;
 
 export function createDomTableCellView(
   depth: number = 0
 ): DomTableCellView {
-  return createParentView((component) => {
+  return createParent((component) => {
     const pos = component.indexOf(",");
     const row = component.slice(0, pos);
     const column = component.slice(pos + 1);

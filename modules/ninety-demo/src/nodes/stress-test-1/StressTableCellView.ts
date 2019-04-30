@@ -1,12 +1,12 @@
 import {connect, Node} from "1e14";
 import {createFlameSplitter} from "flamejet";
 import {createDomTableCellView, createDomTextView} from "ninety-ui-dom";
-import {ParentViewIn, ParentViewOut} from "ninety-view";
+import {ParentIn, ParentOut} from "ninety-view";
 import {createDomStyleView} from "ninety-view-dom";
 
-export type In = ParentViewIn;
+export type In = ParentIn;
 
-export type Out = ParentViewOut;
+export type Out = ParentOut;
 
 export type StressTableCellView = Node<In, Out>;
 
@@ -23,12 +23,12 @@ export function createStressTableCellView(
     d_color: ["color"]
   }, depth + 2);
 
-  connect(view.o.d_vm, callSplitter.i.d_val);
-  connect(callSplitter.o.d_content, text.i.d_vm);
-  connect(text.o.d_vm, textSplitter.i.d_val);
-  connect(textSplitter.o.d_color, color.i.d_vm);
-  connect(color.o.d_view, text.i.d_view);
-  connect(text.o.d_view, view.i.d_view);
+  connect(view.o.d_in, callSplitter.i.d_val);
+  connect(callSplitter.o.d_content, text.i.d_in);
+  connect(text.o.d_in, textSplitter.i.d_val);
+  connect(textSplitter.o.d_color, color.i.d_in);
+  connect(color.o.d_out, text.i.d_out);
+  connect(text.o.d_out, view.i.d_out);
 
   return view;
 }

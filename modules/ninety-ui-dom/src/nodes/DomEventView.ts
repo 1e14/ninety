@@ -1,11 +1,11 @@
 import {createNode, Node} from "1e14";
 import {Flame, replacePathTail} from "flamejet";
-import {LeafViewIn, LeafViewOut} from "ninety-view";
+import {LeafIn, LeafOut} from "ninety-view";
 import {DomEventType} from "../types";
 
-export type In = LeafViewIn;
+export type In = LeafIn;
 
-export type Out = LeafViewOut & {
+export type Out = LeafOut & {
   d_event: Flame;
 };
 
@@ -21,8 +21,8 @@ export type DomEventView = Node<In, Out>;
 export function createDomEventView<T extends Event>(
   type: DomEventType
 ): DomEventView {
-  return createNode<In, Out>(["d_event", "d_view"], (outputs) => ({
-    d_vm: (value, tag) => {
+  return createNode<In, Out>(["d_event", "d_out"], (outputs) => ({
+    d_in: (value, tag) => {
       const view = {};
       for (const path in value) {
         view[replacePathTail(path, () => type)] = (event) => {
@@ -34,7 +34,7 @@ export function createDomEventView<T extends Event>(
           return;
         };
       }
-      outputs.d_view(view, tag);
+      outputs.d_out(view, tag);
     }
   }));
 }

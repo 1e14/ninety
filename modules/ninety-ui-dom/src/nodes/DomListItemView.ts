@@ -1,15 +1,15 @@
 import {Node} from "1e14";
-import {createParentView, ParentViewIn, ParentViewOut} from "ninety-view";
+import {createParent, ParentIn, ParentOut} from "ninety-view";
 
-export type In = ParentViewIn;
+export type In = ParentIn;
 
-export type Out = ParentViewOut;
+export type Out = ParentOut;
 
 export type DomListItemView = Node<In, Out>;
 
 export function createDomListItemView(
   depth: number = 0
 ): DomListItemView {
-  return createParentView((component) =>
+  return createParent((component) =>
     "childNodes," + component + ":LI", depth);
 }

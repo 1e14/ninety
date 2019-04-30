@@ -1,18 +1,18 @@
 import {connect} from "1e14";
-import {createLeafView, LeafView} from "./LeafView";
+import {createLeaf, Leaf} from "./Leaf";
 
-describe("createLeafView()", () => {
-  describe("on input (d_vm)", () => {
-    let node: LeafView;
+describe("createLeaf()", () => {
+  describe("on input (d_in)", () => {
+    let node: Leaf;
 
     beforeEach(() => {
-      node = createLeafView(() => "style,color");
+      node = createLeaf(() => "style,color");
     });
 
-    it("should emit processed view on 'd_view'", () => {
+    it("should emit processed view on 'd_out'", () => {
       const spy = jasmine.createSpy();
-      connect(node.o.d_view, spy);
-      node.i.d_vm({
+      connect(node.o.d_out, spy);
+      node.i.d_in({
         "page.table.1,3.text": null,
         "page.table.2,4.text": "Foo"
       }, "1");

@@ -16,17 +16,17 @@ afterEach(() => {
 });
 
 describe("createEventView()", () => {
-  describe("on input (d_vm)", () => {
+  describe("on input (d_in)", () => {
     let node: DomEventView;
 
     beforeEach(() => {
       node = createDomEventView("onclick");
     });
 
-    it("should emit on 'd_view'", () => {
+    it("should emit on 'd_out'", () => {
       const spy = jasmine.createSpy();
-      connect(node.o.d_view, spy);
-      node.i.d_vm({
+      connect(node.o.d_out, spy);
+      node.i.d_in({
         "foo.bar.baz": null
       }, "1");
       expect(spy).toHaveBeenCalled();
@@ -42,10 +42,10 @@ describe("createEventView()", () => {
 
     beforeEach(() => {
       node = createDomEventView("onclick");
-      connect(node.o.d_view, (view) => {
+      connect(node.o.d_out, (view) => {
         onclick = view["foo.bar.onclick"];
       });
-      node.i.d_vm({
+      node.i.d_in({
         "foo.bar.baz": null
       }, "1");
     });
