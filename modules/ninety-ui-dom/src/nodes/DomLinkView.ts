@@ -1,11 +1,11 @@
 import {connect, Node} from "1e14";
-import {createFlameSplitter} from "flamejet";
 import {
+  createFlameSplitter,
   createParent,
   ParentIn,
   ParentOut,
   PathMapperCallback
-} from "ninety-view";
+} from "flamejet";
 import {createDomPropertyView} from "ninety-view-dom";
 
 export type In = ParentIn;

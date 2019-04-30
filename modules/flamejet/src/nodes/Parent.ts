@@ -1,11 +1,10 @@
 import {createNode, Node} from "1e14";
+import {Flame, PathMapperCallback} from "../types";
 import {
   countPathComponents,
-  Flame,
   replacePathComponent,
   replacePathTail
-} from "flamejet";
-import {PathMapperCallback} from "../types";
+} from "../utils";
 
 export type In = {
   /** View processed by children */

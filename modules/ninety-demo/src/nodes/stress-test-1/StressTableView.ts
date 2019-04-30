@@ -1,10 +1,5 @@
 import {connect, Node} from "1e14";
-import {
-  createParent,
-  ParentIn,
-  ParentOut,
-  PathMapperCallback
-} from "ninety-view";
+import {createParent, ParentIn, ParentOut, PathMapperCallback} from "flamejet";
 import {createStressTableCellView} from "./StressTableCellView";
 
 export type In = ParentIn;

@@ -1,5 +1,5 @@
 import {Node} from "1e14";
-import {createParent, ParentIn, ParentOut} from "ninety-view";
+import {createParent, ParentIn, ParentOut} from "flamejet";
 
 export type In = ParentIn;
 

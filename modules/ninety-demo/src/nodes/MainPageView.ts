@@ -1,11 +1,11 @@
 import {connect, Node} from "1e14";
-import {createFlameSplitter} from "flamejet";
 import {
+  createFlameSplitter,
   createLeaf,
   createRoot,
   ParentIn,
   ParentOut
-} from "ninety-view";
+} from "flamejet";
 import {createHelloWorldPageView} from "./hello-world";
 import {createMainMenuView} from "./MainMenuView";
 import {createModelTest1PageView} from "./model-test-1";
@@ -23,9 +23,12 @@ export function createMainPageView(): MainPageView {
   const mainView = createRoot();
   const mainMenuView = createMainMenuView("childNodes.0:UL", MAIN_PAGE_DEPTH);
   const emptyPageView = createLeaf(() => "childNodes.1:DIV");
-  const helloWorldPageView = createHelloWorldPageView("childNodes.1:DIV", MAIN_PAGE_DEPTH);
-  const stressTest1PageView = createStressTest1PageView("childNodes.1:DIV", MAIN_PAGE_DEPTH);
-  const modelTest1PageView = createModelTest1PageView("childNodes.1:DIV", MAIN_PAGE_DEPTH);
+  const helloWorldPageView = createHelloWorldPageView("childNodes.1:DIV",
+    MAIN_PAGE_DEPTH);
+  const stressTest1PageView = createStressTest1PageView("childNodes.1:DIV",
+    MAIN_PAGE_DEPTH);
+  const modelTest1PageView = createModelTest1PageView("childNodes.1:DIV",
+    MAIN_PAGE_DEPTH);
   const splitter = createFlameSplitter({
     d_content: ["content"],
     d_hello: ["hello"],

@@ -1,6 +1,6 @@
 import {createNode, Node} from "1e14";
-import {Flame, replacePathTail} from "flamejet";
-import {PathMapperCallback} from "../types";
+import {Flame, PathMapperCallback} from "../types";
+import {replacePathTail} from "../utils";
 
 export type In = {
   d_in: Flame;

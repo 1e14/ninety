@@ -1,5 +1,5 @@
 import {Node} from "1e14";
-import {createLeaf, LeafIn, LeafOut} from "ninety-view";
+import {createLeaf, LeafIn, LeafOut} from "flamejet";
 
 export type In = LeafIn;
 

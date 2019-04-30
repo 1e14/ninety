@@ -5,7 +5,7 @@ import {
   ParentIn,
   ParentOut,
   PathMapperCallback
-} from "ninety-view";
+} from "flamejet";
 import {createDomPropertyView} from "ninety-view-dom";
 
 export type In = ParentIn;

@@ -1,6 +1,6 @@
 import {connect, Node} from "1e14";
+import {createParent, ParentIn, ParentOut} from "flamejet";
 import {createDomLinkView, createDomListItemView} from "ninety-ui-dom";
-import {createParent, ParentIn, ParentOut} from "ninety-view";
 
 export type In = ParentIn;
 
