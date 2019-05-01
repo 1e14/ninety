@@ -8,16 +8,16 @@ export type Out = ParentOut;
 export type Root = Node<In, Out>;
 
 export function createRoot(): Root {
-  const vm = createNoop();
-  const view = createNoop();
+  const input = createNoop();
+  const output = createNoop();
   return {
     i: {
-      d_in: vm.i.d_val,
-      d_out: view.i.d_val
+      d_in: input.i.d_val,
+      d_out: output.i.d_val
     },
     o: {
-      d_in: vm.o.d_val,
-      d_out: view.o.d_val
+      d_in: input.o.d_val,
+      d_out: output.o.d_val
     }
   };
 }

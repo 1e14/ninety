@@ -3,7 +3,8 @@ export * from "./nodes";
 export {
   Flame,
   FlameTraversalCallback,
-  PathMapperCallback
+  PathMapperCallback,
+  ValueMapperCallback
 } from "./types";
 export {
   countPathComponents,

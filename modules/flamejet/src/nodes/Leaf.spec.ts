@@ -6,7 +6,9 @@ describe("createLeaf()", () => {
     let node: Leaf;
 
     beforeEach(() => {
-      node = createLeaf(() => "style,color");
+      node = createLeaf(
+        () => "style,color",
+        (value) => value && value.toLowerCase());
     });
 
     it("should emit processed view on 'd_out'", () => {
@@ -18,7 +20,7 @@ describe("createLeaf()", () => {
       }, "1");
       expect(spy).toHaveBeenCalledWith({
         "page.table.1,3.style,color": null,
-        "page.table.2,4.style,color": "Foo"
+        "page.table.2,4.style,color": "foo"
       }, "1");
     });
   });

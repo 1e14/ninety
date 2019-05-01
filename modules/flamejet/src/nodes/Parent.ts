@@ -1,5 +1,5 @@
 import {createNode, Node} from "1e14";
-import {Flame, PathMapperCallback} from "../types";
+import {Flame} from "../types";
 import {
   countPathComponents,
   replacePathComponent,
@@ -7,66 +7,61 @@ import {
 } from "../utils";
 
 export type In = {
-  /** View processed by children */
+  /** Output flame processed by children */
   d_out: Flame;
 
-  /** View-model passed down by parent */
+  /** Input flame passed down by parent */
   d_in: Flame;
 };
 
 export type Out = {
-  /** View processed by current node */
+  /** Output flame processed by current node */
   d_out: Flame;
 
-  /** View-model to be passed down to children */
+  /** Input flame to be passed down to children */
   d_in: Flame;
 };
 
 /**
- * Processes the view of a non-leaf component in the component tree.
- * Child views of a Parent must connect to its output 'd_in' and input
- * 'd_out' ports in order to work.
- * Passes received view-model on to children without change. (Distribution
- * phase)
- * Processes view received from children and passes it on to prent.
- * (Bubbling phase)
+ * Routes input flame, collects output flame, and maps flame paths in the
+ * given depth.
  */
 export type Parent = Node<In, Out>;
 
 /**
  * Creates a Parent node.
- * @param cb Maps view-model path component to view path component.
- * @param depth Specifies location in the component tree.
+ * @param cb Maps input path component to output path component.
+ * @param depth Specifies location in the path.
  */
 export function createParent(
-  cb: PathMapperCallback,
+  cb: (component: string) => string,
   depth: number = 0
 ): Parent {
   return createNode<In, Out>(["d_out", "d_in"], (outputs) => ({
-    d_in: (value, tag) => {
-      // passing VM on towards children
+    d_in: (flameIn, tag) => {
+      // passing input on towards children
       // (must be split up before children get its contents)
-      outputs.d_in(value, tag);
+      outputs.d_in(flameIn, tag);
 
       // bouncing subtree delete paths
-      const view: Flame = {};
-      for (const path in value) {
-        if (value[path] === null && countPathComponents(path) === depth + 1) {
-          view[replacePathTail(path, cb)] = null;
+      const flameOut: Flame = {};
+      for (const pathIn in flameIn) {
+        if (flameIn[pathIn] === null && countPathComponents(pathIn) === depth + 1) {
+          flameOut[replacePathTail(pathIn, cb)] = null;
         }
       }
-      for (const path in view) {
-        outputs.d_out(view, tag);
+      for (const path in flameOut) {
+        outputs.d_out(flameOut, tag);
         break;
       }
     },
 
-    d_out: (value, tag) => {
-      const view = {};
-      for (const path in value) {
-        view[replacePathComponent(path, depth, cb)] = value[path];
+    d_out: (flameIn, tag) => {
+      const flameOut = {};
+      for (const pathIn in flameIn) {
+        flameOut[replacePathComponent(pathIn, depth, cb)] = flameIn[pathIn];
       }
-      outputs.d_out(view, tag);
+      outputs.d_out(flameOut, tag);
     }
   }));
 }

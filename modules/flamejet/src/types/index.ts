@@ -4,3 +4,4 @@ export {Flame} from "./Flame";
 export {PathComponents} from "./PathComponents";
 export {PathMapperCallback} from "./PathMapperCallback";
 export {PortsByComponent} from "./PortsByComponent";
+export {ValueMapperCallback} from "./ValueMapperCallback";

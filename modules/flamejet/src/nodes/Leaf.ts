@@ -1,6 +1,6 @@
 import {createNode, Node} from "1e14";
-import {Flame, PathMapperCallback} from "../types";
-import {replacePathTail} from "../utils";
+import {Flame, PathMapperCallback, ValueMapperCallback} from "../types";
+import {PATH_DELIMITER, replacePathTail} from "../utils";
 
 export type In = {
   d_in: Flame;
@@ -10,21 +10,38 @@ export type Out = {
   d_out: Flame;
 };
 
+/**
+ * Maps path tail/value pairs.
+ */
 export type Leaf = Node<In, Out>;
 
-// TODO: Is a callback necessary? Are there any other use cases than string?
-//  (Perhaps when the property to be written is not known beforehand.)
+/**
+ * Creates a Leaf node.
+ * @param cbTail
+ * @param cbValue
+ */
 export function createLeaf(
-  cb: PathMapperCallback
+  cbTail: PathMapperCallback,
+  cbValue?: ValueMapperCallback
 ): Leaf {
   return createNode<In, Out>
   (["d_out"], (outputs) => ({
-    d_in: (value, tag) => {
-      const view = {};
-      for (const abs in value) {
-        view[replacePathTail(abs, cb)] = value[abs];
+    d_in: (flameIn, tag) => {
+      const flameOut = {};
+      if (cbValue) {
+        for (const pathIn in flameIn) {
+          const pos = pathIn.lastIndexOf(PATH_DELIMITER) + 1;
+          const body = pathIn.slice(0, pos);
+          const tailIn = pathIn.slice(pos);
+          flameOut[body + cbTail(tailIn)] =
+            cbValue(flameIn[pathIn], tailIn, pathIn);
+        }
+      } else {
+        for (const pathIn in flameIn) {
+          flameOut[replacePathTail(pathIn, cbTail)] = flameIn[pathIn];
+        }
       }
-      outputs.d_out(view, tag);
+      outputs.d_out(flameOut, tag);
     }
   }));
 }
