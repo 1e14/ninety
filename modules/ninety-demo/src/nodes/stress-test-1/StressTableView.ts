@@ -1,5 +1,5 @@
 import {connect, Node} from "1e14";
-import {createParent, ParentIn, ParentOut, PathMapperCallback} from "flamejet";
+import {createPathBodyMapper, ParentIn, ParentOut, PathMapperCallback} from "flamejet";
 import {createStressTableCellView} from "./StressTableCellView";
 
 export type In = ParentIn;
@@ -12,7 +12,7 @@ export function createStressTableView(
   cb: PathMapperCallback,
   depth: number = 0
 ): StressTableView {
-  const view = createParent(cb, depth);
+  const view = createPathBodyMapper(cb, depth);
   const cell = createStressTableCellView(depth + 1);
 
   connect(view.o.d_in, cell.i.d_in);

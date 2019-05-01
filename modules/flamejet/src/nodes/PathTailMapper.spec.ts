@@ -1,12 +1,12 @@
 import {connect} from "1e14";
-import {createLeaf, Leaf} from "./Leaf";
+import {createPathTailMapper, PathTailMapper} from "./PathTailMapper";
 
-describe("createLeaf()", () => {
+describe("createPathTailMapper()", () => {
   describe("on input (d_in)", () => {
-    let node: Leaf;
+    let node: PathTailMapper;
 
     beforeEach(() => {
-      node = createLeaf(
+      node = createPathTailMapper(
         () => "style,color",
         (value) => value && value.toLowerCase());
     });

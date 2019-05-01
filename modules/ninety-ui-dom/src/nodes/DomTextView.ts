@@ -1,7 +1,7 @@
 import {connect, Node} from "1e14";
 import {createFlameSplitter} from "flamejet";
 import {
-  createParent,
+  createPathBodyMapper,
   ParentIn,
   ParentOut,
   PathMapperCallback
@@ -18,7 +18,7 @@ export function createDomTextView(
   cb: PathMapperCallback,
   depth: number = 0
 ): DomTextView {
-  const view = createParent(cb, depth);
+  const view = createPathBodyMapper(cb, depth);
   const textView = createDomPropertyView("innerText");
 
   const splitter = createFlameSplitter<"d_text">({

@@ -1,8 +1,8 @@
 import {connect, Node} from "1e14";
 import {
+  createFlameMapperRoot,
   createFlameSplitter,
-  createLeaf,
-  createRoot,
+  createPathTailMapper,
   ParentIn,
   ParentOut
 } from "flamejet";
@@ -20,9 +20,9 @@ export type MainPageView = Node<In, Out>;
 const MAIN_PAGE_DEPTH = 0;
 
 export function createMainPageView(): MainPageView {
-  const mainView = createRoot();
+  const mainView = createFlameMapperRoot();
   const mainMenuView = createMainMenuView("childNodes.0:UL", MAIN_PAGE_DEPTH);
-  const emptyPageView = createLeaf(() => "childNodes.1:DIV");
+  const emptyPageView = createPathTailMapper(() => "childNodes.1:DIV");
   const helloWorldPageView = createHelloWorldPageView("childNodes.1:DIV",
     MAIN_PAGE_DEPTH);
   const stressTest1PageView = createStressTest1PageView("childNodes.1:DIV",

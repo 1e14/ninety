@@ -13,17 +13,17 @@ export type Out = {
 /**
  * Maps path tail/value pairs.
  */
-export type Leaf = Node<In, Out>;
+export type PathTailMapper = Node<In, Out>;
 
 /**
- * Creates a Leaf node.
+ * Creates a PathTailMapper node.
  * @param cbTail
  * @param cbValue
  */
-export function createLeaf(
+export function createPathTailMapper(
   cbTail: PathMapperCallback,
   cbValue?: ValueMapperCallback
-): Leaf {
+): PathTailMapper {
   return createNode<In, Out>
   (["d_out"], (outputs) => ({
     d_in: (flameIn, tag) => {

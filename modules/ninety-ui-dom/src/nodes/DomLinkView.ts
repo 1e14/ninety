@@ -1,7 +1,7 @@
 import {connect, Node} from "1e14";
 import {
   createFlameSplitter,
-  createParent,
+  createPathBodyMapper,
   ParentIn,
   ParentOut,
   PathMapperCallback
@@ -20,7 +20,7 @@ export function createDomLinkView(
 ): DomLinkView {
   const textView = createDomPropertyView("innerText");
   const urlView = createDomPropertyView("href");
-  const view = createParent(cb, depth);
+  const view = createPathBodyMapper(cb, depth);
   const splitter = createFlameSplitter<"d_text" | "d_url">({
     d_text: ["text"],
     d_url: ["url"]

@@ -1,5 +1,5 @@
 import {connect, Node} from "1e14";
-import {createFlameSplitter, createParent, ParentIn, ParentOut} from "flamejet";
+import {createFlameSplitter, createPathBodyMapper, ParentIn, ParentOut} from "flamejet";
 import {createDomTextView} from "ninety-ui-dom";
 
 export type In = ParentIn;
@@ -16,7 +16,7 @@ export function createModelTest1PageView(
   path: string,
   depth: number = 0
 ): ModelTest1PageView {
-  const view = createParent(() => path, depth);
+  const view = createPathBodyMapper(() => path, depth);
   const description = createDomTextView(() => "childNodes,0:P", depth + 1);
   const splitter = createFlameSplitter({
     d_desc: ["desc"]

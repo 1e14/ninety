@@ -23,20 +23,20 @@ export type Out = {
 };
 
 /**
- * Routes input flame, collects output flame, and maps flame paths in the
+ * Forwards input flame, collects output flame, and maps flame paths at
  * given depth.
  */
-export type Parent = Node<In, Out>;
+export type PathBodyMapper = Node<In, Out>;
 
 /**
- * Creates a Parent node.
+ * Creates a PathBodyMapper node.
  * @param cb Maps input path component to output path component.
  * @param depth Specifies location in the path.
  */
-export function createParent(
+export function createPathBodyMapper(
   cb: (component: string) => string,
   depth: number = 0
-): Parent {
+): PathBodyMapper {
   return createNode<In, Out>(["d_out", "d_in"], (outputs) => ({
     d_in: (flameIn, tag) => {
       // passing input on towards children

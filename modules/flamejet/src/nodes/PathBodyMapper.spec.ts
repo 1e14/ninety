@@ -1,13 +1,13 @@
 import {connect} from "1e14";
-import {createParent, Parent} from "./Parent";
+import {createPathBodyMapper, PathBodyMapper} from "./PathBodyMapper";
 
-describe("createParent()", () => {
+describe("createPathBodyMapper()", () => {
   describe("on input (d_in)", () => {
-    let node: Parent;
+    let node: PathBodyMapper;
 
     beforeEach(() => {
       const RE = /(\d+),(\d+)/;
-      node = createParent((component) => {
+      node = createPathBodyMapper((component) => {
         const hits = RE.exec(component);
         return `childNodes,${hits[1]}:tr,childNodes,${hits[2]}:td`;
       }, 2);
@@ -41,11 +41,11 @@ describe("createParent()", () => {
   });
 
   describe("on input (d_out)", () => {
-    let node: Parent;
+    let node: PathBodyMapper;
 
     beforeEach(() => {
       const RE = /(\d+),(\d+)/;
-      node = createParent((component) => {
+      node = createPathBodyMapper((component) => {
         const hits = RE.exec(component);
         return `childNodes,${hits[1]}:tr,childNodes,${hits[2]}:td`;
       }, 2);

@@ -1,5 +1,5 @@
 import {connect, Node} from "1e14";
-import {createFlameSplitter, createParent, ParentIn, ParentOut} from "flamejet";
+import {createFlameSplitter, createPathBodyMapper, ParentIn, ParentOut} from "flamejet";
 import {createDomTextView} from "ninety-ui-dom";
 import {createStressTableView} from "./StressTableView";
 
@@ -17,7 +17,7 @@ export function createStressTest1PageView(
   path: string,
   depth: number = 0
 ): StressTest1PageView {
-  const view = createParent(() => path, depth);
+  const view = createPathBodyMapper(() => path, depth);
   const description = createDomTextView(() => "childNodes,0:P", depth + 1);
   const table = createStressTableView(() => "childNodes,1:TABLE", depth + 1);
   const splitter = createFlameSplitter({

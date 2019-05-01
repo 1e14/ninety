@@ -5,9 +5,9 @@ export type In = ParentIn;
 
 export type Out = ParentOut;
 
-export type Root = Node<In, Out>;
+export type FlameMapperRoot = Node<In, Out>;
 
-export function createRoot(): Root {
+export function createFlameMapperRoot(): FlameMapperRoot {
   const input = createNoop();
   const output = createNoop();
   return {

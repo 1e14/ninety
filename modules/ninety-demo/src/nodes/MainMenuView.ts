@@ -1,5 +1,5 @@
 import {connect, Node} from "1e14";
-import {createParent, ParentIn, ParentOut} from "flamejet";
+import {createPathBodyMapper, ParentIn, ParentOut} from "flamejet";
 import {createDomLinkView, createDomListItemView} from "ninety-ui-dom";
 
 export type In = ParentIn;
@@ -16,7 +16,7 @@ export function createMainMenuView(
   path: string,
   depth: number = 0
 ): MainMenuView {
-  const view = createParent(() => path, depth);
+  const view = createPathBodyMapper(() => path, depth);
   const menuItemView = createDomListItemView(depth + 1);
   const menuLinkView = createDomLinkView(() => "childNodes,0:A", depth + 2);
 
