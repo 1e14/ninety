@@ -18,6 +18,7 @@ export type Out<P extends string> = FlamesByPort<P>;
 
 /**
  * Splits flames by path component at given depth.
+ * TODO: Allow sub-path at depth rather than single component.
  */
 export type FlameSplitter<P extends string> = Node<In, Out<P>>;
 
@@ -37,9 +38,11 @@ export function createFlameSplitter<P extends string>(
       // flame, split by path component
       const split = <FlamesByPort<P>>{};
       for (const path in value) {
+        // acquiring port(s) associated with component
         const component = getPathComponent(path, depth);
         const ports = portsByComponent[component];
         if (ports) {
+          // preparing to output path on associated port
           for (const port of ports) {
             const flame = split[port] = split[port] || {};
             flame[path] = value[path];
