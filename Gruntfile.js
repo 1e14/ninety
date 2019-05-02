@@ -7,7 +7,7 @@ module.exports = function (grunt) {
 
   const modules = [
     "flamejet",
-    "ninety-model",
+    "ninety-mvvm",
     "ninety-router",
     "ninety-dom",
     "ninety-location",
