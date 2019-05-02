@@ -1,28 +1,28 @@
 import {connect, Node} from "1e14";
+import {createFlameSplitter} from "flamejet";
 import {
-  createFlameEdgeMapper,
-  createFlameMapperRoot,
-  createFlameSplitter,
-  FlameBodyMapperIn,
-  FlameBodyMapperOut
-} from "flamejet";
+  createLeafView,
+  createRootView,
+  ParentViewIn,
+  ParentViewOut
+} from "ninety-mvvm";
 import {createHelloWorldPageView} from "./hello-world";
 import {createMainMenuView} from "./MainMenuView";
 import {createModelTest1PageView} from "./model-test-1";
 import {createStressTest1PageView} from "./stress-test-1";
 
-export type In = FlameBodyMapperIn;
+export type In = ParentViewIn;
 
-export type Out = FlameBodyMapperOut;
+export type Out = ParentViewOut;
 
 export type MainPageView = Node<In, Out>;
 
 const MAIN_PAGE_DEPTH = 0;
 
 export function createMainPageView(): MainPageView {
-  const mainView = createFlameMapperRoot();
+  const mainView = createRootView();
   const mainMenuView = createMainMenuView("childNodes.0:UL", MAIN_PAGE_DEPTH);
-  const emptyPageView = createFlameEdgeMapper(() => "childNodes.1:DIV");
+  const emptyPageView = createLeafView(() => "childNodes.1:DIV");
   const helloWorldPageView = createHelloWorldPageView("childNodes.1:DIV",
     MAIN_PAGE_DEPTH);
   const stressTest1PageView = createStressTest1PageView("childNodes.1:DIV",
@@ -37,17 +37,17 @@ export function createMainPageView(): MainPageView {
     d_stress1: ["stress1"]
   }, MAIN_PAGE_DEPTH);
 
-  connect(mainView.o.d_in, splitter.i.d_val);
-  connect(splitter.o.d_menu, mainMenuView.i.d_in);
-  connect(splitter.o.d_content, emptyPageView.i.d_in);
-  connect(splitter.o.d_hello, helloWorldPageView.i.d_in);
-  connect(splitter.o.d_stress1, stressTest1PageView.i.d_in);
-  connect(splitter.o.d_model1, modelTest1PageView.i.d_in);
-  connect(mainMenuView.o.d_out, mainView.i.d_out);
-  connect(emptyPageView.o.d_out, mainView.i.d_out);
-  connect(helloWorldPageView.o.d_out, mainView.i.d_out);
-  connect(stressTest1PageView.o.d_out, mainView.i.d_out);
-  connect(modelTest1PageView.o.d_out, mainView.i.d_out);
+  connect(mainView.o.d_vm, splitter.i.d_val);
+  connect(splitter.o.d_menu, mainMenuView.i.d_vm);
+  connect(splitter.o.d_content, emptyPageView.i.d_vm);
+  connect(splitter.o.d_hello, helloWorldPageView.i.d_vm);
+  connect(splitter.o.d_stress1, stressTest1PageView.i.d_vm);
+  connect(splitter.o.d_model1, modelTest1PageView.i.d_vm);
+  connect(mainMenuView.o.d_view, mainView.i.d_view);
+  connect(emptyPageView.o.d_view, mainView.i.d_view);
+  connect(helloWorldPageView.o.d_view, mainView.i.d_view);
+  connect(stressTest1PageView.o.d_view, mainView.i.d_view);
+  connect(modelTest1PageView.o.d_view, mainView.i.d_view);
 
   return mainView;
 }

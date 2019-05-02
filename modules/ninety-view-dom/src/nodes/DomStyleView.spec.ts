@@ -11,8 +11,8 @@ describe("createDomStyleView()", () => {
 
     it("should emit on 'd_out'", () => {
       const spy = jasmine.createSpy();
-      connect(node.o.d_out, spy);
-      node.i.d_in({
+      connect(node.o.d_view, spy);
+      node.i.d_vm({
         "bar.baz": "a"
       }, "1");
       expect(spy).toHaveBeenCalledWith({

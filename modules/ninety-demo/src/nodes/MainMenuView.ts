@@ -1,10 +1,10 @@
 import {connect, Node} from "1e14";
-import {createFlameBodyMapper, FlameBodyMapperIn, FlameBodyMapperOut} from "flamejet";
+import {createParentView, ParentViewIn, ParentViewOut} from "ninety-mvvm";
 import {createDomLinkView, createDomListItemView} from "ninety-ui-dom";
 
-export type In = FlameBodyMapperIn;
+export type In = ParentViewIn;
 
-export type Out = FlameBodyMapperOut;
+export type Out = ParentViewOut;
 
 export type MainMenuView = Node<In, Out>;
 
@@ -16,14 +16,14 @@ export function createMainMenuView(
   path: string,
   depth: number = 0
 ): MainMenuView {
-  const view = createFlameBodyMapper(() => path, depth);
+  const view = createParentView(() => path, depth);
   const menuItemView = createDomListItemView(depth + 1);
   const menuLinkView = createDomLinkView(() => "childNodes,0:A", depth + 2);
 
-  connect(view.o.d_in, menuItemView.i.d_in);
-  connect(menuItemView.o.d_in, menuLinkView.i.d_in);
-  connect(menuLinkView.o.d_out, menuItemView.i.d_out);
-  connect(menuItemView.o.d_out, view.i.d_out);
+  connect(view.o.d_vm, menuItemView.i.d_vm);
+  connect(menuItemView.o.d_vm, menuLinkView.i.d_vm);
+  connect(menuLinkView.o.d_view, menuItemView.i.d_view);
+  connect(menuItemView.o.d_view, view.i.d_view);
 
   return view;
 }

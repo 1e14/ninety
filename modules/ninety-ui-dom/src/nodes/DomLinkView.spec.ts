@@ -12,8 +12,8 @@ describe("createDomLinkView()", () => {
     describe("on set", () => {
       it("should emit mapped vm on 'd_out'", () => {
         const spy = jasmine.createSpy();
-        connect(node.o.d_out, spy);
-        node.i.d_in({
+        connect(node.o.d_view, spy);
+        node.i.d_vm({
           "foo.text": "Hello",
           "foo.url": "http://"
         }, "1");
@@ -28,7 +28,7 @@ describe("createDomLinkView()", () => {
 
     describe("on del", () => {
       beforeEach(() => {
-        node.i.d_in({
+        node.i.d_vm({
           "foo.text": "Hello",
           "foo.url": "http://"
         }, "1");
@@ -36,8 +36,8 @@ describe("createDomLinkView()", () => {
 
       it("should emit mapped vm on 'd_out'", () => {
         const spy = jasmine.createSpy();
-        connect(node.o.d_out, spy);
-        node.i.d_in({
+        connect(node.o.d_view, spy);
+        node.i.d_vm({
           "foo.text": null,
           "foo.url": null
         }, "2");

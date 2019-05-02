@@ -1,15 +1,19 @@
 import {Node} from "1e14";
-import {createFlameBodyMapper, FlameBodyMapperIn, FlameBodyMapperOut} from "flamejet";
+import {
+  createParentView,
+  ParentViewIn,
+  ParentViewOut
+} from "ninety-mvvm";
 
-export type In = FlameBodyMapperIn;
+export type In = ParentViewIn;
 
-export type Out = FlameBodyMapperOut;
+export type Out = ParentViewOut;
 
 export type DomListItemView = Node<In, Out>;
 
 export function createDomListItemView(
   depth: number = 0
 ): DomListItemView {
-  return createFlameBodyMapper((component) =>
+  return createParentView((component) =>
     "childNodes," + component + ":LI", depth);
 }

@@ -15,8 +15,8 @@ describe("createDomTextView()", () => {
     describe("on set", () => {
       it("should emit mapped vm on 'd_out'", () => {
         const spy = jasmine.createSpy();
-        connect(node.o.d_out, spy);
-        node.i.d_in({
+        connect(node.o.d_view, spy);
+        node.i.d_vm({
           "page.table.2,4.text": "Foo"
         }, "1");
         expect(spy).toHaveBeenCalledWith({
@@ -28,8 +28,8 @@ describe("createDomTextView()", () => {
     describe("on del", () => {
       it("should emit mapped vm on 'd_out'", () => {
         const spy = jasmine.createSpy();
-        connect(node.o.d_out, spy);
-        node.i.d_in({
+        connect(node.o.d_view, spy);
+        node.i.d_vm({
           "page.table.2,4.text": null
         }, "2");
         expect(spy).toHaveBeenCalledWith({

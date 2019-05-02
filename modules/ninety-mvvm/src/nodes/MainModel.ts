@@ -12,12 +12,12 @@ export type Out = {
 };
 
 /**
- * Joins all (expanded) models tobe processed by the view-model layer.
+ * Joins all (expanded) models to be processed by the view-model layer.
  */
 export type MainModel = Node<In, Out>;
 
 /**
- * Creates a MainModule node.
+ * Creates a MainModel node.
  */
 export function createMainModel(): MainModel {
   const model = createNoop();

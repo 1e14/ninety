@@ -1,9 +1,10 @@
 import {Node} from "1e14";
-import {createFlameEdgeMapper, FlameEdgeMapperIn, FlameEdgeMapperOut, ValueMapperCallback} from "flamejet";
+import {ValueMapperCallback} from "flamejet";
+import {createLeafView, LeafViewIn, LeafViewOut} from "ninety-mvvm";
 
-export type In = FlameEdgeMapperIn;
+export type In = LeafViewIn;
 
-export type Out = FlameEdgeMapperOut;
+export type Out = LeafViewOut;
 
 export type DomStyleView = Node<In, Out>;
 
@@ -11,5 +12,5 @@ export function createDomStyleView(
   style: string,
   cbValue?: ValueMapperCallback
 ): DomStyleView {
-  return createFlameEdgeMapper(() => "style," + style, cbValue);
+  return createLeafView(() => "style," + style, cbValue);
 }

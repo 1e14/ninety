@@ -11,8 +11,8 @@ describe("createDomTableCellView()", () => {
 
     it("should emit on 'd_out'", () => {
       const spy = jasmine.createSpy();
-      connect(node.o.d_out, spy);
-      node.i.d_out({
+      connect(node.o.d_view, spy);
+      node.i.d_view({
         "foo.1,3.bar": "baz"
       }, "1");
       expect(spy).toHaveBeenCalledWith({
