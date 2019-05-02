@@ -1,11 +1,11 @@
 import {connect, Node} from "1e14";
-import {createFlameSplitter, ParentIn, ParentOut} from "flamejet";
+import {createFlameSplitter, FlameBodyMapperIn, FlameBodyMapperOut} from "flamejet";
 import {createDomTableCellView, createDomTextView} from "ninety-ui-dom";
 import {createDomStyleView} from "ninety-view-dom";
 
-export type In = ParentIn;
+export type In = FlameBodyMapperIn;
 
-export type Out = ParentOut;
+export type Out = FlameBodyMapperOut;
 
 export type StressTableCellView = Node<In, Out>;
 

@@ -1,11 +1,16 @@
 import {connect, Node} from "1e14";
-import {createFlameSplitter, createPathBodyMapper, ParentIn, ParentOut} from "flamejet";
+import {
+  createFlameBodyMapper,
+  createFlameSplitter,
+  FlameBodyMapperIn,
+  FlameBodyMapperOut
+} from "flamejet";
 import {createDomTextView} from "ninety-ui-dom";
 import {createStressTableView} from "./StressTableView";
 
-export type In = ParentIn;
+export type In = FlameBodyMapperIn;
 
-export type Out = ParentOut;
+export type Out = FlameBodyMapperOut;
 
 export type StressTest1PageView = Node<In, Out>;
 
@@ -17,7 +22,7 @@ export function createStressTest1PageView(
   path: string,
   depth: number = 0
 ): StressTest1PageView {
-  const view = createPathBodyMapper(() => path, depth);
+  const view = createFlameBodyMapper(() => path, depth);
   const description = createDomTextView(() => "childNodes,0:P", depth + 1);
   const table = createStressTableView(() => "childNodes,1:TABLE", depth + 1);
   const splitter = createFlameSplitter({

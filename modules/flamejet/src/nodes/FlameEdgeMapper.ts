@@ -11,19 +11,19 @@ export type Out = {
 };
 
 /**
- * Maps path tail/value pairs.
+ * Maps path tail/value pairs of input flames.
  */
-export type PathTailMapper = Node<In, Out>;
+export type FlameEdgeMapper = Node<In, Out>;
 
 /**
- * Creates a PathTailMapper node.
+ * Creates a FlameEdgeMapper node.
  * @param cbTail
  * @param cbValue
  */
-export function createPathTailMapper(
+export function createFlameEdgeMapper(
   cbTail: PathMapperCallback,
   cbValue?: ValueMapperCallback
-): PathTailMapper {
+): FlameEdgeMapper {
   return createNode<In, Out>
   (["d_out"], (outputs) => ({
     d_in: (flameIn, tag) => {

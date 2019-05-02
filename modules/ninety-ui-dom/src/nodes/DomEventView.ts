@@ -1,10 +1,10 @@
 import {createNode, Node} from "1e14";
-import {Flame, LeafIn, LeafOut, replacePathTail} from "flamejet";
+import {Flame, FlameEdgeMapperIn, FlameEdgeMapperOut, replacePathTail} from "flamejet";
 import {DomEventType} from "../types";
 
-export type In = LeafIn;
+export type In = FlameEdgeMapperIn;
 
-export type Out = LeafOut & {
+export type Out = FlameEdgeMapperOut & {
   d_event: Flame;
 };
 

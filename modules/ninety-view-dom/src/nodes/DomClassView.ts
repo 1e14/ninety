@@ -1,9 +1,9 @@
 import {Node} from "1e14";
-import {createPathTailMapper, LeafIn, LeafOut, ValueMapperCallback} from "flamejet";
+import {createFlameEdgeMapper, FlameEdgeMapperIn, FlameEdgeMapperOut, ValueMapperCallback} from "flamejet";
 
-export type In = LeafIn;
+export type In = FlameEdgeMapperIn;
 
-export type Out = LeafOut;
+export type Out = FlameEdgeMapperOut;
 
 export type DomClassView = Node<In, Out>;
 
@@ -11,5 +11,5 @@ export function createDomClassView(
   cssClass: string,
   cbValue?: ValueMapperCallback
 ): DomClassView {
-  return createPathTailMapper(() => "classList," + cssClass, cbValue);
+  return createFlameEdgeMapper(() => "classList," + cssClass, cbValue);
 }

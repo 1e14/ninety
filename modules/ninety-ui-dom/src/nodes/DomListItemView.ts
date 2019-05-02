@@ -1,15 +1,15 @@
 import {Node} from "1e14";
-import {createPathBodyMapper, ParentIn, ParentOut} from "flamejet";
+import {createFlameBodyMapper, FlameBodyMapperIn, FlameBodyMapperOut} from "flamejet";
 
-export type In = ParentIn;
+export type In = FlameBodyMapperIn;
 
-export type Out = ParentOut;
+export type Out = FlameBodyMapperOut;
 
 export type DomListItemView = Node<In, Out>;
 
 export function createDomListItemView(
   depth: number = 0
 ): DomListItemView {
-  return createPathBodyMapper((component) =>
+  return createFlameBodyMapper((component) =>
     "childNodes," + component + ":LI", depth);
 }

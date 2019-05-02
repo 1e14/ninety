@@ -1,19 +1,19 @@
 import {connect, Node} from "1e14";
 import {
+  createFlameEdgeMapper,
   createFlameMapperRoot,
   createFlameSplitter,
-  createPathTailMapper,
-  ParentIn,
-  ParentOut
+  FlameBodyMapperIn,
+  FlameBodyMapperOut
 } from "flamejet";
 import {createHelloWorldPageView} from "./hello-world";
 import {createMainMenuView} from "./MainMenuView";
 import {createModelTest1PageView} from "./model-test-1";
 import {createStressTest1PageView} from "./stress-test-1";
 
-export type In = ParentIn;
+export type In = FlameBodyMapperIn;
 
-export type Out = ParentOut;
+export type Out = FlameBodyMapperOut;
 
 export type MainPageView = Node<In, Out>;
 
@@ -22,7 +22,7 @@ const MAIN_PAGE_DEPTH = 0;
 export function createMainPageView(): MainPageView {
   const mainView = createFlameMapperRoot();
   const mainMenuView = createMainMenuView("childNodes.0:UL", MAIN_PAGE_DEPTH);
-  const emptyPageView = createPathTailMapper(() => "childNodes.1:DIV");
+  const emptyPageView = createFlameEdgeMapper(() => "childNodes.1:DIV");
   const helloWorldPageView = createHelloWorldPageView("childNodes.1:DIV",
     MAIN_PAGE_DEPTH);
   const stressTest1PageView = createStressTest1PageView("childNodes.1:DIV",

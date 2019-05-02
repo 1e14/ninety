@@ -1,16 +1,16 @@
 import {connect, Node} from "1e14";
 import {createFlameSplitter} from "flamejet";
 import {
-  createPathBodyMapper,
-  ParentIn,
-  ParentOut,
+  createFlameBodyMapper,
+  FlameBodyMapperIn,
+  FlameBodyMapperOut,
   PathMapperCallback
 } from "flamejet";
 import {createDomPropertyView} from "ninety-view-dom";
 
-export type In = ParentIn;
+export type In = FlameBodyMapperIn;
 
-export type Out = ParentOut;
+export type Out = FlameBodyMapperOut;
 
 export type DomTextView = Node<In, Out>;
 
@@ -18,7 +18,7 @@ export function createDomTextView(
   cb: PathMapperCallback,
   depth: number = 0
 ): DomTextView {
-  const view = createPathBodyMapper(cb, depth);
+  const view = createFlameBodyMapper(cb, depth);
   const textView = createDomPropertyView("innerText");
 
   const splitter = createFlameSplitter<"d_text">({

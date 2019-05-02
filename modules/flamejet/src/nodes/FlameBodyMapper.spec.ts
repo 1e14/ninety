@@ -1,13 +1,13 @@
 import {connect} from "1e14";
-import {createPathBodyMapper, PathBodyMapper} from "./PathBodyMapper";
+import {createFlameBodyMapper, FlameBodyMapper} from "./FlameBodyMapper";
 
-describe("createPathBodyMapper()", () => {
+describe("createFlameBodyMapper()", () => {
   describe("on input (d_in)", () => {
-    let node: PathBodyMapper;
+    let node: FlameBodyMapper;
 
     beforeEach(() => {
       const RE = /(\d+),(\d+)/;
-      node = createPathBodyMapper((component) => {
+      node = createFlameBodyMapper((component) => {
         const hits = RE.exec(component);
         return `childNodes,${hits[1]}:tr,childNodes,${hits[2]}:td`;
       }, 2);
@@ -41,11 +41,11 @@ describe("createPathBodyMapper()", () => {
   });
 
   describe("on input (d_out)", () => {
-    let node: PathBodyMapper;
+    let node: FlameBodyMapper;
 
     beforeEach(() => {
       const RE = /(\d+),(\d+)/;
-      node = createPathBodyMapper((component) => {
+      node = createFlameBodyMapper((component) => {
         const hits = RE.exec(component);
         return `childNodes,${hits[1]}:tr,childNodes,${hits[2]}:td`;
       }, 2);

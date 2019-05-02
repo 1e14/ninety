@@ -1,12 +1,12 @@
 import {connect} from "1e14";
-import {createPathTailMapper, PathTailMapper} from "./PathTailMapper";
+import {createFlameEdgeMapper, FlameEdgeMapper} from "./FlameEdgeMapper";
 
-describe("createPathTailMapper()", () => {
+describe("createFlameEdgeMapper()", () => {
   describe("on input (d_in)", () => {
-    let node: PathTailMapper;
+    let node: FlameEdgeMapper;
 
     beforeEach(() => {
-      node = createPathTailMapper(
+      node = createFlameEdgeMapper(
         () => "style,color",
         (value) => value && value.toLowerCase());
     });

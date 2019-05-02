@@ -1,16 +1,16 @@
 import {Node} from "1e14";
-import {createPathBodyMapper, ParentIn, ParentOut} from "flamejet";
+import {createFlameBodyMapper, FlameBodyMapperIn, FlameBodyMapperOut} from "flamejet";
 
-export type In = ParentIn;
+export type In = FlameBodyMapperIn;
 
-export type Out = ParentOut;
+export type Out = FlameBodyMapperOut;
 
 export type DomTableCellView = Node<In, Out>;
 
 export function createDomTableCellView(
   depth: number = 0
 ): DomTableCellView {
-  return createPathBodyMapper((component) => {
+  return createFlameBodyMapper((component) => {
     const pos = component.indexOf(",");
     const row = component.slice(0, pos);
     const column = component.slice(pos + 1);

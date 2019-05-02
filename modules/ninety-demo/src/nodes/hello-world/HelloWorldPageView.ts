@@ -1,10 +1,15 @@
 import {connect, Node} from "1e14";
-import {createFlameSplitter, createPathBodyMapper, ParentIn, ParentOut} from "flamejet";
+import {
+  createFlameBodyMapper,
+  createFlameSplitter,
+  FlameBodyMapperIn,
+  FlameBodyMapperOut
+} from "flamejet";
 import {createDomTextView} from "ninety-ui-dom";
 
-export type In = ParentIn;
+export type In = FlameBodyMapperIn;
 
-export type Out = ParentOut;
+export type Out = FlameBodyMapperOut;
 
 export type HelloWorldPageView = Node<In, Out>;
 
@@ -12,7 +17,7 @@ export function createHelloWorldPageView(
   path: string,
   depth: number = 0
 ): HelloWorldPageView {
-  const view = createPathBodyMapper(() => path, depth);
+  const view = createFlameBodyMapper(() => path, depth);
   const textView = createDomTextView(() => "childNodes.0:P", depth + 1);
   const splitter = createFlameSplitter<"d_caption">({
     d_caption: ["caption"]

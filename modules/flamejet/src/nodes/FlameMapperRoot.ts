@@ -1,9 +1,9 @@
 import {createNoop, Node} from "1e14";
-import {ParentIn, ParentOut} from "./index";
+import {FlameBodyMapperIn, FlameBodyMapperOut} from "./index";
 
-export type In = ParentIn;
+export type In = FlameBodyMapperIn;
 
-export type Out = ParentOut;
+export type Out = FlameBodyMapperOut;
 
 export type FlameMapperRoot = Node<In, Out>;
 
