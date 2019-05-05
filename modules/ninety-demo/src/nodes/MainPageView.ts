@@ -1,4 +1,6 @@
 import {connect, Node} from "1e14";
+import {createSwitcher} from "1e14-flow";
+import {createMapper} from "1e14-fp";
 import {createFlameSplitter} from "flamejet";
 import {
   createLeafView,
@@ -6,12 +8,19 @@ import {
   ParentViewIn,
   ParentViewOut
 } from "ninety-mvvm";
+import {
+  ROUTE_HELLO_WORLD,
+  ROUTE_MODEL_TEST_1,
+  ROUTE_STRESS_TEST_1
+} from "../utils";
 import {createHelloWorldPageView} from "./hello-world";
 import {createMainMenuView} from "./MainMenuView";
 import {createModelTest1PageView} from "./model-test-1";
 import {createStressTest1PageView} from "./stress-test-1";
 
-export type In = ParentViewIn;
+export type In = ParentViewIn & {
+  d_route: RegExp;
+};
 
 export type Out = ParentViewOut;
 
@@ -21,6 +30,12 @@ const MAIN_PAGE_DEPTH = 0;
 
 export function createMainPageView(): MainPageView {
   const mainView = createRootView();
+  const routeStringifier = createMapper(String);
+  const switcher = createSwitcher([
+    String(ROUTE_HELLO_WORLD),
+    String(ROUTE_MODEL_TEST_1),
+    String(ROUTE_STRESS_TEST_1)
+  ]);
   const mainMenuView = createMainMenuView("childNodes.0:UL", MAIN_PAGE_DEPTH);
   const emptyPageView = createLeafView(() => "childNodes.1:DIV");
   const helloWorldPageView = createHelloWorldPageView("childNodes.1:DIV",
@@ -30,24 +45,32 @@ export function createMainPageView(): MainPageView {
   const modelTest1PageView = createModelTest1PageView("childNodes.1:DIV",
     MAIN_PAGE_DEPTH);
   const splitter = createFlameSplitter({
-    d_content: ["content"],
-    d_hello: ["hello"],
-    d_menu: ["menu"],
-    d_model1: ["model1"],
-    d_stress1: ["stress1"]
+    d_menu: ["menu"]
   }, MAIN_PAGE_DEPTH);
 
+  connect(routeStringifier.o.d_val, switcher.i.st_pos);
   connect(mainView.o.d_vm, splitter.i.d_val);
   connect(splitter.o.d_menu, mainMenuView.i.d_vm);
-  connect(splitter.o.d_content, emptyPageView.i.d_vm);
-  connect(splitter.o.d_hello, helloWorldPageView.i.d_vm);
-  connect(splitter.o.d_stress1, stressTest1PageView.i.d_vm);
-  connect(splitter.o.d_model1, modelTest1PageView.i.d_vm);
+  connect(splitter.o.b_d_val, switcher.i.d_val);
+  connect(switcher.o.b_d_val, emptyPageView.i.d_vm);
+  connect(switcher.o[String(ROUTE_HELLO_WORLD)], helloWorldPageView.i.d_vm);
+  connect(switcher.o[String(ROUTE_STRESS_TEST_1)], stressTest1PageView.i.d_vm);
+  connect(switcher.o[String(ROUTE_MODEL_TEST_1)], modelTest1PageView.i.d_vm);
   connect(mainMenuView.o.d_view, mainView.i.d_view);
   connect(emptyPageView.o.d_view, mainView.i.d_view);
   connect(helloWorldPageView.o.d_view, mainView.i.d_view);
   connect(stressTest1PageView.o.d_view, mainView.i.d_view);
   connect(modelTest1PageView.o.d_view, mainView.i.d_view);
 
-  return mainView;
+  return {
+    i: {
+      d_route: routeStringifier.i.d_val,
+      d_view: mainView.i.d_view,
+      d_vm: mainView.i.d_vm
+    },
+    o: {
+      d_view: mainView.o.d_view,
+      d_vm: mainView.o.d_vm
+    }
+  };
 }
