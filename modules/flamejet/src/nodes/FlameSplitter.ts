@@ -7,6 +7,8 @@ import {getPathComponent, invertComponentsByPort} from "../utils";
  */
 export type FlamesByPort<P extends string> = {
   [K in P]: Flame
+} & {
+  b_d_val: Flame;
 };
 
 export type In = {
@@ -33,7 +35,7 @@ export function createFlameSplitter<P extends string>(
 ): FlameSplitter<P> {
   const portsByComponent = invertComponentsByPort(componentsByPort);
   return createNode<In, Out<P>>
-  (<Array<P>>Object.keys(componentsByPort), (outputs) => ({
+  (<Array<P>>Object.keys(componentsByPort).concat("b_d_val"), (outputs) => ({
     d_val: (value, tag) => {
       // flame, split by path component
       const split = <FlamesByPort<P>>{};
@@ -44,9 +46,12 @@ export function createFlameSplitter<P extends string>(
         if (ports) {
           // preparing to output path on associated port
           for (const port of ports) {
-            const flame = split[port] = split[port] || {};
+            const flame = split[port] = split[port] || <FlamesByPort<P>[P]>{};
             flame[path] = value[path];
           }
+        } else {
+          const flame = split.b_d_val = split.b_d_val || {};
+          flame[path] = value[path];
         }
       }
       // emitting split flame

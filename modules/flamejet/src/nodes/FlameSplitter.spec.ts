@@ -19,11 +19,14 @@ describe("createFlameSplitter()", () => {
       const spy1 = jasmine.createSpy();
       const spy2 = jasmine.createSpy();
       const spy3 = jasmine.createSpy();
+      const spy4 = jasmine.createSpy();
       connect(node.o.d_dob, spy1);
       connect(node.o.d_name, spy2);
       connect(node.o.d_photo, spy3);
+      connect(node.o.b_d_val, spy4);
       node.i.d_val({
         "a.b.baz.c": "quux",
+        "a.b.c.d": 4,
         "a.b.foo.d": 5
       }, "1");
       expect(spy1).not.toHaveBeenCalled();
@@ -33,6 +36,9 @@ describe("createFlameSplitter()", () => {
       }, "1");
       expect(spy3).toHaveBeenCalledWith({
         "a.b.baz.c": "quux"
+      }, "1");
+      expect(spy4).toHaveBeenCalledWith({
+        "a.b.c.d": 4
       }, "1");
     });
   });
