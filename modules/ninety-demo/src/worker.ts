@@ -13,6 +13,8 @@ import {
 import {createRouter} from "ninety-router";
 import {createParentThread} from "ninety-webworker";
 import {createMainPageView} from "./nodes";
+import {createEmptyPageVm} from "./nodes/empty";
+import {createHelloWorldPageVm} from "./nodes/hello-world";
 import {createUserEndpoint, Person, User} from "./nodes/model-test-1";
 import {
   generateTableVm,
@@ -63,17 +65,12 @@ connect(ticker.o.ev_tick, flameBuffer.i.a_res);
 connect(flameBuffer.o.d_val, parentMuxer.i.d_out);
 
 // "page" 0: no content
-const emptyPageView = createMapper(() => ({
-  content: null
-}));
-connect(emptyPageView.o.d_val, mainPageView.i.d_vm);
+const emptyPageView = createEmptyPageVm();
+connect(emptyPageView.o.d_vm, mainPageView.i.d_vm);
 
 // "page" 1: "hello world"
-const helloWorldPageVm = createMapper(() => ({
-  "page": null,
-  "page.caption.text": "Hello World!"
-}));
-connect(helloWorldPageVm.o.d_val, mainPageView.i.d_vm);
+const helloWorldPageVm = createHelloWorldPageVm();
+connect(helloWorldPageVm.o.d_vm, mainPageView.i.d_vm);
 
 // "page" 2: stress test with large table
 const stressTest1PageVm = createMapper(() => ({
@@ -130,10 +127,10 @@ connect(structureModel.o.d_val, console.log);
 connect(modelTest1PageVm.o.d_val, mainPageView.i.d_vm);
 
 // setting up routing table
-connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageVm.i.d_val);
+connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageVm.i.d_model);
 connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], stressTest1PageVm.i.d_val);
 connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], tableDataGenerator.i.d_val);
 connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], modelTest1PageVm.i.d_val);
 connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], userSampler.i.d_val);
 connect(router.o.d_pattern, tableRouteDetector.i.d_val);
-connect(router.o[`r_${ROUTE_REST}`], emptyPageView.i.d_val);
+connect(router.o[`r_${ROUTE_REST}`], emptyPageView.i.d_model);
