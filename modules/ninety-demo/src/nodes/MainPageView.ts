@@ -29,7 +29,7 @@ export type MainPageView = Node<In, Out>;
 const MAIN_PAGE_DEPTH = 0;
 
 export function createMainPageView(): MainPageView {
-  const mainView = createRootView();
+  const rootView = createRootView();
   const routeStringifier = createMapper(String);
   const switcher = createSwitcher([
     String(ROUTE_HELLO_WORLD),
@@ -49,28 +49,28 @@ export function createMainPageView(): MainPageView {
   }, MAIN_PAGE_DEPTH);
 
   connect(routeStringifier.o.d_val, switcher.i.st_pos);
-  connect(mainView.o.d_vm, splitter.i.d_val);
+  connect(rootView.o.d_vm, splitter.i.d_val);
   connect(splitter.o.d_menu, mainMenuView.i.d_vm);
   connect(splitter.o.b_d_val, switcher.i.d_val);
   connect(switcher.o.b_d_val, emptyPageView.i.d_vm);
   connect(switcher.o[String(ROUTE_HELLO_WORLD)], helloWorldPageView.i.d_vm);
   connect(switcher.o[String(ROUTE_STRESS_TEST_1)], stressTest1PageView.i.d_vm);
   connect(switcher.o[String(ROUTE_MODEL_TEST_1)], modelTest1PageView.i.d_vm);
-  connect(mainMenuView.o.d_view, mainView.i.d_view);
-  connect(emptyPageView.o.d_view, mainView.i.d_view);
-  connect(helloWorldPageView.o.d_view, mainView.i.d_view);
-  connect(stressTest1PageView.o.d_view, mainView.i.d_view);
-  connect(modelTest1PageView.o.d_view, mainView.i.d_view);
+  connect(mainMenuView.o.d_view, rootView.i.d_view);
+  connect(emptyPageView.o.d_view, rootView.i.d_view);
+  connect(helloWorldPageView.o.d_view, rootView.i.d_view);
+  connect(stressTest1PageView.o.d_view, rootView.i.d_view);
+  connect(modelTest1PageView.o.d_view, rootView.i.d_view);
 
   return {
     i: {
       d_route: routeStringifier.i.d_val,
-      d_view: mainView.i.d_view,
-      d_vm: mainView.i.d_vm
+      d_view: rootView.i.d_view,
+      d_vm: rootView.i.d_vm
     },
     o: {
-      d_view: mainView.o.d_view,
-      d_vm: mainView.o.d_vm
+      d_view: rootView.o.d_view,
+      d_vm: rootView.o.d_vm
     }
   };
 }
