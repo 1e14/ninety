@@ -16,8 +16,8 @@ import {createMainPageView} from "./nodes";
 import {createEmptyPageVm} from "./nodes/empty";
 import {createHelloWorldPageVm} from "./nodes/hello-world";
 import {createUserEndpoint, Person, User} from "./nodes/model-test-1";
+import {createStressTest1PageVm} from "./nodes/stress-test-1";
 import {
-  generateTableVm,
   ROUTE_HELLO_WORLD,
   ROUTE_MODEL_TEST_1,
   ROUTE_REST,
@@ -65,27 +65,16 @@ connect(ticker.o.ev_tick, flameBuffer.i.a_res);
 connect(flameBuffer.o.d_val, parentMuxer.i.d_out);
 
 // "page" 0: no content
-const emptyPageView = createEmptyPageVm();
-connect(emptyPageView.o.d_vm, mainPageView.i.d_vm);
+const emptyPageVm = createEmptyPageVm();
+connect(emptyPageVm.o.d_vm, mainPageView.i.d_vm);
 
 // "page" 1: "hello world"
 const helloWorldPageVm = createHelloWorldPageVm();
 connect(helloWorldPageVm.o.d_vm, mainPageView.i.d_vm);
 
 // "page" 2: stress test with large table
-const stressTest1PageVm = createMapper(() => ({
-  "page": null,
-  "page.desc.text": "Firehose test using a table with 1024 cells"
-}));
-const tableTicker = createTicker(100, true);
-const tableDataGenerator = createMapper<any, Flame>(
-  () => generateTableVm("page.table", 32, 32));
-connect(tableTicker.o.ev_tick, tableDataGenerator.i.d_val);
-connect(tableDataGenerator.o.d_val, mainPageView.i.d_vm);
-connect(stressTest1PageVm.o.d_val, mainPageView.i.d_vm);
-const tableRouteDetector = createMapper<RegExp, boolean>(
-  (pattern) => pattern === ROUTE_STRESS_TEST_1);
-connect(tableRouteDetector.o.d_val, tableTicker.i.st_ticking);
+const stressTest1PageVm = createStressTest1PageVm("page", 0);
+connect(stressTest1PageVm.o.d_vm, mainPageView.i.d_vm);
 
 // "page" 3: model test with list with references
 const userEndpoint = createUserEndpoint();
@@ -128,9 +117,7 @@ connect(modelTest1PageVm.o.d_val, mainPageView.i.d_vm);
 
 // setting up routing table
 connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageVm.i.d_model);
-connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], stressTest1PageVm.i.d_val);
-connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], tableDataGenerator.i.d_val);
 connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], modelTest1PageVm.i.d_val);
 connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], userSampler.i.d_val);
-connect(router.o.d_pattern, tableRouteDetector.i.d_val);
-connect(router.o[`r_${ROUTE_REST}`], emptyPageView.i.d_model);
+connect(router.o.d_pattern, stressTest1PageVm.i.d_route);
+connect(router.o[`r_${ROUTE_REST}`], emptyPageVm.i.d_model);
