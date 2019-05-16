@@ -1,12 +1,12 @@
-import {connect, Node} from "1e14";
+import {connect, createNoop, Node} from "1e14";
 import {createMapper} from "1e14-fp";
 import {createTicker} from "1e14-time";
 import {Flame} from "flamejet";
 import {createParentVm, ParentVmIn, ParentVmOut} from "ninety-mvvm";
-import {generateTableVm, ROUTE_STRESS_TEST_1} from "../../utils";
+import {generateTableVm} from "../../utils";
 
 export type In = ParentVmIn & {
-  d_route: RegExp;
+  ev_ready: any;
 };
 
 export type Out = ParentVmOut;
@@ -22,16 +22,15 @@ export function createStressTest1PageVm(
     "page": null,
     "page.desc.text": "Firehose test using a table with 1024 cells"
   }));
+  const readyForwarder = createNoop();
   const tableTicker = createTicker(100, true);
   // TODO: Should receive data from the outside.
   const tableDataGenerator = createMapper<any, Flame>(
     () => generateTableVm("page.table", 32, 32));
-  const tableRouteDetector = createMapper<RegExp, boolean>(
-    (pattern) => pattern === ROUTE_STRESS_TEST_1);
 
-  connect(tableRouteDetector.o.d_val, staticVm.i.d_val);
-  connect(tableRouteDetector.o.d_val, tableTicker.i.st_ticking);
-  connect(tableRouteDetector.o.d_val, tableDataGenerator.i.d_val);
+  connect(readyForwarder.o.d_val, staticVm.i.d_val);
+  connect(readyForwarder.o.d_val, tableTicker.i.st_ticking);
+  connect(readyForwarder.o.d_val, tableDataGenerator.i.d_val);
   connect(tableTicker.o.ev_tick, tableDataGenerator.i.d_val);
   connect(staticVm.o.d_val, vm.i.d_vm);
   connect(tableDataGenerator.o.d_val, vm.i.d_vm);
@@ -39,8 +38,8 @@ export function createStressTest1PageVm(
   return {
     i: {
       d_model: vm.i.d_model,
-      d_route: tableRouteDetector.i.d_val,
-      d_vm: vm.i.d_vm
+      d_vm: vm.i.d_vm,
+      ev_ready: readyForwarder.i.d_val
     },
     o: {
       d_model: vm.o.d_model,

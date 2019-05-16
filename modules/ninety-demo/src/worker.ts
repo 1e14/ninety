@@ -115,7 +115,7 @@ connect(modelTest1PageVm.o.d_vm, mainPageView.i.d_vm);
 
 // setting up routing table
 connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageVm.i.d_model);
+connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], stressTest1PageVm.i.ev_ready);
 connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], modelTest1PageVm.i.ev_ready);
 connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], userSampler.i.d_val);
-connect(router.o.d_pattern, stressTest1PageVm.i.d_route);
 connect(router.o[`r_${ROUTE_REST}`], emptyPageVm.i.d_model);
