@@ -16,6 +16,7 @@ import {createMainPageView} from "./nodes";
 import {createEmptyPageVm} from "./nodes/empty";
 import {createHelloWorldPageVm} from "./nodes/hello-world";
 import {createUserEndpoint, Person, User} from "./nodes/model-test-1";
+import {createModelTest1PageVm} from "./nodes/model-test-1/ModelTest1PageVm";
 import {createStressTest1PageVm} from "./nodes/stress-test-1";
 import {
   ROUTE_HELLO_WORLD,
@@ -95,10 +96,7 @@ const userExpander = createModelExpander<{
   d_person: null
 });
 const structureModel = createFlameStore();
-const modelTest1PageVm = createMapper(() => ({
-  "page": null,
-  "page.desc.text": "List items with references"
-}));
+const modelTest1PageVm = createModelTest1PageVm("page", 0);
 connect(userEndpoint.o.d_res, responseSplitter.i.all);
 connect(responseSplitter.o.users, userStore.i.d_model);
 connect(responseSplitter.o.persons, personStore.i.d_model);
@@ -113,11 +111,11 @@ connect(userExpander.o.d_model, structureModel.i.d_val);
 // tslint:disable:no-console
 connect(structureModel.o.d_val, console.log);
 // tslint:enable:no-console
-connect(modelTest1PageVm.o.d_val, mainPageView.i.d_vm);
+connect(modelTest1PageVm.o.d_vm, mainPageView.i.d_vm);
 
 // setting up routing table
 connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageVm.i.d_model);
-connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], modelTest1PageVm.i.d_val);
+connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], modelTest1PageVm.i.ev_ready);
 connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], userSampler.i.d_val);
 connect(router.o.d_pattern, stressTest1PageVm.i.d_route);
 connect(router.o[`r_${ROUTE_REST}`], emptyPageVm.i.d_model);
