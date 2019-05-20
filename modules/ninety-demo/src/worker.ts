@@ -3,7 +3,7 @@ import {createSplitter} from "1e14-flow";
 import {createMapper} from "1e14-fp";
 import {createDemuxer, createMuxer} from "1e14-mux";
 import {createTicker} from "1e14-time";
-import {createFlameBuffer, createFlameStore, Flame} from "flamejet";
+import {createFlameBuffer, createFlameStore} from "flamejet";
 import {normalizePaths} from "flamejet/dist/callbacks/map";
 import {
   createModelExpander,
@@ -13,11 +13,8 @@ import {
 import {createRouter} from "ninety-router";
 import {createParentThread} from "ninety-webworker";
 import {createMainPageView} from "./nodes";
-import {createEmptyPageVm} from "./nodes/empty";
-import {createHelloWorldPageVm} from "./nodes/hello-world";
+import {createMainPageVm} from "./nodes/MainPageVm";
 import {createUserEndpoint, Person, User} from "./nodes/model-test-1";
-import {createModelTest1PageVm} from "./nodes/model-test-1/ModelTest1PageVm";
-import {createStressTest1PageVm} from "./nodes/stress-test-1";
 import {
   ROUTE_HELLO_WORLD,
   ROUTE_MODEL_TEST_1,
@@ -44,17 +41,11 @@ connect(parentDemuxer.o.d_hash_path, router.i.d_route);
 
 // setting up main page
 const mainPageView = createMainPageView();
-const mainPageVm = createMapper<any, Flame>(() => ({
-  "menu.0.link.text": "Hello world",
-  "menu.0.link.url": "#hello-world",
-  "menu.1.link.text": "Stress test (table)",
-  "menu.1.link.url": "#stress-test-1",
-  "menu.2.link.text": "Model reference test",
-  "menu.2.link.url": "#model-test-1"
-}));
+const mainPageVm = createMainPageVm();
+connect(parentDemuxer.o.d_hash_path, mainPageVm.i.d_hash_path);
 connect(router.o.d_pattern, mainPageView.i.d_route);
-connect(mainPageVm.o.d_val, mainPageView.i.d_vm);
-connect(parentDemuxer.o.ev_dom_ready, mainPageVm.i.d_val);
+connect(mainPageVm.o.d_vm, mainPageView.i.d_vm);
+connect(parentDemuxer.o.ev_dom_ready, mainPageVm.i.ev_ready);
 
 // setting up pre-rendering
 const ticker = createTicker(10, true);
@@ -65,19 +56,8 @@ connect(pathNormalizer.o.d_val, flameBuffer.i.d_val);
 connect(ticker.o.ev_tick, flameBuffer.i.a_res);
 connect(flameBuffer.o.d_val, parentMuxer.i.d_out);
 
-// "page" 0: no content
-const emptyPageVm = createEmptyPageVm();
-connect(emptyPageVm.o.d_vm, mainPageView.i.d_vm);
-
-// "page" 1: "hello world"
-const helloWorldPageVm = createHelloWorldPageVm();
-connect(helloWorldPageVm.o.d_vm, mainPageView.i.d_vm);
-
-// "page" 2: stress test with large table
-const stressTest1PageVm = createStressTest1PageVm("page", 0);
-connect(stressTest1PageVm.o.d_vm, mainPageView.i.d_vm);
-
-// "page" 3: model test with list with references
+// model for model test with list with references
+// TODO: Move to model node
 const userEndpoint = createUserEndpoint();
 const responseSplitter = createSplitter(["users", "persons"]);
 const userStore = createModelStore<User>();
@@ -96,7 +76,6 @@ const userExpander = createModelExpander<{
   d_person: null
 });
 const structureModel = createFlameStore();
-const modelTest1PageVm = createModelTest1PageVm("page", 0);
 connect(userEndpoint.o.d_res, responseSplitter.i.all);
 connect(responseSplitter.o.users, userStore.i.d_model);
 connect(responseSplitter.o.persons, personStore.i.d_model);
@@ -111,11 +90,6 @@ connect(userExpander.o.d_model, structureModel.i.d_val);
 // tslint:disable:no-console
 connect(structureModel.o.d_val, console.log);
 // tslint:enable:no-console
-connect(modelTest1PageVm.o.d_vm, mainPageView.i.d_vm);
 
 // setting up routing table
-connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageVm.i.d_model);
-connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], stressTest1PageVm.i.ev_ready);
-connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], modelTest1PageVm.i.ev_ready);
 connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], userSampler.i.d_val);
-connect(router.o[`r_${ROUTE_REST}`], emptyPageVm.i.d_model);

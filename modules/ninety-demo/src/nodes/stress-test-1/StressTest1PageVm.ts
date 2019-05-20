@@ -29,6 +29,7 @@ export function createStressTest1PageVm(
     () => generateTableVm("page.table", 32, 32));
 
   connect(readyForwarder.o.d_val, staticVm.i.d_val);
+  // FIXME: 'st_ticking' never gets reset
   connect(readyForwarder.o.d_val, tableTicker.i.st_ticking);
   connect(readyForwarder.o.d_val, tableDataGenerator.i.d_val);
   connect(tableTicker.o.ev_tick, tableDataGenerator.i.d_val);
