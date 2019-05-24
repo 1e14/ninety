@@ -31,6 +31,7 @@ const MAIN_PAGE_DEPTH = 0;
 
 export function createMainPageVm(): MainPageVm {
   const vm = createRootVm();
+  const hashPathForwarder = createNoop();
   const readyForwarder = createNoop();
   const staticVm = createMapper<any, Flame>(() => ({
     "menu.0.link.text": "Hello world",
@@ -46,6 +47,8 @@ export function createMainPageVm(): MainPageVm {
   const stressTest1PageVm = createStressTest1PageVm("page", MAIN_PAGE_DEPTH);
   const modelTest1PageVm = createModelTest1PageVm("page", MAIN_PAGE_DEPTH);
 
+  connect(hashPathForwarder.o.d_val, router.i.d_route);
+  connect(hashPathForwarder.o.d_val, stressTest1PageVm.i.d_hash_path);
   connect(readyForwarder.o.d_val, staticVm.i.d_val);
   connect(router.o[`r_${ROUTE_REST}`], emptyPageVm.i.ev_ready);
   connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageVm.i.ev_ready);
@@ -59,7 +62,7 @@ export function createMainPageVm(): MainPageVm {
 
   return {
     i: {
-      d_hash_path: router.i.d_route,
+      d_hash_path: hashPathForwarder.i.d_val,
       d_model: vm.i.d_model,
       d_vm: vm.i.d_vm,
       ev_ready: readyForwarder.i.d_val
