@@ -9,11 +9,11 @@ import {
   ROUTE_REST,
   ROUTE_STRESS_TEST_1,
   ROUTES
-} from "../utils";
-import {createEmptyPageVm} from "./empty";
-import {createHelloWorldPageVm} from "./hello-world";
+} from "../utils/routes";
+import {createEmptyPageVm} from "./empty/EmptyPageVm";
+import {createHelloWorldPageVm} from "./hello-world/HelloWorldPageVm";
 import {createModelTest1PageVm} from "./model-test-1/ModelTest1PageVm";
-import {createStressTest1PageVm} from "./stress-test-1";
+import {createStressTest1PageVm} from "./stress-test-1/StressTest1PageVm";
 
 export type In = ParentVmIn & {
   /** Determines child VMs to use. */

@@ -3,7 +3,8 @@ import {connect, createNoop, Node} from "flowcode";
 import {createMapper} from "flowcode-fp";
 import {createTicker} from "flowcode-time";
 import {createParentVm, ParentVmIn, ParentVmOut} from "ninety-mvvm";
-import {generateTableVm, ROUTE_STRESS_TEST_1} from "../../utils";
+import {ROUTE_STRESS_TEST_1} from "../../utils/routes";
+import {generateTableVm} from "./utils/generateTableVm";
 
 export type In = ParentVmIn & {
   /** @deprecated */

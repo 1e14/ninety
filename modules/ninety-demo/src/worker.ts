@@ -12,15 +12,12 @@ import {
 } from "ninety-mvvm";
 import {createRouter} from "ninety-router";
 import {createParentThread} from "ninety-webworker";
-import {createMainPageView} from "./nodes";
+import {createMainPageView} from "./nodes/MainPageView";
 import {createMainPageVm} from "./nodes/MainPageVm";
-import {createUserEndpoint, Person, User} from "./nodes/model-test-1";
-import {
-  ROUTE_HELLO_WORLD,
-  ROUTE_MODEL_TEST_1,
-  ROUTE_REST,
-  ROUTE_STRESS_TEST_1
-} from "./utils";
+import {Person} from "./nodes/model-test-1/Person";
+import {User} from "./nodes/model-test-1/User";
+import {createUserEndpoint} from "./nodes/model-test-1/UserEndpoint";
+import {ROUTE_MODEL_TEST_1, ROUTES} from "./utils/routes";
 
 // setting up thread communication
 const parentThread = createParentThread();
@@ -29,13 +26,6 @@ const parentDemuxer = createDemuxer(["ev_dom_ready", "d_hash_path"]);
 connect(parentThread.o.d_msg, parentDemuxer.i.d_mux);
 connect(parentMuxer.o.d_mux, parentThread.i.d_msg);
 
-// setting up routing
-const ROUTES = [
-  ROUTE_HELLO_WORLD,
-  ROUTE_STRESS_TEST_1,
-  ROUTE_MODEL_TEST_1,
-  ROUTE_REST
-];
 const router = createRouter(ROUTES);
 connect(parentDemuxer.o.d_hash_path, router.i.d_route);
 

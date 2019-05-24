@@ -12,11 +12,11 @@ import {
   ROUTE_HELLO_WORLD,
   ROUTE_MODEL_TEST_1,
   ROUTE_STRESS_TEST_1
-} from "../utils";
-import {createHelloWorldPageView} from "./hello-world";
+} from "../utils/routes";
+import {createHelloWorldPageView} from "./hello-world/HelloWorldPageView";
 import {createMainMenuView} from "./MainMenuView";
-import {createModelTest1PageView} from "./model-test-1";
-import {createStressTest1PageView} from "./stress-test-1";
+import {createModelTest1PageView} from "./model-test-1/ModelTest1PageView";
+import {createStressTest1PageView} from "./stress-test-1/StressTest1PageView";
 
 export type In = ParentViewIn & {
   d_route: RegExp;
