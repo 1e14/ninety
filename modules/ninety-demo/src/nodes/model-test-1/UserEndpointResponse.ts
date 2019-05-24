@@ -1,4 +1,4 @@
-import {Model} from "../../../../ninety-mvvm";
+import {Model} from "ninety-mvvm";
 import {Person} from "./Person";
 import {User} from "./User";
 
