@@ -1,7 +1,7 @@
-import {connect, createNoop, Node} from "1e14";
-import {createMapper} from "1e14-fp";
-import {createTicker} from "1e14-time";
 import {Flame} from "flamejet";
+import {connect, createNoop, Node} from "flowcode";
+import {createMapper} from "flowcode-fp";
+import {createTicker} from "flowcode-time";
 import {createParentVm, ParentVmIn, ParentVmOut} from "ninety-mvvm";
 import {generateTableVm} from "../../utils";
 

@@ -1,7 +1,7 @@
-import {connect, Node} from "1e14";
-import {createSwitcher} from "1e14-flow";
-import {createMapper} from "1e14-fp";
 import {createFlameSplitter} from "flamejet";
+import {connect, Node} from "flowcode";
+import {createSwitcher} from "flowcode-flow";
+import {createMapper} from "flowcode-fp";
 import {
   createLeafView,
   createRootView,

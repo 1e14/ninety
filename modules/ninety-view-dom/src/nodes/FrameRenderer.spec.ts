@@ -1,4 +1,4 @@
-import {connect} from "1e14";
+import {connect} from "flowcode";
 import * as utils from "../utils";
 import {createFrameRenderer, FrameRenderer} from "./FrameRenderer";
 

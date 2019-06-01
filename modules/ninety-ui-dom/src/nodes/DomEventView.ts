@@ -1,5 +1,10 @@
-import {createNode, Node} from "1e14";
-import {Flame, FlameEdgeMapperIn, FlameEdgeMapperOut, replacePathTail} from "flamejet";
+import {
+  Flame,
+  FlameEdgeMapperIn,
+  FlameEdgeMapperOut,
+  replacePathTail
+} from "flamejet";
+import {createNode, Node} from "flowcode";
 import {DomEventType} from "../types";
 
 export type In = FlameEdgeMapperIn;

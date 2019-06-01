@@ -1,10 +1,10 @@
-import {connect} from "1e14";
-import {createSplitter} from "1e14-flow";
-import {createMapper} from "1e14-fp";
-import {createDemuxer, createMuxer} from "1e14-mux";
-import {createTicker} from "1e14-time";
 import {createFlameBuffer, createFlameStore} from "flamejet";
 import {normalizePaths} from "flamejet/dist/callbacks/map";
+import {connect} from "flowcode";
+import {createSplitter} from "flowcode-flow";
+import {createMapper} from "flowcode-fp";
+import {createDemuxer, createMuxer} from "flowcode-mux";
+import {createTicker} from "flowcode-time";
 import {
   createModelExpander,
   createModelStore,

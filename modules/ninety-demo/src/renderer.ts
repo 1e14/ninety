@@ -1,7 +1,7 @@
-import {connect} from "1e14";
-import {createMapper} from "1e14-fp";
-import {createDemuxer, createMuxer} from "1e14-mux";
 import {createFlameThrottler} from "flamejet";
+import {connect} from "flowcode";
+import {createMapper} from "flowcode-fp";
+import {createDemuxer, createMuxer} from "flowcode-mux";
 import {createDomReadyNotifier} from "ninety-dom";
 import {createLocationHash} from "ninety-location";
 import {createFrameRenderer} from "ninety-view-dom";

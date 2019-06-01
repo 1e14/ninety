@@ -1,4 +1,4 @@
-import {createNode, Node} from "1e14";
+import {createNode, Node} from "flowcode";
 import {ComponentsByPort, Flame} from "../types";
 import {getPathComponent, invertComponentsByPort} from "../utils";
 
@@ -47,7 +47,7 @@ export function createFlameSplitter<P extends string>(
           // preparing to output path on associated port
           for (const port of ports) {
             const flame = split[port] = split[port] || <FlamesByPort<P>[P]>{};
-            flame[path] = value[path];
+            flame[<P>path] = value[path];
           }
         } else {
           const flame = split.b_d_val = split.b_d_val || {};

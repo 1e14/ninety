@@ -1,5 +1,5 @@
-import {Node} from "1e14";
-import {createMapper} from "1e14-fp";
+import {Node} from "flowcode";
+import {createMapper} from "flowcode-fp";
 import {UserEndpointResponse} from "./UserEndpointResponse";
 
 export type In = {

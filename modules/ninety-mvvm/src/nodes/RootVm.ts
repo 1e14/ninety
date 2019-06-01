@@ -1,5 +1,5 @@
-import {Node} from "1e14";
 import {createFlameMapperRoot} from "flamejet";
+import {Node} from "flowcode";
 import {ParentVmIn, ParentVmOut} from "./index";
 
 export type In = ParentVmIn;

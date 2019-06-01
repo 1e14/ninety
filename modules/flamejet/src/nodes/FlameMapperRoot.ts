@@ -1,4 +1,4 @@
-import {createNoop, Node} from "1e14";
+import {createNoop, Node} from "flowcode";
 import {FlameBodyMapperIn, FlameBodyMapperOut} from "./index";
 
 export type In = FlameBodyMapperIn;

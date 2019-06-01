@@ -1,4 +1,4 @@
-import {createNode, Node} from "1e14";
+import {createNode, Node} from "flowcode";
 
 /**
  * TypeScript thinks the second argument of postMessage is mandatory.

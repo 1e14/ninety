@@ -1,4 +1,4 @@
-import {connect} from "1e14";
+import {connect} from "flowcode";
 import {createDomTableCellView, DomTableCellView} from "./DomTableCellView";
 
 describe("createDomTableCellView()", () => {

@@ -1,4 +1,4 @@
-import {createNode, Node} from "1e14";
+import {createNode, Node} from "flowcode";
 import {Flame} from "../types";
 import {
   countPathComponents,

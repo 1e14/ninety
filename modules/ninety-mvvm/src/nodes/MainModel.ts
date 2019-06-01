@@ -1,5 +1,5 @@
-import {createNoop, Node} from "1e14";
 import {Flame} from "flamejet";
+import {createNoop, Node} from "flowcode";
 
 export type In = {
   /** Model received from expanders. */

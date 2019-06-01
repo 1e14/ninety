@@ -1,4 +1,4 @@
-import {connect, Node} from "1e14";
+import {connect, Node} from "flowcode";
 import {createParentView, ParentViewIn, ParentViewOut} from "ninety-mvvm";
 import {createDomLinkView, createDomListItemView} from "ninety-ui-dom";
 

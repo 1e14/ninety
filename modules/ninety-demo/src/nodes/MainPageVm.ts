@@ -1,6 +1,6 @@
-import {connect, createNoop, Node} from "1e14";
-import {createMapper} from "1e14-fp";
 import {Flame} from "flamejet/dist";
+import {connect, createNoop, Node} from "flowcode";
+import {createMapper} from "flowcode-fp";
 import {createRootVm, ParentVmIn, ParentVmOut} from "ninety-mvvm";
 import {createRouter} from "ninety-router/dist";
 import {

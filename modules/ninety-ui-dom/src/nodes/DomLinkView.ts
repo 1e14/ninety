@@ -1,5 +1,5 @@
-import {connect, Node} from "1e14";
 import {createFlameSplitter, PathMapperCallback} from "flamejet";
+import {connect, Node} from "flowcode";
 import {createParentView, ParentViewIn, ParentViewOut} from "ninety-mvvm";
 import {createDomPropertyView} from "ninety-view-dom";
 

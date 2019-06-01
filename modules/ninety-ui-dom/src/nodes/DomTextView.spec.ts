@@ -1,4 +1,4 @@
-import {connect} from "1e14";
+import {connect} from "flowcode";
 import {createDomTextView, DomTextView} from "./DomTextView";
 
 describe("createDomTextView()", () => {

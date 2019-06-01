@@ -1,7 +1,7 @@
-import {connect, Node, OutPorts} from "1e14";
-import {createSplitter} from "1e14-flow";
-import {createMapper} from "1e14-fp";
 import {Flame} from "flamejet/dist/types";
+import {connect, Node, OutPorts} from "flowcode";
+import {createSplitter} from "flowcode-flow";
+import {createMapper} from "flowcode-fp";
 import {IdList, IdListsByModelType, Model, ReferenceTypes} from "../types";
 import {extractFields} from "../utils/extractFields";
 

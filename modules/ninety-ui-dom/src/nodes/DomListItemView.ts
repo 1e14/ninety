@@ -1,9 +1,5 @@
-import {Node} from "1e14";
-import {
-  createParentView,
-  ParentViewIn,
-  ParentViewOut
-} from "ninety-mvvm";
+import {Node} from "flowcode";
+import {createParentView, ParentViewIn, ParentViewOut} from "ninety-mvvm";
 
 export type In = ParentViewIn;
 

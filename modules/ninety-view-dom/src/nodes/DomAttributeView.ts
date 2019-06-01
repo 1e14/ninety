@@ -1,5 +1,5 @@
-import {Node} from "1e14";
 import {ValueMapperCallback} from "flamejet";
+import {Node} from "flowcode";
 import {createLeafView, LeafViewIn, LeafViewOut} from "ninety-mvvm";
 
 export type In = LeafViewIn;

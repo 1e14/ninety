@@ -1,10 +1,10 @@
-import {Node} from "1e14";
 import {
   createFlameEdgeMapper,
   Flame,
   PathMapperCallback,
   ValueMapperCallback
 } from "flamejet";
+import {Node} from "flowcode";
 
 export type In = {
   d_model: Flame;

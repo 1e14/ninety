@@ -1,7 +1,7 @@
-import {connect, InPorts, Node} from "1e14";
-import {createMerger} from "1e14-flow";
-import {createMapper} from "1e14-fp";
 import {Flame, treeToFlame} from "flamejet";
+import {connect, InPorts, Node} from "flowcode";
+import {createMerger} from "flowcode-flow";
+import {createMapper} from "flowcode-fp";
 import {FlamesByModelType, Model, ReferenceConfig} from "../types";
 import {expandModel} from "../utils/expandModel";
 
@@ -44,7 +44,7 @@ export function createModelExpander<T extends FlamesByModelType>(
   const i = <InPorts<In<T>>>{};
   for (let j = 0, count = inPorts.length; j < count; j++) {
     const port = inPorts[j];
-    i[port] = merger.i[port];
+    i[<keyof T>port] = merger.i[port];
   }
   const o = {
     d_model: flattener.o.d_val

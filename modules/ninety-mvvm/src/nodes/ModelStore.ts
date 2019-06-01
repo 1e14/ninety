@@ -1,5 +1,5 @@
-import {createNode, Node} from "1e14";
 import {Flame} from "flamejet";
+import {createNode, Node} from "flowcode";
 import {IdList, Model} from "../types";
 
 export type In<F extends Flame> = {

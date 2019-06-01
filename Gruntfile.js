@@ -113,7 +113,7 @@ module.exports = function (grunt) {
         cmd: () => {
           const pkg = grunt.file.readJSON(`modules/${module}/package.json`);
           const deps = Object.keys(pkg.dependencies || {})
-          .filter((name) => /^(?:1e14|flamejet|ninety).*$/.test(name));
+          .filter((name) => /^(?:flowcode|flamejet|ninety).*$/.test(name));
           return deps
           .map((dep) => `npm ln ${dep}`)
           .join(" && ") || "echo noop";

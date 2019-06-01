@@ -1,5 +1,5 @@
-import {connect, Node} from "1e14";
 import {createFlameSplitter} from "flamejet";
+import {connect, Node} from "flowcode";
 import {createParentView, ParentViewIn, ParentViewOut} from "ninety-mvvm";
 import {createDomTextView} from "ninety-ui-dom";
 

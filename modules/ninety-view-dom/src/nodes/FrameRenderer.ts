@@ -1,5 +1,5 @@
-import {createNode, Node} from "1e14";
 import {Flame} from "flamejet";
+import {createNode, Node} from "flowcode";
 import {applyViewToDom} from "../utils";
 
 export type In = {
