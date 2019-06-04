@@ -1,7 +1,7 @@
 Ninety
 ======
 
-**Ninety** is a web application framework, built as a function graph.
+**Ninety** is a web application framework, written in [FlowCode](https://github.com/kwaia/flowcode.js).
 
 **WORK IN PROGRESS**
 
