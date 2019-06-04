@@ -4,7 +4,7 @@ import {ParentVmIn, ParentVmOut} from "ninety-mvvm";
 import {createParentVm} from "ninety-mvvm/dist";
 
 export type In = ParentVmIn & {
-  ev_ready: any;
+  a_stat: any;
 };
 
 export type Out = ParentVmOut;
@@ -25,9 +25,9 @@ export function createModelTest1PageVm(
 
   return {
     i: {
+      a_stat: staticVm.i.d_val,
       d_model: vm.i.d_model,
-      d_vm: vm.i.d_vm,
-      ev_ready: staticVm.i.d_val
+      d_vm: vm.i.d_vm
     },
     o: {
       d_model: vm.o.d_model,

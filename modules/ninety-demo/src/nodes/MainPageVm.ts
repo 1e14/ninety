@@ -16,11 +16,11 @@ import {createModelTest1PageVm} from "./model-test-1/ModelTest1PageVm";
 import {createStressTest1PageVm} from "./stress-test-1/StressTest1PageVm";
 
 export type In = ParentVmIn & {
+  /** Triggers emitting static VM. */
+  a_stat: any;
+
   /** Determines child VMs to use. */
   d_hash_path: string;
-
-  /** Triggers emitting static VM. */
-  ev_ready: any;
 };
 
 export type Out = ParentVmOut;
@@ -50,10 +50,10 @@ export function createMainPageVm(): MainPageVm {
   connect(hashPathForwarder.o.d_val, router.i.d_route);
   connect(hashPathForwarder.o.d_val, stressTest1PageVm.i.d_hash_path);
   connect(readyForwarder.o.d_val, staticVm.i.d_val);
-  connect(router.o[`r_${ROUTE_REST}`], emptyPageVm.i.ev_ready);
-  connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageVm.i.ev_ready);
-  connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], stressTest1PageVm.i.ev_ready);
-  connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], modelTest1PageVm.i.ev_ready);
+  connect(router.o[`r_${ROUTE_REST}`], emptyPageVm.i.a_stat);
+  connect(router.o[`r_${ROUTE_HELLO_WORLD}`], helloWorldPageVm.i.a_stat);
+  connect(router.o[`r_${ROUTE_STRESS_TEST_1}`], stressTest1PageVm.i.a_stat);
+  connect(router.o[`r_${ROUTE_MODEL_TEST_1}`], modelTest1PageVm.i.a_stat);
   connect(emptyPageVm.o.d_vm, vm.i.d_vm);
   connect(helloWorldPageVm.o.d_vm, vm.i.d_vm);
   connect(stressTest1PageVm.o.d_vm, vm.i.d_vm);
@@ -62,10 +62,10 @@ export function createMainPageVm(): MainPageVm {
 
   return {
     i: {
+      a_stat: readyForwarder.i.d_val,
       d_hash_path: hashPathForwarder.i.d_val,
       d_model: vm.i.d_model,
-      d_vm: vm.i.d_vm,
-      ev_ready: readyForwarder.i.d_val
+      d_vm: vm.i.d_vm
     },
     o: {
       d_model: vm.o.d_model,

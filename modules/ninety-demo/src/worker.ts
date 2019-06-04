@@ -35,7 +35,7 @@ const mainPageVm = createMainPageVm();
 connect(parentDemuxer.o.d_hash_path, mainPageVm.i.d_hash_path);
 connect(router.o.d_pattern, mainPageView.i.d_route);
 connect(mainPageVm.o.d_vm, mainPageView.i.d_vm);
-connect(parentDemuxer.o.ev_dom_ready, mainPageVm.i.ev_ready);
+connect(parentDemuxer.o.ev_dom_ready, mainPageVm.i.a_stat);
 
 // setting up pre-rendering
 const ticker = createTicker(10, true);

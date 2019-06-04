@@ -7,9 +7,10 @@ import {ROUTE_STRESS_TEST_1} from "../../utils/routes";
 import {generateTableVm} from "./utils/generateTableVm";
 
 export type In = ParentVmIn & {
+  a_stat: any;
+
   /** @deprecated */
-  d_hash_path: string,
-  ev_ready: any;
+  d_hash_path: string;
 };
 
 export type Out = ParentVmOut;
@@ -42,10 +43,10 @@ export function createStressTest1PageVm(
 
   return {
     i: {
+      a_stat: readyForwarder.i.d_val,
       d_hash_path: routeDetector.i.d_val,
       d_model: vm.i.d_model,
-      d_vm: vm.i.d_vm,
-      ev_ready: readyForwarder.i.d_val
+      d_vm: vm.i.d_vm
     },
     o: {
       d_model: vm.o.d_model,

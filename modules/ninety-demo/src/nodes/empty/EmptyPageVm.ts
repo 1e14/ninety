@@ -3,7 +3,7 @@ import {createMapper} from "flowcode-fp";
 import {LeafVmIn, LeafVmOut} from "ninety-mvvm";
 
 export type In = LeafVmIn & {
-  ev_ready: any
+  a_stat: any
 };
 
 export type Out = LeafVmOut;
@@ -17,8 +17,8 @@ export function createEmptyPageVm(): EmptyPageVm {
 
   return {
     i: {
-      d_model: null,
-      ev_ready: staticVm.i.d_val
+      a_stat: staticVm.i.d_val,
+      d_model: null
     },
     o: {
       d_vm: staticVm.o.d_val
